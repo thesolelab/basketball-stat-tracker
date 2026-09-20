@@ -1,25 +1,26 @@
 /* ======================================================
    BASKETBALL STAT TRACKER
-   Mobile-first game tracking interface
+   Mobile-first interface
 ====================================================== */
 
 :root {
   --red: #c8102e;
-  --red-dark: #a50d26;
+  --red-dark: #a90d27;
 
   --white: #ffffff;
-  --background: #f5f6f8;
+
+  --background: #f4f7f8;
   --surface: #ffffff;
+  --surface-secondary: #f1f4f5;
 
-  --text: #15171a;
-  --text-secondary: #68707c;
-  --text-muted: #9aa1aa;
+  --text: #111820;
+  --text-secondary: #66717d;
+  --text-muted: #9ba5ae;
 
-  --border: #e6e8ec;
-  --button-light: #f1f3f5;
+  --border: #dfe4e7;
 
-  --radius-lg: 22px;
-  --radius-md: 15px;
+  --radius-large: 22px;
+  --radius-medium: 16px;
 
   --content-width: 680px;
 }
@@ -39,7 +40,9 @@ html {
 
 body {
   margin: 0;
+
   min-height: 100%;
+
   background: var(--background);
   color: var(--text);
 
@@ -58,6 +61,7 @@ body {
 
 button {
   font: inherit;
+
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -69,16 +73,32 @@ button {
 .app {
   width: 100%;
   max-width: var(--content-width);
+
   margin: 0 auto;
 
   padding:
-    max(18px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-top))
     14px
-    max(28px, env(safe-area-inset-bottom));
+    max(22px, env(safe-area-inset-bottom));
 
   display: flex;
   flex-direction: column;
+
   gap: 12px;
+}
+
+
+/* ======================================================
+   GAME CARD
+====================================================== */
+
+.game-card {
+  overflow: hidden;
+
+  background: var(--white);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-large);
 }
 
 
@@ -92,22 +112,18 @@ button {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+
+  gap: 14px;
 
   padding: 22px 18px 18px;
-
-  background: var(--white);
-
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-
-  overflow: hidden;
 }
+
 
 .game-header::before {
   content: "";
 
   position: absolute;
+
   top: 0;
   left: 0;
 
@@ -117,33 +133,43 @@ button {
   background: var(--red);
 }
 
+
 .game-info {
   min-width: 0;
 }
 
+
 .season-label {
-  margin: 0 0 5px;
+  margin: 0 0 6px;
 
   color: var(--text-muted);
 
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-weight: 900;
+
+  letter-spacing: 0.13em;
 }
+
 
 .player-name-row {
   display: flex;
   align-items: baseline;
+
   gap: 7px;
 }
+
 
 .player-name-row h1 {
   margin: 0;
 
-  font-size: clamp(24px, 7vw, 32px);
+  font-size: clamp(25px, 7vw, 32px);
+  font-weight: 900;
+
   line-height: 1;
+
   letter-spacing: -0.04em;
 }
+
 
 .player-number {
   color: var(--red);
@@ -152,13 +178,14 @@ button {
   font-weight: 900;
 }
 
+
 .opponent {
-  margin: 7px 0 0;
+  margin: 8px 0 0;
 
   color: var(--text-secondary);
 
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 
@@ -167,9 +194,11 @@ button {
 ====================================================== */
 
 .points-card {
+  flex: 0 0 auto;
+
   min-width: 80px;
 
-  padding: 9px 14px;
+  padding: 9px 14px 10px;
 
   background: var(--red);
   color: var(--white);
@@ -179,21 +208,26 @@ button {
   text-align: center;
 }
 
+
 .points-card span {
   display: block;
 
-  margin-bottom: 1px;
-
   font-size: 9px;
   font-weight: 900;
-  letter-spacing: 0.14em;
+
+  letter-spacing: 0.15em;
 }
+
 
 .points-card strong {
   display: block;
 
+  margin-top: 1px;
+
   font-size: 32px;
-  line-height: 1.1;
+  font-weight: 900;
+
+  line-height: 1.05;
 }
 
 
@@ -203,17 +237,15 @@ button {
 
 .stat-bar {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
 
-  margin-top: -12px;
-  padding: 14px 8px;
+  grid-template-columns:
+    repeat(7, minmax(0, 1fr));
 
-  background: var(--white);
+  padding: 14px 8px 15px;
 
-  border: 1px solid var(--border);
-  border-top: 1px solid #f0f1f3;
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  border-top: 1px solid var(--border);
 }
+
 
 .stat {
   min-width: 0;
@@ -221,27 +253,31 @@ button {
   text-align: center;
 }
 
+
 .stat span {
   display: block;
 
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 
   color: var(--text-muted);
 
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 900;
 }
+
 
 .stat strong {
   display: block;
 
   font-size: 17px;
+  font-weight: 900;
+
   line-height: 1;
 }
 
 
 /* ======================================================
-   CARDS
+   STANDARD CARDS
 ====================================================== */
 
 .card {
@@ -250,17 +286,9 @@ button {
   background: var(--surface);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-large);
 }
 
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-
-  margin-bottom: 14px;
-}
 
 .eyebrow {
   display: block;
@@ -269,42 +297,72 @@ button {
 
   font-size: 10px;
   font-weight: 900;
-  letter-spacing: 0.14em;
+
+  letter-spacing: 0.15em;
 }
+
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 14px;
+}
+
 
 .section-header h2 {
-  margin: 1px 0 0;
+  margin: 2px 0 0;
 
   font-size: 21px;
-  line-height: 1.1;
+  font-weight: 900;
+
+  line-height: 1;
 }
 
-.shooting-summary {
-  padding: 7px 11px;
 
-  background: var(--button-light);
+/* ======================================================
+   SHOOTING SUMMARY
+====================================================== */
+
+.shooting-summary {
+  flex: 0 0 auto;
+
+  padding: 7px 10px;
+
+  background: var(--surface-secondary);
   color: var(--text-secondary);
 
   border-radius: 999px;
 
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
+
   white-space: nowrap;
 }
 
 
 /* ======================================================
-   SHOOTING CONTROLS
+   SHOT BUTTONS
 ====================================================== */
 
 .shot-row {
   display: grid;
-  grid-template-columns: 46px minmax(0, 1fr) minmax(0, 1fr);
+
+  grid-template-columns:
+    44px
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
   align-items: stretch;
+
   gap: 8px;
 
   margin-top: 8px;
 }
+
 
 .shot-label {
   display: flex;
@@ -315,189 +373,85 @@ button {
   font-weight: 900;
 }
 
+
 .shot-row button {
   min-height: 56px;
 
+  padding: 8px;
+
   border: 0;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-medium);
 
   font-size: 13px;
   font-weight: 900;
 
   cursor: pointer;
 }
+
 
 .btn-made {
   background: var(--red);
   color: var(--white);
 }
 
+
 .btn-miss {
-  background: var(--button-light);
-  color: #59616c;
+  background: var(--surface-secondary);
+  color: #596570;
 }
 
-
-/* ======================================================
-   OTHER STAT BUTTONS
-====================================================== */
-
-.stat-buttons {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-
-  margin-top: 12px;
-}
-
-.stat-buttons button {
-  min-width: 0;
-  min-height: 68px;
-
-  padding: 8px 4px;
-
-  background: var(--white);
-  color: var(--text);
-
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-
-  font-size: 11px;
-  font-weight: 900;
-
-  cursor: pointer;
-}
-
-.stat-buttons button span {
-  display: block;
-
-  margin-bottom: 3px;
-
-  color: var(--red);
-
-  font-size: 20px;
-  line-height: 1;
-}
-
-.foul-button {
-  width: 100%;
-  min-height: 48px;
-
-  margin-top: 8px;
-
-  background: #fafafa;
-  color: var(--text);
-
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-
-  font-size: 12px;
-  font-weight: 900;
-
-  cursor: pointer;
-}
-
-.foul-button::first-letter {
-  color: var(--red);
-}
-
-
-/* ======================================================
-   GAME CONTROLS
-====================================================== */
-
-.game-controls {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: 8px;
-}
-
-.game-controls button {
-  min-height: 54px;
-
-  border-radius: var(--radius-md);
-
-  font-size: 13px;
-  font-weight: 900;
-
-  cursor: pointer;
-}
-
-.undo-button {
-  background: var(--white);
-  color: var(--text-secondary);
-
-  border: 1px solid #d8dce1;
-}
-
-.end-game-button {
-  background: var(--red);
-  color: var(--white);
-
-  border: 1px solid var(--red);
-}
-
-
-/* ======================================================
-   INTERACTIONS
-====================================================== */
-
-button {
-  transition:
-    transform 0.08s ease,
-    opacity 0.08s ease,
-    background-color 0.15s ease;
-}
-
-button:active {
-  transform: scale(0.97);
-  opacity: 0.86;
-}
-
-button:focus-visible {
-  outline: 3px solid rgba(200, 16, 46, 0.22);
-  outline-offset: 2px;
-}
-
-
-/* ======================================================
-   TABLET
-====================================================== */
-
-@media (min-width: 600px) {
-
-  .app {
-    padding-left: 22px;
-    padding-right: 22px;
-  }
-
-  .game-header {
-    padding: 26px 24px 21px;
-  }
-
-  .card {
-    padding: 20px;
-  }
-
-  .shot-row {
-    grid-template-columns: 60px minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  .stat-buttons button {
-    min-height: 76px;
-  }
-}
-/* ======================================================
-   SHOOTING SUMMARY
-====================================================== */
 
 .miss-x {
-  margin-right: 2px;
+  margin-right: 3px;
 
   color: var(--red);
 
   font-size: 18px;
   font-weight: 900;
+
+  line-height: 0;
+}
+
+
+/* ======================================================
+   OTHER STATS
+====================================================== */
+
+.other-stats-card {
+  padding-bottom: 16px;
+}
+
+
+.stat-buttons {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 8px;
+
+  margin-top: 12px;
+}
+
+
+.stat-buttons button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+  min-height: 82px;
+
+  padding: 10px 5px;
+
+  background: var(--white);
+  color: var(--text);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-medium);
+
+  cursor: pointer;
 }
 
 
@@ -506,43 +460,83 @@ button:focus-visible {
 ====================================================== */
 
 .stat-icon {
-  display: flex !important;
+  display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 28px;
-  height: 28px;
+  width: 27px;
+  height: 27px;
 
-  margin: 0 auto 5px !important;
+  margin-bottom: 7px;
 
   color: var(--red);
 }
 
+
 .stat-icon svg {
+  display: block;
+
   width: 27px;
   height: 27px;
 
   fill: none;
-  stroke: currentColor;
 
-  stroke-width: 2;
+  stroke: currentColor;
+  stroke-width: 1.8;
+
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 
+.stat-button-label {
+  display: block;
+
+  color: var(--text);
+
+  font-size: 10px;
+  font-weight: 900;
+
+  line-height: 1.1;
+
+  white-space: nowrap;
+}
+
+
 /* ======================================================
-   FOUL ICON
+   PERSONAL FOUL
 ====================================================== */
 
 .foul-button {
   display: flex;
   align-items: center;
   justify-content: center;
+
   gap: 7px;
+
+  width: 100%;
+  min-height: 48px;
+
+  margin-top: 8px;
+
+  padding: 8px;
+
+  background: #fafafa;
+  color: var(--text);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-medium);
+
+  font-size: 11px;
+  font-weight: 900;
+
+  cursor: pointer;
 }
 
+
 .foul-dot {
+  display: block;
+
   width: 10px;
   height: 10px;
 
@@ -553,14 +547,92 @@ button:focus-visible {
 
 
 /* ======================================================
-   TAP FEEDBACK
+   GAME CONTROLS
 ====================================================== */
 
-.stat-recorded {
-  animation: statRecorded 0.22s ease;
+.game-controls {
+  display: grid;
+
+  grid-template-columns:
+    0.8fr
+    1.2fr;
+
+  gap: 8px;
 }
 
-@keyframes statRecorded {
+
+.game-controls button {
+  min-height: 54px;
+
+  padding: 8px;
+
+  border-radius: var(--radius-medium);
+
+  font-size: 13px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+
+.undo-button {
+  background: var(--white);
+  color: var(--text-secondary);
+
+  border: 1px solid var(--border);
+}
+
+
+.undo-button:disabled {
+  background: #f2f4f5;
+  color: #aab1b8;
+
+  border-color: #e2e6e8;
+
+  cursor: default;
+}
+
+
+.end-game-button {
+  background: var(--red);
+  color: var(--white);
+
+  border: 1px solid var(--red);
+}
+
+
+/* ======================================================
+   BUTTON FEEDBACK
+====================================================== */
+
+button {
+  transition:
+    transform 0.08s ease,
+    opacity 0.08s ease,
+    background-color 0.15s ease;
+}
+
+
+button:active:not(:disabled) {
+  transform: scale(0.97);
+
+  opacity: 0.88;
+}
+
+
+button:focus-visible {
+  outline: 3px solid rgba(200, 16, 46, 0.2);
+
+  outline-offset: 2px;
+}
+
+
+.stat-recorded {
+  animation: stat-recorded 0.22s ease;
+}
+
+
+@keyframes stat-recorded {
 
   0% {
     transform: scale(1);
@@ -578,75 +650,74 @@ button:focus-visible {
 
 
 /* ======================================================
-   DISABLED UNDO
-====================================================== */
-
-.undo-button:disabled {
-  background: #f1f2f4;
-  color: #b2b7be;
-
-  border-color: #e3e5e8;
-
-  cursor: default;
-}
-
-.undo-button:disabled:active {
-  transform: none;
-  opacity: 1;
-}
-
-
-/* ======================================================
-   END GAME MODAL
+   MODAL BACKDROP
 ====================================================== */
 
 .modal-backdrop {
   position: fixed;
+
   inset: 0;
-  z-index: 100;
+
+  z-index: 1000;
 
   display: flex;
   align-items: flex-end;
   justify-content: center;
 
-  padding: 18px;
+  padding: 0;
 
-  background: rgba(15, 17, 20, 0.48);
+  background: rgba(17, 24, 32, 0.45);
 
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 
   transition:
-    opacity 0.2s ease,
-    visibility 0.2s ease;
+    opacity 0.18s ease,
+    visibility 0.18s ease;
 }
+
 
 .modal-backdrop.is-open {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
+
+
+/* ======================================================
+   END GAME BOTTOM SHEET
+====================================================== */
 
 .end-game-modal {
   width: 100%;
   max-width: var(--content-width);
 
+  margin: 0;
+
   padding:
     10px
     20px
-    max(20px, env(safe-area-inset-bottom));
+    max(22px, env(safe-area-inset-bottom));
 
   background: var(--white);
 
-  border-radius: 24px;
+  border-radius: 26px 26px 0 0;
 
-  transform: translateY(20px);
+  box-shadow:
+    0 -8px 30px rgba(0, 0, 0, 0.12);
+
+  transform: translateY(100%);
 
   transition: transform 0.2s ease;
 }
 
-.modal-backdrop.is-open .end-game-modal {
+
+.modal-backdrop.is-open
+.end-game-modal {
   transform: translateY(0);
 }
+
 
 .modal-handle {
   width: 38px;
@@ -654,17 +725,23 @@ button:focus-visible {
 
   margin: 0 auto 18px;
 
-  background: #d8dce1;
+  background: #d7dcdf;
 
   border-radius: 999px;
 }
 
+
 .end-game-modal h2 {
-  margin: 4px 0 6px;
+  margin: 5px 0 6px;
 
   font-size: 25px;
+  font-weight: 900;
+
+  line-height: 1.1;
+
   letter-spacing: -0.03em;
 }
+
 
 .modal-description {
   margin: 0;
@@ -672,31 +749,62 @@ button:focus-visible {
   color: var(--text-secondary);
 
   font-size: 14px;
-  line-height: 1.45;
+
+  line-height: 1.4;
 }
+
+
+/* ======================================================
+   FINAL STATS
+====================================================== */
 
 .final-stat-line {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
 
-  margin-top: 20px;
-  padding: 16px 8px;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
 
-  background: #f7f8f9;
+  margin-top: 18px;
+
+  padding: 15px 6px;
+
+  background: #f6f8f9;
 
   border-radius: 17px;
 }
 
+
 .final-stat-line div {
+  position: relative;
+
   text-align: center;
 }
+
+
+.final-stat-line div:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  top: 3px;
+  right: 0;
+
+  width: 1px;
+  height: calc(100% - 6px);
+
+  background: #dce1e4;
+}
+
 
 .final-stat-line strong {
   display: block;
 
-  font-size: 24px;
+  font-size: 23px;
+  font-weight: 900;
+
   line-height: 1;
 }
+
 
 .final-stat-line span {
   display: block;
@@ -709,61 +817,143 @@ button:focus-visible {
   font-weight: 900;
 }
 
+
 .final-shooting {
   margin-top: 10px;
 
   color: var(--text-secondary);
 
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
 
   text-align: center;
 }
 
+
+/* ======================================================
+   MODAL ACTIONS
+====================================================== */
+
 .modal-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
   gap: 8px;
 
-  margin-top: 20px;
+  margin-top: 18px;
 }
+
 
 .modal-actions button {
   min-height: 52px;
 
-  border-radius: var(--radius-md);
+  padding: 8px;
 
-  font-size: 12px;
+  border: 0;
+  border-radius: var(--radius-medium);
+
+  font-size: 11px;
   font-weight: 900;
 
   cursor: pointer;
 }
 
-.modal-cancel {
-  background: var(--button-light);
-  color: var(--text-secondary);
 
-  border: 0;
+.modal-cancel {
+  background: var(--surface-secondary);
+  color: var(--text);
 }
+
 
 .modal-confirm {
   background: var(--red);
   color: var(--white);
-
-  border: 0;
 }
 
 
 /* ======================================================
-   SMALL SCREEN SHOOTING SUMMARY
+   MOBILE
 ====================================================== */
 
 @media (max-width: 430px) {
+
+  .app {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+
+  .game-header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+
+  .card {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
 
   .shooting-summary {
     padding: 6px 8px;
 
     font-size: 9px;
+  }
+
+
+  .stat-buttons button {
+    min-height: 78px;
+  }
+
+
+  .stat-icon,
+  .stat-icon svg {
+    width: 25px;
+    height: 25px;
+  }
+
+}
+
+
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media (min-width: 600px) {
+
+  .app {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+
+  .game-header {
+    padding:
+      26px
+      24px
+      21px;
+  }
+
+
+  .card {
+    padding: 20px;
+  }
+
+
+  .shot-row {
+    grid-template-columns:
+      58px
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+  }
+
+
+  .stat-buttons button {
+    min-height: 88px;
   }
 
 }
