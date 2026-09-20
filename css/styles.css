@@ -59,10 +59,19 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button {
+body.modal-open {
+  overflow: hidden;
+}
+
+button,
+input {
   font: inherit;
 
   -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
 }
 
 
@@ -80,11 +89,397 @@ button {
     max(16px, env(safe-area-inset-top))
     14px
     max(22px, env(safe-area-inset-bottom));
+}
 
+
+/* ======================================================
+   SCREENS
+====================================================== */
+
+.screen {
+  display: none;
+}
+
+.screen.active-screen {
   display: flex;
   flex-direction: column;
 
   gap: 12px;
+}
+
+
+/* ======================================================
+   HOME
+====================================================== */
+
+.home-hero {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 28px 22px 26px;
+
+  background: var(--white);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-large);
+}
+
+.home-hero::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 6px;
+
+  background: var(--red);
+}
+
+.home-eyebrow {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--red);
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 0.16em;
+}
+
+.home-hero h1 {
+  margin: 0;
+
+  font-size: 34px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: -0.04em;
+}
+
+.home-season {
+  margin: 7px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+/* ======================================================
+   HOME ACTIONS
+====================================================== */
+
+.home-actions {
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+.primary-home-action,
+.secondary-home-action {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  text-align: left;
+
+  border-radius: var(--radius-large);
+}
+
+.primary-home-action {
+  min-height: 88px;
+
+  padding: 16px;
+
+  background: var(--red);
+  color: var(--white);
+
+  border: 0;
+}
+
+.secondary-home-action {
+  min-height: 76px;
+
+  padding: 16px 18px;
+
+  background: var(--white);
+  color: var(--text);
+
+  border: 1px solid var(--border);
+}
+
+.secondary-home-action:disabled {
+  cursor: default;
+
+  opacity: 0.58;
+}
+
+.home-action-icon {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  margin-right: 14px;
+
+  background: rgba(255, 255, 255, 0.16);
+
+  border-radius: 14px;
+}
+
+.home-action-icon svg {
+  width: 23px;
+  height: 23px;
+
+  fill: none;
+  stroke: currentColor;
+
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.home-action-copy {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.home-action-copy strong,
+.home-action-copy small {
+  display: block;
+}
+
+.home-action-copy strong {
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.home-action-copy small {
+  margin-top: 3px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  opacity: 0.72;
+}
+
+.home-action-arrow {
+  margin-left: 10px;
+
+  font-size: 30px;
+  font-weight: 300;
+
+  line-height: 1;
+}
+
+
+/* ======================================================
+   SCREEN TOP BAR
+====================================================== */
+
+.screen-topbar {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 5px 2px 8px;
+}
+
+.screen-topbar h1 {
+  margin: 2px 0 0;
+
+  font-size: 27px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: -0.03em;
+}
+
+.back-button {
+  flex: 0 0 auto;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0 0 4px;
+
+  background: var(--white);
+  color: var(--text);
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  font-size: 31px;
+  font-weight: 400;
+
+  line-height: 1;
+}
+
+
+/* ======================================================
+   GAME SETUP
+====================================================== */
+
+.setup-card {
+  padding: 19px;
+
+  background: var(--white);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-large);
+}
+
+.form-group {
+  min-width: 0;
+
+  margin: 0 0 19px;
+  padding: 0;
+
+  border: 0;
+}
+
+.form-group > label,
+.form-group legend {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--text);
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"] {
+  width: 100%;
+  min-height: 52px;
+
+  padding: 0 14px;
+
+  background: #fafbfb;
+  color: var(--text);
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  outline: none;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.form-group input:focus {
+  border-color: var(--red);
+
+  box-shadow:
+    0 0 0 3px rgba(200, 16, 46, 0.09);
+}
+
+
+/* ======================================================
+   SEGMENTED CONTROLS
+====================================================== */
+
+.segmented-control,
+.game-type-options {
+  display: grid;
+
+  gap: 7px;
+}
+
+.segmented-control {
+  grid-template-columns: 1fr 1fr;
+}
+
+.game-type-options {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.segmented-control input,
+.game-type-options input {
+  position: absolute;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segmented-control label,
+.game-type-options label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+
+  padding: 7px;
+
+  background: var(--surface-secondary);
+  color: var(--text-secondary);
+
+  border: 1px solid transparent;
+  border-radius: 13px;
+
+  text-align: center;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.segmented-control input:checked + label,
+.game-type-options input:checked + label {
+  background: #fff5f6;
+  color: var(--red);
+
+  border-color: rgba(200, 16, 46, 0.3);
+}
+
+
+/* ======================================================
+   SETUP MESSAGE / START GAME
+====================================================== */
+
+.form-message {
+  min-height: 18px;
+
+  margin: -4px 0 7px;
+
+  color: var(--red);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.start-game-button {
+  width: 100%;
+  min-height: 55px;
+
+  background: var(--red);
+  color: var(--white);
+
+  border: 0;
+  border-radius: var(--radius-medium);
+
+  font-size: 13px;
+  font-weight: 900;
 }
 
 
@@ -118,7 +513,6 @@ button {
   padding: 22px 18px 18px;
 }
 
-
 .game-header::before {
   content: "";
 
@@ -133,11 +527,9 @@ button {
   background: var(--red);
 }
 
-
 .game-info {
   min-width: 0;
 }
-
 
 .season-label {
   margin: 0 0 6px;
@@ -150,14 +542,12 @@ button {
   letter-spacing: 0.13em;
 }
 
-
 .player-name-row {
   display: flex;
   align-items: baseline;
 
   gap: 7px;
 }
-
 
 .player-name-row h1 {
   margin: 0;
@@ -170,14 +560,12 @@ button {
   letter-spacing: -0.04em;
 }
 
-
 .player-number {
   color: var(--red);
 
   font-size: 14px;
   font-weight: 900;
 }
-
 
 .opponent {
   margin: 8px 0 0;
@@ -186,6 +574,24 @@ button {
 
   font-size: 14px;
   font-weight: 700;
+}
+
+.game-type-badge {
+  display: inline-flex;
+
+  margin-top: 9px;
+
+  padding: 5px 8px;
+
+  background: #fff3f5;
+  color: var(--red);
+
+  border-radius: 999px;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 0.1em;
 }
 
 
@@ -208,7 +614,6 @@ button {
   text-align: center;
 }
 
-
 .points-card span {
   display: block;
 
@@ -217,7 +622,6 @@ button {
 
   letter-spacing: 0.15em;
 }
-
 
 .points-card strong {
   display: block;
@@ -246,13 +650,11 @@ button {
   border-top: 1px solid var(--border);
 }
 
-
 .stat {
   min-width: 0;
 
   text-align: center;
 }
-
 
 .stat span {
   display: block;
@@ -264,7 +666,6 @@ button {
   font-size: 9px;
   font-weight: 900;
 }
-
 
 .stat strong {
   display: block;
@@ -289,7 +690,6 @@ button {
   border-radius: var(--radius-large);
 }
 
-
 .eyebrow {
   display: block;
 
@@ -301,7 +701,6 @@ button {
   letter-spacing: 0.15em;
 }
 
-
 .section-header {
   display: flex;
   align-items: center;
@@ -311,7 +710,6 @@ button {
 
   margin-bottom: 14px;
 }
-
 
 .section-header h2 {
   margin: 2px 0 0;
@@ -363,7 +761,6 @@ button {
   margin-top: 8px;
 }
 
-
 .shot-label {
   display: flex;
   align-items: center;
@@ -372,7 +769,6 @@ button {
   font-size: 15px;
   font-weight: 900;
 }
-
 
 .shot-row button {
   min-height: 56px;
@@ -384,22 +780,17 @@ button {
 
   font-size: 13px;
   font-weight: 900;
-
-  cursor: pointer;
 }
-
 
 .btn-made {
   background: var(--red);
   color: var(--white);
 }
 
-
 .btn-miss {
   background: var(--surface-secondary);
   color: #596570;
 }
-
 
 .miss-x {
   margin-right: 3px;
@@ -421,7 +812,6 @@ button {
   padding-bottom: 16px;
 }
 
-
 .stat-buttons {
   display: grid;
 
@@ -432,7 +822,6 @@ button {
 
   margin-top: 12px;
 }
-
 
 .stat-buttons button {
   display: flex;
@@ -450,8 +839,6 @@ button {
 
   border: 1px solid var(--border);
   border-radius: var(--radius-medium);
-
-  cursor: pointer;
 }
 
 
@@ -472,7 +859,6 @@ button {
   color: var(--red);
 }
 
-
 .stat-icon svg {
   display: block;
 
@@ -487,7 +873,6 @@ button {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-
 
 .stat-button-label {
   display: block;
@@ -529,10 +914,7 @@ button {
 
   font-size: 11px;
   font-weight: 900;
-
-  cursor: pointer;
 }
-
 
 .foul-dot {
   display: block;
@@ -560,7 +942,6 @@ button {
   gap: 8px;
 }
 
-
 .game-controls button {
   min-height: 54px;
 
@@ -570,10 +951,7 @@ button {
 
   font-size: 13px;
   font-weight: 900;
-
-  cursor: pointer;
 }
-
 
 .undo-button {
   background: var(--white);
@@ -581,7 +959,6 @@ button {
 
   border: 1px solid var(--border);
 }
-
 
 .undo-button:disabled {
   background: #f2f4f5;
@@ -592,12 +969,27 @@ button {
   cursor: default;
 }
 
-
 .end-game-button {
   background: var(--red);
   color: var(--white);
 
   border: 1px solid var(--red);
+}
+
+.exit-game-button {
+  align-self: center;
+
+  min-height: 42px;
+
+  padding: 5px 18px;
+
+  background: transparent;
+  color: var(--text-muted);
+
+  border: 0;
+
+  font-size: 11px;
+  font-weight: 800;
 }
 
 
@@ -612,13 +1004,11 @@ button {
     background-color 0.15s ease;
 }
 
-
 button:active:not(:disabled) {
   transform: scale(0.97);
 
   opacity: 0.88;
 }
-
 
 button:focus-visible {
   outline: 3px solid rgba(200, 16, 46, 0.2);
@@ -626,11 +1016,9 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-
 .stat-recorded {
   animation: stat-recorded 0.22s ease;
 }
-
 
 @keyframes stat-recorded {
 
@@ -677,7 +1065,6 @@ button:focus-visible {
     visibility 0.18s ease;
 }
 
-
 .modal-backdrop.is-open {
   opacity: 1;
   visibility: visible;
@@ -686,7 +1073,7 @@ button:focus-visible {
 
 
 /* ======================================================
-   END GAME BOTTOM SHEET
+   BOTTOM SHEET
 ====================================================== */
 
 .end-game-modal {
@@ -712,12 +1099,10 @@ button:focus-visible {
   transition: transform 0.2s ease;
 }
 
-
 .modal-backdrop.is-open
 .end-game-modal {
   transform: translateY(0);
 }
-
 
 .modal-handle {
   width: 38px;
@@ -730,7 +1115,6 @@ button:focus-visible {
   border-radius: 999px;
 }
 
-
 .end-game-modal h2 {
   margin: 5px 0 6px;
 
@@ -741,7 +1125,6 @@ button:focus-visible {
 
   letter-spacing: -0.03em;
 }
-
 
 .modal-description {
   margin: 0;
@@ -773,13 +1156,11 @@ button:focus-visible {
   border-radius: 17px;
 }
 
-
 .final-stat-line div {
   position: relative;
 
   text-align: center;
 }
-
 
 .final-stat-line div:not(:last-child)::after {
   content: "";
@@ -795,7 +1176,6 @@ button:focus-visible {
   background: #dce1e4;
 }
 
-
 .final-stat-line strong {
   display: block;
 
@@ -804,7 +1184,6 @@ button:focus-visible {
 
   line-height: 1;
 }
-
 
 .final-stat-line span {
   display: block;
@@ -816,7 +1195,6 @@ button:focus-visible {
   font-size: 9px;
   font-weight: 900;
 }
-
 
 .final-shooting {
   margin-top: 10px;
@@ -846,7 +1224,6 @@ button:focus-visible {
   margin-top: 18px;
 }
 
-
 .modal-actions button {
   min-height: 52px;
 
@@ -857,16 +1234,12 @@ button:focus-visible {
 
   font-size: 11px;
   font-weight: 900;
-
-  cursor: pointer;
 }
-
 
 .modal-cancel {
   background: var(--surface-secondary);
   color: var(--text);
 }
-
 
 .modal-confirm {
   background: var(--red);
@@ -885,18 +1258,15 @@ button:focus-visible {
     padding-right: 12px;
   }
 
-
   .game-header {
     padding-left: 16px;
     padding-right: 16px;
   }
 
-
   .card {
     padding-left: 15px;
     padding-right: 15px;
   }
-
 
   .shooting-summary {
     padding: 6px 8px;
@@ -904,16 +1274,18 @@ button:focus-visible {
     font-size: 9px;
   }
 
-
   .stat-buttons button {
     min-height: 78px;
   }
-
 
   .stat-icon,
   .stat-icon svg {
     width: 25px;
     height: 25px;
+  }
+
+  .game-type-options label {
+    font-size: 10px;
   }
 
 }
@@ -930,7 +1302,6 @@ button:focus-visible {
     padding-right: 22px;
   }
 
-
   .game-header {
     padding:
       26px
@@ -938,11 +1309,10 @@ button:focus-visible {
       21px;
   }
 
-
-  .card {
+  .card,
+  .setup-card {
     padding: 20px;
   }
-
 
   .shot-row {
     grid-template-columns:
@@ -950,7 +1320,6 @@ button:focus-visible {
       minmax(0, 1fr)
       minmax(0, 1fr);
   }
-
 
   .stat-buttons button {
     min-height: 88px;
