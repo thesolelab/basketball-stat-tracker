@@ -28,11 +28,6 @@ const stats = {
   fouls: 0
 };
 
-
-/*
-  Stores each action in order so Undo can reverse
-  the most recent stat entry.
-*/
 const actionHistory = [];
 
 
@@ -40,14 +35,29 @@ const actionHistory = [];
    DOM ELEMENTS
 ====================================================== */
 
-const pointsElement = document.getElementById("points");
-const reboundsElement = document.getElementById("rebounds");
-const assistsElement = document.getElementById("assists");
-const stealsElement = document.getElementById("steals");
-const blocksElement = document.getElementById("blocks");
-const turnoversElement = document.getElementById("turnovers");
-const foulsElement = document.getElementById("fouls");
-const fgPercentElement = document.getElementById("fgPercent");
+const pointsElement =
+  document.getElementById("points");
+
+const reboundsElement =
+  document.getElementById("rebounds");
+
+const assistsElement =
+  document.getElementById("assists");
+
+const stealsElement =
+  document.getElementById("steals");
+
+const blocksElement =
+  document.getElementById("blocks");
+
+const turnoversElement =
+  document.getElementById("turnovers");
+
+const foulsElement =
+  document.getElementById("fouls");
+
+const fgPercentElement =
+  document.getElementById("fgPercent");
 
 const shootingSummaryElement =
   document.getElementById("shootingSummary");
@@ -57,6 +67,33 @@ const undoButton =
 
 const endGameButton =
   document.getElementById("endGameButton");
+
+
+/* Modal */
+
+const endGameModal =
+  document.getElementById("endGameModal");
+
+const cancelEndGameButton =
+  document.getElementById("cancelEndGame");
+
+const confirmEndGameButton =
+  document.getElementById("confirmEndGame");
+
+const finalPointsElement =
+  document.getElementById("finalPoints");
+
+const finalReboundsElement =
+  document.getElementById("finalRebounds");
+
+const finalAssistsElement =
+  document.getElementById("finalAssists");
+
+const finalStealsElement =
+  document.getElementById("finalSteals");
+
+const finalShootingElement =
+  document.getElementById("finalShooting");
 
 
 /* ======================================================
@@ -86,13 +123,20 @@ function calculateFieldGoalsMade() {
 
 
 function calculateFieldGoalAttempts() {
-  return stats.twoAttempted + stats.threeAttempted;
+  return (
+    stats.twoAttempted +
+    stats.threeAttempted
+  );
 }
 
 
 function calculateFieldGoalPercentage() {
-  const made = calculateFieldGoalsMade();
-  const attempts = calculateFieldGoalAttempts();
+
+  const made =
+    calculateFieldGoalsMade();
+
+  const attempts =
+    calculateFieldGoalAttempts();
 
   if (attempts === 0) {
     return "—";
@@ -103,16 +147,30 @@ function calculateFieldGoalPercentage() {
 
 
 /* ======================================================
-   UPDATE SCREEN
+   SHOOTING TEXT
 ====================================================== */
 
-function updateDisplay() {
+function getShootingSummary() {
 
   const fieldGoalsMade =
     calculateFieldGoalsMade();
 
   const fieldGoalAttempts =
     calculateFieldGoalAttempts();
+
+  return (
+    `FG ${fieldGoalsMade}/${fieldGoalAttempts} · ` +
+    `3PT ${stats.threeMade}/${stats.threeAttempted} · ` +
+    `FT ${stats.freeThrowMade}/${stats.freeThrowAttempted}`
+  );
+}
+
+
+/* ======================================================
+   UPDATE SCREEN
+====================================================== */
+
+function updateDisplay() {
 
   pointsElement.textContent =
     calculatePoints();
@@ -139,8 +197,34 @@ function updateDisplay() {
     calculateFieldGoalPercentage();
 
   shootingSummaryElement.textContent =
-    `FG ${fieldGoalsMade}/${fieldGoalAttempts} · ` +
-    `FT ${stats.freeThrowMade}/${stats.freeThrowAttempted}`;
+    getShootingSummary();
+
+
+  /*
+    Undo only becomes available after at least
+    one action has been recorded.
+  */
+
+  undoButton.disabled =
+    actionHistory.length === 0;
+}
+
+
+/* ======================================================
+   TAP FEEDBACK
+====================================================== */
+
+function showTapFeedback(button) {
+
+  button.classList.remove("stat-recorded");
+
+  void button.offsetWidth;
+
+  button.classList.add("stat-recorded");
+
+  window.setTimeout(() => {
+    button.classList.remove("stat-recorded");
+  }, 220);
 }
 
 
@@ -227,7 +311,8 @@ function undoLastAction() {
     return;
   }
 
-  const action = actionHistory.pop();
+  const action =
+    actionHistory.pop();
 
   switch (action) {
 
@@ -307,6 +392,8 @@ statButtons.forEach((button) => {
 
     recordAction(action);
 
+    showTapFeedback(button);
+
   });
 
 });
@@ -323,49 +410,89 @@ undoButton.addEventListener(
 
 
 /* ======================================================
-   END GAME
+   END GAME MODAL
 ====================================================== */
+
+function openEndGameModal() {
+
+  finalPointsElement.textContent =
+    calculatePoints();
+
+  finalReboundsElement.textContent =
+    calculateRebounds();
+
+  finalAssistsElement.textContent =
+    stats.assists;
+
+  finalStealsElement.textContent =
+    stats.steals;
+
+  finalShootingElement.textContent =
+    getShootingSummary();
+
+  endGameModal.classList.add("is-open");
+
+  endGameModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+}
+
+
+function closeEndGameModal() {
+
+  endGameModal.classList.remove("is-open");
+
+  endGameModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+}
+
 
 endGameButton.addEventListener(
   "click",
-  () => {
+  openEndGameModal
+);
 
-    const points =
-      calculatePoints();
 
-    const rebounds =
-      calculateRebounds();
+cancelEndGameButton.addEventListener(
+  "click",
+  closeEndGameModal
+);
 
-    const fieldGoalsMade =
-      calculateFieldGoalsMade();
 
-    const fieldGoalAttempts =
-      calculateFieldGoalAttempts();
+endGameModal.addEventListener(
+  "click",
+  (event) => {
 
-    const confirmEnd =
-      window.confirm(
-        `End game?\n\n` +
-        `${points} PTS · ` +
-        `${rebounds} REB · ` +
-        `${stats.assists} AST\n\n` +
-        `FG ${fieldGoalsMade}/${fieldGoalAttempts}`
-      );
-
-    if (!confirmEnd) {
-      return;
+    if (event.target === endGameModal) {
+      closeEndGameModal();
     }
 
-    /*
-      Google Sheets saving will be added later.
+  }
+);
 
-      For now we're just confirming that the game
-      tracking portion works correctly.
+
+/* ======================================================
+   SAVE GAME
+====================================================== */
+
+confirmEndGameButton.addEventListener(
+  "click",
+  () => {
+
+    /*
+      Google Sheets connection will replace
+      this temporary behavior.
     */
 
     console.log(
       "Final Game Stats:",
       stats
     );
+
+    closeEndGameModal();
 
   }
 );
