@@ -1,1 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
 
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#c8102e">
+
+  <title>Basketball Stat Tracker</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- =========================
+         PLAYER / GAME HEADER
+    ========================== -->
+    <header class="game-header">
+
+      <div class="game-info">
+        <p class="season-label">2026–27 SEASON · GAME 1</p>
+
+        <div class="player-name-row">
+          <h1>ADDYSON</h1>
+          <span class="player-number">#2</span>
+        </div>
+
+        <p class="opponent">vs. Tigers · Home</p>
+      </div>
+
+      <div class="points-card">
+        <span>POINTS</span>
+        <strong id="points">0</strong>
+      </div>
+
+    </header>
+
+
+    <!-- =========================
+         LIVE STAT BAR
+    ========================== -->
+    <section class="stat-bar">
+
+      <div class="stat">
+        <span>REB</span>
+        <strong id="rebounds">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>AST</span>
+        <strong id="assists">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>STL</span>
+        <strong id="steals">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>BLK</span>
+        <strong id="blocks">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>TOV</span>
+        <strong id="turnovers">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>PF</span>
+        <strong id="fouls">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>FG%</span>
+        <strong id="fgPercent">—</strong>
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         SHOOTING
+    ========================== -->
+    <section class="card shooting-card">
+
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">SCORING</span>
+          <h2>Shots</h2>
+        </div>
+
+        <div class="shooting-summary" id="shootingSummary">
+          FG 0/0 · FT 0/0
+        </div>
+      </div>
+
+
+      <div class="shot-row">
+        <div class="shot-label">2PT</div>
+
+        <button class="btn-made" data-action="2pt-made">
+          +2 MADE
+        </button>
+
+        <button class="btn-miss" data-action="2pt-miss">
+          MISS
+        </button>
+      </div>
+
+
+      <div class="shot-row">
+        <div class="shot-label">3PT</div>
+
+        <button class="btn-made" data-action="3pt-made">
+          +3 MADE
+        </button>
+
+        <button class="btn-miss" data-action="3pt-miss">
+          MISS
+        </button>
+      </div>
+
+
+      <div class="shot-row">
+        <div class="shot-label">FT</div>
+
+        <button class="btn-made" data-action="ft-made">
+          +1 MADE
+        </button>
+
+        <button class="btn-miss" data-action="ft-miss">
+          MISS
+        </button>
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         OTHER STATS
+    ========================== -->
+    <section class="card">
+
+      <span class="eyebrow">OTHER STATS</span>
+
+      <div class="stat-buttons">
+
+        <button data-action="oreb">
+          <span>↑</span>
+          OFF REB
+        </button>
+
+        <button data-action="assist">
+          <span>A</span>
+          ASSIST
+        </button>
+
+        <button data-action="block">
+          <span>✋</span>
+          BLOCK
+        </button>
+
+        <button data-action="dreb">
+          <span>↓</span>
+          DEF REB
+        </button>
+
+        <button data-action="steal">
+          <span>S</span>
+          STEAL
+        </button>
+
+        <button data-action="turnover">
+          <span>↩</span>
+          TURNOVER
+        </button>
+
+      </div>
+
+      <button class="foul-button" data-action="foul">
+        ● PERSONAL FOUL
+      </button>
+
+    </section>
+
+
+    <!-- =========================
+         GAME CONTROLS
+    ========================== -->
+    <section class="game-controls">
+
+      <button id="undoButton" class="undo-button">
+        ↶ Undo
+      </button>
+
+      <button id="endGameButton" class="end-game-button">
+        END GAME
+      </button>
+
+    </section>
+
+  </div>
+
+
+  <script src="js/app.js"></script>
+
+</body>
+</html>
