@@ -506,7 +506,6 @@ button {
 
    Important:
    Do NOT absolutely position the calendar picker.
-   That was causing desktop Chrome to intercept clicks.
 ====================================================== */
 
 .form-group input[type="date"] {
@@ -1632,48 +1631,120 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   padding: 16px 18px;
+
   background: var(--white);
+
   border: 1px solid var(--border);
   border-radius: var(--radius-large);
 }
 
 .history-summary-card span {
   color: var(--text-muted);
+
   font-size: 10px;
   font-weight: 900;
+
   letter-spacing: 0.13em;
 }
 
 .history-summary-card strong {
   color: var(--red);
+
   font-size: 26px;
   font-weight: 900;
+
   line-height: 1;
 }
 
 .history-list {
   display: flex;
   flex-direction: column;
+
   gap: 9px;
 }
 
-.history-game-card {
-  width: 100%;
-  padding: 0;
+.history-swipe-row {
+  position: relative;
+
   overflow: hidden;
+
+  border-radius: var(--radius-large);
+
+  touch-action: pan-y;
+}
+
+.history-delete-button {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 92px;
+
+  padding: 0 12px;
+
+  background: var(--red);
+  color: var(--white);
+
+  border: 0;
+  border-radius:
+    0
+    var(--radius-large)
+    var(--radius-large)
+    0;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+}
+
+.history-swipe-row.is-delete-open
+.history-delete-button {
+  background: var(--red-dark);
+}
+
+.history-game-card {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+
+  padding: 0;
+
+  overflow: hidden;
+
   background: var(--white);
   color: var(--text);
+
   border: 1px solid var(--border);
   border-radius: var(--radius-large);
+
   text-align: left;
+
+  touch-action: pan-y;
+
+  transition:
+    transform 0.18s ease;
+
+  will-change: transform;
+}
+
+.history-swipe-row.is-delete-open
+.history-game-card {
+  transform: translateX(-92px);
 }
 
 .history-game-card-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
   gap: 12px;
+
   padding: 16px 16px 13px;
 }
 
@@ -1683,37 +1754,52 @@ button:focus-visible {
 
 .history-game-label {
   display: block;
+
   margin-bottom: 5px;
+
   color: var(--red);
+
   font-size: 9px;
   font-weight: 900;
+
   letter-spacing: 0.12em;
 }
 
 .history-game-opponent {
   display: block;
+
   overflow: hidden;
+
   font-size: 18px;
   font-weight: 900;
+
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .history-game-meta {
   display: block;
+
   margin-top: 5px;
+
   color: var(--text-secondary);
+
   font-size: 11px;
   font-weight: 700;
 }
 
 .history-game-points {
   flex: 0 0 auto;
+
   min-width: 64px;
+
   padding: 8px 10px;
+
   background: var(--red);
   color: var(--white);
+
   border-radius: 14px;
+
   text-align: center;
 }
 
@@ -1725,21 +1811,29 @@ button:focus-visible {
 .history-game-points strong {
   font-size: 25px;
   font-weight: 900;
+
   line-height: 1;
 }
 
 .history-game-points span {
   margin-top: 3px;
+
   font-size: 8px;
   font-weight: 900;
+
   letter-spacing: 0.12em;
 }
 
 .history-game-stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
   padding: 12px 8px;
+
   background: #fafbfb;
+
   border-top: 1px solid var(--border);
 }
 
@@ -1759,16 +1853,21 @@ button:focus-visible {
 
 .history-game-stats span {
   margin-top: 3px;
+
   color: var(--text-muted);
+
   font-size: 8px;
   font-weight: 900;
 }
 
 .history-empty {
   padding: 34px 20px;
+
   background: var(--white);
+
   border: 1px dashed var(--border);
   border-radius: var(--radius-large);
+
   text-align: center;
 }
 
@@ -1788,7 +1887,9 @@ button:focus-visible {
 
 .history-empty span {
   margin-top: 5px;
+
   color: var(--text-secondary);
+
   font-size: 12px;
   font-weight: 600;
 }
@@ -1801,6 +1902,7 @@ button:focus-visible {
 .detail-hero,
 .detail-card {
   background: var(--white);
+
   border: 1px solid var(--border);
   border-radius: var(--radius-large);
 }
@@ -1809,8 +1911,11 @@ button:focus-visible {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
   gap: 14px;
+
   padding: 20px 18px;
+
   border-top: 6px solid var(--red);
 }
 
@@ -1820,38 +1925,54 @@ button:focus-visible {
 
 .detail-game-number {
   display: block;
+
   margin-bottom: 5px;
+
   color: var(--red);
+
   font-size: 9px;
   font-weight: 900;
+
   letter-spacing: 0.13em;
 }
 
 .detail-hero h2 {
   margin: 0;
+
   overflow: hidden;
+
   font-size: 24px;
   font-weight: 900;
+
   line-height: 1.05;
+
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .detail-hero p {
   margin: 7px 0 0;
+
   color: var(--text-secondary);
+
   font-size: 12px;
   font-weight: 700;
+
   line-height: 1.4;
 }
 
 .detail-points {
   flex: 0 0 auto;
+
   min-width: 76px;
+
   padding: 9px 12px;
+
   background: var(--red);
   color: var(--white);
+
   border-radius: 16px;
+
   text-align: center;
 }
 
@@ -1863,13 +1984,16 @@ button:focus-visible {
 .detail-points span {
   font-size: 9px;
   font-weight: 900;
+
   letter-spacing: 0.14em;
 }
 
 .detail-points strong {
   margin-top: 1px;
+
   font-size: 32px;
   font-weight: 900;
+
   line-height: 1.05;
 }
 
@@ -1879,16 +2003,23 @@ button:focus-visible {
 
 .detail-stat-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
   gap: 8px;
+
   margin-top: 12px;
 }
 
 .detail-stat-grid div,
 .rebound-detail-grid div {
   padding: 14px 8px;
+
   background: var(--surface-secondary);
+
   border-radius: 14px;
+
   text-align: center;
 }
 
@@ -1903,13 +2034,16 @@ button:focus-visible {
 .rebound-detail-grid strong {
   font-size: 21px;
   font-weight: 900;
+
   line-height: 1;
 }
 
 .detail-stat-grid span,
 .rebound-detail-grid span {
   margin-top: 5px;
+
   color: var(--text-muted);
+
   font-size: 8px;
   font-weight: 900;
 }
@@ -1922,8 +2056,11 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 14px;
+
   padding: 13px 2px;
+
   border-bottom: 1px solid var(--border);
 }
 
@@ -1933,6 +2070,7 @@ button:focus-visible {
 
 .shooting-detail-list span {
   color: var(--text-secondary);
+
   font-size: 12px;
   font-weight: 700;
 }
@@ -1940,13 +2078,19 @@ button:focus-visible {
 .shooting-detail-list strong {
   font-size: 13px;
   font-weight: 900;
+
   white-space: nowrap;
 }
 
 .rebound-detail-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
   gap: 8px;
+
   margin-top: 12px;
 }
 
