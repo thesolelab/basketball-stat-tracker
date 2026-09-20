@@ -487,3 +487,283 @@ button:focus-visible {
     min-height: 76px;
   }
 }
+/* ======================================================
+   SHOOTING SUMMARY
+====================================================== */
+
+.miss-x {
+  margin-right: 2px;
+
+  color: var(--red);
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
+
+/* ======================================================
+   STAT ICONS
+====================================================== */
+
+.stat-icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  margin: 0 auto 5px !important;
+
+  color: var(--red);
+}
+
+.stat-icon svg {
+  width: 27px;
+  height: 27px;
+
+  fill: none;
+  stroke: currentColor;
+
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* ======================================================
+   FOUL ICON
+====================================================== */
+
+.foul-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.foul-dot {
+  width: 10px;
+  height: 10px;
+
+  background: var(--red);
+
+  border-radius: 50%;
+}
+
+
+/* ======================================================
+   TAP FEEDBACK
+====================================================== */
+
+.stat-recorded {
+  animation: statRecorded 0.22s ease;
+}
+
+@keyframes statRecorded {
+
+  0% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(0.94);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
+}
+
+
+/* ======================================================
+   DISABLED UNDO
+====================================================== */
+
+.undo-button:disabled {
+  background: #f1f2f4;
+  color: #b2b7be;
+
+  border-color: #e3e5e8;
+
+  cursor: default;
+}
+
+.undo-button:disabled:active {
+  transform: none;
+  opacity: 1;
+}
+
+
+/* ======================================================
+   END GAME MODAL
+====================================================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  padding: 18px;
+
+  background: rgba(15, 17, 20, 0.48);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+}
+
+.modal-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.end-game-modal {
+  width: 100%;
+  max-width: var(--content-width);
+
+  padding:
+    10px
+    20px
+    max(20px, env(safe-area-inset-bottom));
+
+  background: var(--white);
+
+  border-radius: 24px;
+
+  transform: translateY(20px);
+
+  transition: transform 0.2s ease;
+}
+
+.modal-backdrop.is-open .end-game-modal {
+  transform: translateY(0);
+}
+
+.modal-handle {
+  width: 38px;
+  height: 4px;
+
+  margin: 0 auto 18px;
+
+  background: #d8dce1;
+
+  border-radius: 999px;
+}
+
+.end-game-modal h2 {
+  margin: 4px 0 6px;
+
+  font-size: 25px;
+  letter-spacing: -0.03em;
+}
+
+.modal-description {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.final-stat-line {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  margin-top: 20px;
+  padding: 16px 8px;
+
+  background: #f7f8f9;
+
+  border-radius: 17px;
+}
+
+.final-stat-line div {
+  text-align: center;
+}
+
+.final-stat-line strong {
+  display: block;
+
+  font-size: 24px;
+  line-height: 1;
+}
+
+.final-stat-line span {
+  display: block;
+
+  margin-top: 5px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.final-shooting {
+  margin-top: 10px;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+  font-weight: 800;
+
+  text-align: center;
+}
+
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  min-height: 52px;
+
+  border-radius: var(--radius-md);
+
+  font-size: 12px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.modal-cancel {
+  background: var(--button-light);
+  color: var(--text-secondary);
+
+  border: 0;
+}
+
+.modal-confirm {
+  background: var(--red);
+  color: var(--white);
+
+  border: 0;
+}
+
+
+/* ======================================================
+   SMALL SCREEN SHOOTING SUMMARY
+====================================================== */
+
+@media (max-width: 430px) {
+
+  .shooting-summary {
+    padding: 6px 8px;
+
+    font-size: 9px;
+  }
+
+}
