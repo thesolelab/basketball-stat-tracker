@@ -1,12 +1,10 @@
 /* ======================================================
    BASKETBALL STAT TRACKER
-   Mobile-first interface
 ====================================================== */
 
 :root {
   --red: #c8102e;
   --red-dark: #a90d27;
-
   --white: #ffffff;
 
   --background: #f4f7f8;
@@ -66,7 +64,6 @@ body.modal-open {
 button,
 input {
   font: inherit;
-
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -114,7 +111,6 @@ button {
 
 .home-hero {
   position: relative;
-
   overflow: hidden;
 
   padding: 28px 22px 26px;
@@ -174,6 +170,104 @@ button {
 
 
 /* ======================================================
+   RESUME GAME
+====================================================== */
+
+.resume-game-card {
+  padding: 16px;
+
+  background: var(--white);
+
+  border: 1px solid rgba(200, 16, 46, 0.25);
+  border-radius: var(--radius-large);
+
+  box-shadow:
+    0 4px 18px rgba(17, 24, 32, 0.04);
+}
+
+.resume-game-card[hidden] {
+  display: none;
+}
+
+.resume-game-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 12px;
+}
+
+.resume-label {
+  color: var(--red);
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: 0.14em;
+}
+
+.resume-game-type {
+  padding: 5px 8px;
+
+  background: #fff3f5;
+  color: var(--red);
+
+  border-radius: 999px;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+}
+
+.resume-game-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+}
+
+.resume-opponent,
+.resume-details {
+  display: block;
+}
+
+.resume-opponent {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.resume-details {
+  margin-top: 4px;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.resume-button {
+  flex: 0 0 auto;
+
+  min-height: 44px;
+
+  padding: 0 16px;
+
+  background: var(--red);
+  color: var(--white);
+
+  border: 0;
+  border-radius: 13px;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+
+/* ======================================================
    HOME ACTIONS
 ====================================================== */
 
@@ -220,7 +314,6 @@ button {
 
 .secondary-home-action:disabled {
   cursor: default;
-
   opacity: 0.58;
 }
 
@@ -403,7 +496,7 @@ button {
 
 
 /* ======================================================
-   IOS DATE INPUT FIX
+   IOS / CHROME DATE INPUT FIX
 ====================================================== */
 
 input[type="date"] {
@@ -476,6 +569,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
   cursor: pointer;
 }
+
+
 /* ======================================================
    SEGMENTED CONTROLS
 ====================================================== */
@@ -542,7 +637,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 /* ======================================================
-   SETUP MESSAGE / START GAME
+   SETUP
 ====================================================== */
 
 .form-message {
@@ -810,7 +905,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 /* ======================================================
-   SHOOTING SUMMARY
+   SHOOTING
 ====================================================== */
 
 .shooting-summary {
@@ -828,11 +923,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
   white-space: nowrap;
 }
-
-
-/* ======================================================
-   SHOT BUTTONS
-====================================================== */
 
 .shot-row {
   display: grid;
@@ -931,7 +1021,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 /* ======================================================
-   STAT ICONS
+   ICONS
 ====================================================== */
 
 .stat-icon {
@@ -977,7 +1067,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 /* ======================================================
-   PERSONAL FOUL
+   FOUL
 ====================================================== */
 
 .foul-button {
@@ -1126,7 +1216,7 @@ button:focus-visible {
 
 
 /* ======================================================
-   MODAL BACKDROP
+   MODALS
 ====================================================== */
 
 .modal-backdrop {
@@ -1158,11 +1248,6 @@ button:focus-visible {
   visibility: visible;
   pointer-events: auto;
 }
-
-
-/* ======================================================
-   BOTTOM SHEET
-====================================================== */
 
 .end-game-modal {
   width: 100%;
