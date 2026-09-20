@@ -150,7 +150,7 @@
         <button
           type="button"
           class="secondary-home-action"
-          disabled
+          id="seasonStatsButton"
         >
 
           <span class="home-action-copy">
@@ -159,10 +159,17 @@
               Season Stats
             </strong>
 
-            <small>
-              Coming after game saving is connected
+            <small id="seasonStatsSummary">
+              View season averages and totals
             </small>
 
+          </span>
+
+          <span
+            class="home-action-arrow"
+            aria-hidden="true"
+          >
+            ›
           </span>
 
         </button>
@@ -194,6 +201,250 @@
           </span>
 
         </button>
+
+      </section>
+
+    </section>
+
+
+    <!-- ==================================================
+         SEASON STATS
+    =================================================== -->
+
+    <section
+      class="screen"
+      id="seasonStatsScreen"
+    >
+
+      <div class="screen-topbar">
+
+        <button
+          type="button"
+          class="back-button"
+          id="seasonStatsBackButton"
+          aria-label="Back"
+        >
+          ‹
+        </button>
+
+        <div>
+          <span class="eyebrow">2026–27 SEASON</span>
+          <h1>Season Stats</h1>
+        </div>
+
+      </div>
+
+
+      <section class="season-filter-card">
+
+        <span class="eyebrow">
+          FILTER
+        </span>
+
+        <div class="season-filter-control">
+
+          <button
+            type="button"
+            class="season-filter-button is-active"
+            data-season-filter="All"
+          >
+            All Games
+          </button>
+
+          <button
+            type="button"
+            class="season-filter-button"
+            data-season-filter="Regular Season"
+          >
+            Regular
+          </button>
+
+          <button
+            type="button"
+            class="season-filter-button"
+            data-season-filter="Tournament"
+          >
+            Tournament
+          </button>
+
+          <button
+            type="button"
+            class="season-filter-button"
+            data-season-filter="Club"
+          >
+            Club
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <section
+        class="season-empty"
+        id="seasonStatsEmpty"
+        hidden
+      >
+        <strong>No games in this filter</strong>
+        <span>Completed games will be included automatically.</span>
+      </section>
+
+
+      <section class="season-overview-card">
+
+        <div class="season-card-heading">
+
+          <div>
+            <span class="eyebrow">SEASON AVERAGES</span>
+            <h2 id="seasonFilterLabel">All Games</h2>
+          </div>
+
+          <span class="season-games-badge">
+            <strong id="seasonGamesPlayed">0</strong>
+            GAMES
+          </span>
+
+        </div>
+
+        <div class="season-primary-grid">
+
+          <div>
+            <strong id="seasonPpg">0.0</strong>
+            <span>PPG</span>
+          </div>
+
+          <div>
+            <strong id="seasonRpg">0.0</strong>
+            <span>RPG</span>
+          </div>
+
+          <div>
+            <strong id="seasonApg">0.0</strong>
+            <span>APG</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="season-card">
+
+        <span class="eyebrow">
+          PER GAME
+        </span>
+
+        <div class="season-stat-grid">
+
+          <div>
+            <strong id="seasonSpg">0.0</strong>
+            <span>SPG</span>
+          </div>
+
+          <div>
+            <strong id="seasonBpg">0.0</strong>
+            <span>BPG</span>
+          </div>
+
+          <div>
+            <strong id="seasonTovpg">0.0</strong>
+            <span>TOV/G</span>
+          </div>
+
+          <div>
+            <strong id="seasonPfpg">0.0</strong>
+            <span>PF/G</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="season-card">
+
+        <span class="eyebrow">
+          SHOOTING
+        </span>
+
+        <div class="season-shooting-list">
+
+          <div>
+            <span>Field Goals</span>
+
+            <div>
+              <strong id="seasonFgPercent">—</strong>
+              <small id="seasonFgTotals">0/0</small>
+            </div>
+          </div>
+
+          <div>
+            <span>3PT</span>
+
+            <div>
+              <strong id="seasonThreePercent">—</strong>
+              <small id="seasonThreeTotals">0/0</small>
+            </div>
+          </div>
+
+          <div>
+            <span>Free Throws</span>
+
+            <div>
+              <strong id="seasonFtPercent">—</strong>
+              <small id="seasonFtTotals">0/0</small>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="season-card">
+
+        <span class="eyebrow">
+          SEASON TOTALS
+        </span>
+
+        <div class="season-totals-grid">
+
+          <div>
+            <strong id="seasonTotalPoints">0</strong>
+            <span>PTS</span>
+          </div>
+
+          <div>
+            <strong id="seasonTotalRebounds">0</strong>
+            <span>REB</span>
+          </div>
+
+          <div>
+            <strong id="seasonTotalAssists">0</strong>
+            <span>AST</span>
+          </div>
+
+          <div>
+            <strong id="seasonTotalSteals">0</strong>
+            <span>STL</span>
+          </div>
+
+          <div>
+            <strong id="seasonTotalBlocks">0</strong>
+            <span>BLK</span>
+          </div>
+
+          <div>
+            <strong id="seasonTotalOreb">0</strong>
+            <span>OREB</span>
+          </div>
+
+          <div>
+            <strong id="seasonTotalDreb">0</strong>
+            <span>DREB</span>
+          </div>
+
+        </div>
 
       </section>
 
