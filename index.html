@@ -17,264 +17,563 @@
 
 <body>
 
-  <div class="app">
+  <main class="app">
 
-    <!-- =========================
+    <!-- ==================================================
          PLAYER / GAME HEADER
-    ========================== -->
-    <header class="game-header">
+    =================================================== -->
+    <section class="game-card">
 
-      <div class="game-info">
-        <p class="season-label">2026–27 SEASON · GAME 1</p>
+      <div class="game-header">
 
-        <div class="player-name-row">
-          <h1>ADDYSON</h1>
-          <span class="player-number">#2</span>
+        <div class="game-info">
+          <p class="season-label">
+            2026–27 SEASON · GAME 1
+          </p>
+
+          <div class="player-name-row">
+            <h1>ADDYSON</h1>
+            <span class="player-number">#2</span>
+          </div>
+
+          <p class="opponent">
+            vs. Tigers · Home
+          </p>
         </div>
 
-        <p class="opponent">vs. Tigers · Home</p>
+
+        <div class="points-card">
+          <span>POINTS</span>
+          <strong id="points">0</strong>
+        </div>
+
       </div>
 
-      <div class="points-card">
-        <span>POINTS</span>
-        <strong id="points">0</strong>
-      </div>
 
-    </header>
+      <!-- LIVE STATS -->
 
+      <div class="stat-bar">
 
-    <!-- =========================
-         LIVE STAT BAR
-    ========================== -->
-    <section class="stat-bar">
+        <div class="stat">
+          <span>REB</span>
+          <strong id="rebounds">0</strong>
+        </div>
 
-      <div class="stat">
-        <span>REB</span>
-        <strong id="rebounds">0</strong>
-      </div>
+        <div class="stat">
+          <span>AST</span>
+          <strong id="assists">0</strong>
+        </div>
 
-      <div class="stat">
-        <span>AST</span>
-        <strong id="assists">0</strong>
-      </div>
+        <div class="stat">
+          <span>STL</span>
+          <strong id="steals">0</strong>
+        </div>
 
-      <div class="stat">
-        <span>STL</span>
-        <strong id="steals">0</strong>
-      </div>
+        <div class="stat">
+          <span>BLK</span>
+          <strong id="blocks">0</strong>
+        </div>
 
-      <div class="stat">
-        <span>BLK</span>
-        <strong id="blocks">0</strong>
-      </div>
+        <div class="stat">
+          <span>TOV</span>
+          <strong id="turnovers">0</strong>
+        </div>
 
-      <div class="stat">
-        <span>TOV</span>
-        <strong id="turnovers">0</strong>
-      </div>
+        <div class="stat">
+          <span>PF</span>
+          <strong id="fouls">0</strong>
+        </div>
 
-      <div class="stat">
-        <span>PF</span>
-        <strong id="fouls">0</strong>
-      </div>
+        <div class="stat">
+          <span>FG%</span>
+          <strong id="fgPercent">—</strong>
+        </div>
 
-      <div class="stat">
-        <span>FG%</span>
-        <strong id="fgPercent">—</strong>
       </div>
 
     </section>
 
 
-    <!-- =========================
+    <!-- ==================================================
          SHOOTING
-    ========================== -->
+    =================================================== -->
+
     <section class="card shooting-card">
 
       <div class="section-header">
+
         <div>
           <span class="eyebrow">SCORING</span>
           <h2>Shots</h2>
         </div>
 
-        <div class="shooting-summary" id="shootingSummary">
+        <div
+          class="shooting-summary"
+          id="shootingSummary"
+        >
           FG 0/0 · 3PT 0/0 · FT 0/0
         </div>
+
       </div>
 
 
-      <div class="shot-row">
-        <div class="shot-label">2PT</div>
+      <!-- 2PT -->
 
-        <button class="btn-made" data-action="2pt-made">
+      <div class="shot-row">
+
+        <div class="shot-label">
+          2PT
+        </div>
+
+        <button
+          type="button"
+          class="btn-made"
+          data-action="2pt-made"
+        >
           +2 MADE
         </button>
 
-        <button class="btn-miss" data-action="2pt-miss">
-          <span class="miss-x">×</span> MISS
+        <button
+          type="button"
+          class="btn-miss"
+          data-action="2pt-miss"
+        >
+          <span class="miss-x">×</span>
+          MISS
         </button>
+
       </div>
 
 
-      <div class="shot-row">
-        <div class="shot-label">3PT</div>
+      <!-- 3PT -->
 
-        <button class="btn-made" data-action="3pt-made">
+      <div class="shot-row">
+
+        <div class="shot-label">
+          3PT
+        </div>
+
+        <button
+          type="button"
+          class="btn-made"
+          data-action="3pt-made"
+        >
           +3 MADE
         </button>
 
-        <button class="btn-miss" data-action="3pt-miss">
-          <span class="miss-x">×</span> MISS
+        <button
+          type="button"
+          class="btn-miss"
+          data-action="3pt-miss"
+        >
+          <span class="miss-x">×</span>
+          MISS
         </button>
+
       </div>
 
 
-      <div class="shot-row">
-        <div class="shot-label">FT</div>
+      <!-- FT -->
 
-        <button class="btn-made" data-action="ft-made">
+      <div class="shot-row">
+
+        <div class="shot-label">
+          FT
+        </div>
+
+        <button
+          type="button"
+          class="btn-made"
+          data-action="ft-made"
+        >
           +1 MADE
         </button>
 
-        <button class="btn-miss" data-action="ft-miss">
-          <span class="miss-x">×</span> MISS
+        <button
+          type="button"
+          class="btn-miss"
+          data-action="ft-miss"
+        >
+          <span class="miss-x">×</span>
+          MISS
         </button>
+
       </div>
 
     </section>
 
 
-    <!-- =========================
+    <!-- ==================================================
          OTHER STATS
-    ========================== -->
-    <section class="card">
+    =================================================== -->
 
-      <span class="eyebrow">OTHER STATS</span>
+    <section class="card other-stats-card">
+
+      <span class="eyebrow">
+        OTHER STATS
+      </span>
+
 
       <div class="stat-buttons">
 
-        <button data-action="oreb">
-          <span class="stat-icon" aria-hidden="true">
+
+        <!-- OFFENSIVE REBOUND -->
+
+        <button
+          type="button"
+          data-action="oreb"
+        >
+
+          <span
+            class="stat-icon"
+            aria-hidden="true"
+          >
             <svg viewBox="0 0 24 24">
-              <path d="M12 20V5"></path>
-              <path d="m6 11 6-6 6 6"></path>
-              <path d="M5 21h14"></path>
+
+              <circle
+                cx="12"
+                cy="12"
+                r="8"
+              ></circle>
+
+              <path d="M4.5 9h15"></path>
+
+              <path d="M4.5 15h15"></path>
+
+              <path
+                d="
+                  M12 4
+                  C9.8 6.2 8.8 9 8.8 12
+                  S9.8 17.8 12 20
+                "
+              ></path>
+
+              <path
+                d="
+                  M12 4
+                  C14.2 6.2 15.2 9 15.2 12
+                  S14.2 17.8 12 20
+                "
+              ></path>
+
             </svg>
           </span>
-          OFF REB
+
+          <span class="stat-button-label">
+            OFF REB
+          </span>
+
         </button>
 
-        <button data-action="assist">
-          <span class="stat-icon" aria-hidden="true">
+
+        <!-- ASSIST -->
+
+        <button
+          type="button"
+          data-action="assist"
+        >
+
+          <span
+            class="stat-icon"
+            aria-hidden="true"
+          >
             <svg viewBox="0 0 24 24">
-              <circle cx="8" cy="8" r="3"></circle>
-              <path d="M3 19c.5-3.5 2.2-5 5-5s4.5 1.5 5 5"></path>
-              <path d="M14 9h7"></path>
-              <path d="m18 5 4 4-4 4"></path>
+
+              <circle
+                cx="7"
+                cy="7"
+                r="2.5"
+              ></circle>
+
+              <path
+                d="
+                  M3 18
+                  C3.5 14.2 5 12.5 7.5 12.5
+                  C10 12.5 11.5 14.2 12 18
+                "
+              ></path>
+
+              <path d="M13 10h7"></path>
+
+              <path d="m17 6 4 4-4 4"></path>
+
             </svg>
           </span>
-          ASSIST
+
+          <span class="stat-button-label">
+            ASSIST
+          </span>
+
         </button>
 
-        <button data-action="block">
-          <span class="stat-icon" aria-hidden="true">
+
+        <!-- BLOCK -->
+
+        <button
+          type="button"
+          data-action="block"
+        >
+
+          <span
+            class="stat-icon"
+            aria-hidden="true"
+          >
             <svg viewBox="0 0 24 24">
-              <path d="M7 20V9"></path>
-              <path d="M11 20V5"></path>
-              <path d="M15 20V7"></path>
-              <path d="M19 20v-9"></path>
-              <path d="M4 14c0 4 3 7 7 7h3c4 0 6-2 6-6v-4"></path>
+
+              <path
+                d="
+                  M12 3
+                  L19 6
+                  V11
+                  C19 15.5 16.3 19 12 21
+                  C7.7 19 5 15.5 5 11
+                  V6
+                  Z
+                "
+              ></path>
+
             </svg>
           </span>
-          BLOCK
+
+          <span class="stat-button-label">
+            BLOCK
+          </span>
+
         </button>
 
-        <button data-action="dreb">
-          <span class="stat-icon" aria-hidden="true">
+
+        <!-- DEFENSIVE REBOUND -->
+
+        <button
+          type="button"
+          data-action="dreb"
+        >
+
+          <span
+            class="stat-icon"
+            aria-hidden="true"
+          >
             <svg viewBox="0 0 24 24">
-              <path d="M12 4v15"></path>
-              <path d="m18 13-6 6-6-6"></path>
-              <path d="M5 3h14"></path>
+
+              <circle
+                cx="12"
+                cy="12"
+                r="8"
+              ></circle>
+
+              <path d="M4.5 9h15"></path>
+
+              <path d="M4.5 15h15"></path>
+
+              <path
+                d="
+                  M12 4
+                  C9.8 6.2 8.8 9 8.8 12
+                  S9.8 17.8 12 20
+                "
+              ></path>
+
+              <path
+                d="
+                  M12 4
+                  C14.2 6.2 15.2 9 15.2 12
+                  S14.2 17.8 12 20
+                "
+              ></path>
+
             </svg>
           </span>
-          DEF REB
+
+          <span class="stat-button-label">
+            DEF REB
+          </span>
+
         </button>
 
-        <button data-action="steal">
-          <span class="stat-icon" aria-hidden="true">
+
+        <!-- STEAL -->
+
+        <button
+          type="button"
+          data-action="steal"
+        >
+
+          <span
+            class="stat-icon"
+            aria-hidden="true"
+          >
             <svg viewBox="0 0 24 24">
-              <circle cx="9" cy="14" r="5"></circle>
-              <path d="M14 14h5"></path>
-              <path d="m17 11 3 3-3 3"></path>
-              <path d="M7 12c1.5 1 2.5 2.5 3 5"></path>
+
+              <path
+                d="
+                  M7 11V7.5
+                  A1.5 1.5 0 0 1 10 7.5
+                  V11
+                "
+              ></path>
+
+              <path
+                d="
+                  M10 10V5.5
+                  A1.5 1.5 0 0 1 13 5.5
+                  V10
+                "
+              ></path>
+
+              <path
+                d="
+                  M13 10V6.5
+                  A1.5 1.5 0 0 1 16 6.5
+                  V11
+                "
+              ></path>
+
+              <path
+                d="
+                  M16 11V9
+                  A1.5 1.5 0 0 1 19 9
+                  V14
+                  C19 18 16.2 21 12 21
+                  C7.5 21 5 18.3 5 14.5
+                  V12
+                  A1.5 1.5 0 0 1 8 12
+                  V14
+                "
+              ></path>
+
             </svg>
           </span>
-          STEAL
+
+          <span class="stat-button-label">
+            STEAL
+          </span>
+
         </button>
 
-        <button data-action="turnover">
-          <span class="stat-icon" aria-hidden="true">
+
+        <!-- TURNOVER -->
+
+        <button
+          type="button"
+          data-action="turnover"
+        >
+
+          <span
+            class="stat-icon"
+            aria-hidden="true"
+          >
             <svg viewBox="0 0 24 24">
-              <path d="M7 7h10a4 4 0 0 1 4 4v1"></path>
-              <path d="m17 4-3 3 3 3"></path>
-              <path d="M17 17H7a4 4 0 0 1-4-4v-1"></path>
-              <path d="m7 20 3-3-3-3"></path>
+
+              <path
+                d="
+                  M18 8
+                  A7 7 0 0 0 6 6
+                "
+              ></path>
+
+              <path d="M6 2v4h4"></path>
+
+              <path
+                d="
+                  M6 16
+                  A7 7 0 0 0 18 18
+                "
+              ></path>
+
+              <path d="M18 22v-4h-4"></path>
+
             </svg>
           </span>
-          TURNOVER
+
+          <span class="stat-button-label">
+            TURNOVER
+          </span>
+
         </button>
 
       </div>
 
-      <button class="foul-button" data-action="foul">
-        <span class="foul-dot"></span>
+
+      <!-- PERSONAL FOUL -->
+
+      <button
+        type="button"
+        class="foul-button"
+        data-action="foul"
+      >
+
+        <span
+          class="foul-dot"
+          aria-hidden="true"
+        ></span>
+
         PERSONAL FOUL
+
       </button>
 
     </section>
 
 
-    <!-- =========================
+    <!-- ==================================================
          GAME CONTROLS
-    ========================== -->
+    =================================================== -->
+
     <section class="game-controls">
 
-      <button id="undoButton" class="undo-button" disabled>
+      <button
+        type="button"
+        id="undoButton"
+        class="undo-button"
+        disabled
+      >
         ↶ Undo
       </button>
 
-      <button id="endGameButton" class="end-game-button">
+      <button
+        type="button"
+        id="endGameButton"
+        class="end-game-button"
+      >
         END GAME
       </button>
 
     </section>
 
-  </div>
+  </main>
 
 
-  <!-- =========================
+  <!-- ==================================================
        END GAME MODAL
-  ========================== -->
+  =================================================== -->
+
   <div
     class="modal-backdrop"
     id="endGameModal"
     aria-hidden="true"
   >
 
-    <div
+    <section
       class="end-game-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="endGameTitle"
     >
 
-      <div class="modal-handle"></div>
+      <div
+        class="modal-handle"
+        aria-hidden="true"
+      ></div>
 
-      <span class="eyebrow">GAME COMPLETE</span>
+
+      <span class="eyebrow">
+        GAME COMPLETE
+      </span>
+
 
       <h2 id="endGameTitle">
         End this game?
       </h2>
+
 
       <p class="modal-description">
         Review the final stat line before saving the game.
@@ -306,24 +605,35 @@
       </div>
 
 
-      <div class="final-shooting" id="finalShooting">
+      <div
+        class="final-shooting"
+        id="finalShooting"
+      >
         FG 0/0 · 3PT 0/0 · FT 0/0
       </div>
 
 
       <div class="modal-actions">
 
-        <button id="cancelEndGame" class="modal-cancel">
+        <button
+          type="button"
+          id="cancelEndGame"
+          class="modal-cancel"
+        >
           KEEP TRACKING
         </button>
 
-        <button id="confirmEndGame" class="modal-confirm">
+        <button
+          type="button"
+          id="confirmEndGame"
+          class="modal-confirm"
+        >
           SAVE GAME
         </button>
 
       </div>
 
-    </div>
+    </section>
 
   </div>
 
