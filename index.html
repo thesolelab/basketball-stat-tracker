@@ -19,458 +19,889 @@
 
   <main class="app">
 
+
     <!-- ==================================================
-         PLAYER / GAME HEADER
+         HOME SCREEN
     =================================================== -->
-    <section class="game-card">
 
-      <div class="game-header">
+    <section
+      class="screen active-screen"
+      id="homeScreen"
+    >
 
-        <div class="game-info">
-          <p class="season-label">
-            2026–27 SEASON · GAME 1
-          </p>
+      <section class="home-hero">
 
-          <div class="player-name-row">
-            <h1>ADDYSON</h1>
-            <span class="player-number">#2</span>
-          </div>
+        <span class="home-eyebrow">
+          BASKETBALL STAT TRACKER
+        </span>
 
-          <p class="opponent">
-            vs. Tigers · Home
-          </p>
-        </div>
+        <h1>
+          ADDYSON
+        </h1>
 
-        <div class="points-card">
-          <span>POINTS</span>
-          <strong id="points">0</strong>
-        </div>
+        <p class="home-season">
+          2026–27 Season
+        </p>
 
-      </div>
+      </section>
 
 
-      <!-- LIVE STATS -->
+      <section class="home-actions">
 
-      <div class="stat-bar">
+        <button
+          type="button"
+          class="primary-home-action"
+          id="newGameButton"
+        >
 
-        <div class="stat">
-          <span>REB</span>
-          <strong id="rebounds">0</strong>
-        </div>
+          <span class="home-action-icon">
 
-        <div class="stat">
-          <span>AST</span>
-          <strong id="assists">0</strong>
-        </div>
+            <svg viewBox="0 0 24 24">
+              <path d="M12 5v14"></path>
+              <path d="M5 12h14"></path>
+            </svg>
 
-        <div class="stat">
-          <span>STL</span>
-          <strong id="steals">0</strong>
-        </div>
+          </span>
 
-        <div class="stat">
-          <span>BLK</span>
-          <strong id="blocks">0</strong>
-        </div>
+          <span class="home-action-copy">
 
-        <div class="stat">
-          <span>TOV</span>
-          <strong id="turnovers">0</strong>
-        </div>
+            <strong>
+              Start New Game
+            </strong>
 
-        <div class="stat">
-          <span>PF</span>
-          <strong id="fouls">0</strong>
-        </div>
+            <small>
+              Set up opponent and game details
+            </small>
 
-        <div class="stat">
-          <span>FG%</span>
-          <strong id="fgPercent">—</strong>
-        </div>
+          </span>
 
-      </div>
+          <span class="home-action-arrow">
+            ›
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="secondary-home-action"
+          disabled
+        >
+
+          <span class="home-action-copy">
+
+            <strong>
+              Season Stats
+            </strong>
+
+            <small>
+              Coming after game saving is connected
+            </small>
+
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="secondary-home-action"
+          disabled
+        >
+
+          <span class="home-action-copy">
+
+            <strong>
+              Game History
+            </strong>
+
+            <small>
+              Coming after game saving is connected
+            </small>
+
+          </span>
+
+        </button>
+
+      </section>
 
     </section>
 
 
     <!-- ==================================================
-         SHOOTING
+         NEW GAME SCREEN
     =================================================== -->
 
-    <section class="card shooting-card">
+    <section
+      class="screen"
+      id="setupScreen"
+    >
 
-      <div class="section-header">
+      <div class="screen-topbar">
+
+        <button
+          type="button"
+          class="back-button"
+          id="setupBackButton"
+          aria-label="Back"
+        >
+          ‹
+        </button>
 
         <div>
-          <span class="eyebrow">SCORING</span>
-          <h2>Shots</h2>
-        </div>
+          <span class="eyebrow">
+            GAME SETUP
+          </span>
 
-        <div
-          class="shooting-summary"
-          id="shootingSummary"
-        >
-          FG 0/0 · 3PT 0/0 · FT 0/0
+          <h1>
+            New Game
+          </h1>
         </div>
 
       </div>
 
 
-      <!-- 2PT -->
+      <form
+        class="setup-card"
+        id="gameSetupForm"
+      >
 
-      <div class="shot-row">
+        <!-- PLAYER NUMBER -->
 
-        <div class="shot-label">
-          2PT
+        <div class="form-group">
+
+          <label for="playerNumber">
+            Player Number
+          </label>
+
+          <input
+            type="text"
+            inputmode="numeric"
+            id="playerNumber"
+            maxlength="3"
+            value="2"
+            placeholder="2"
+          >
+
         </div>
 
-        <button
-          type="button"
-          class="btn-made"
-          data-action="2pt-made"
-        >
-          +2 MADE
-        </button>
 
-        <button
-          type="button"
-          class="btn-miss"
-          data-action="2pt-miss"
-        >
-          <span class="miss-x">×</span>
-          MISS
-        </button>
+        <!-- OPPONENT -->
 
-      </div>
+        <div class="form-group">
 
+          <label for="opponentInput">
+            Opponent
+          </label>
 
-      <!-- 3PT -->
+          <input
+            type="text"
+            id="opponentInput"
+            maxlength="50"
+            autocomplete="off"
+            placeholder="Enter opponent"
+            required
+          >
 
-      <div class="shot-row">
-
-        <div class="shot-label">
-          3PT
         </div>
 
-        <button
-          type="button"
-          class="btn-made"
-          data-action="3pt-made"
-        >
-          +3 MADE
-        </button>
 
-        <button
-          type="button"
-          class="btn-miss"
-          data-action="3pt-miss"
-        >
-          <span class="miss-x">×</span>
-          MISS
-        </button>
+        <!-- DATE -->
 
-      </div>
+        <div class="form-group">
 
+          <label for="gameDate">
+            Game Date
+          </label>
 
-      <!-- FT -->
+          <input
+            type="date"
+            id="gameDate"
+            required
+          >
 
-      <div class="shot-row">
-
-        <div class="shot-label">
-          FT
         </div>
 
-        <button
-          type="button"
-          class="btn-made"
-          data-action="ft-made"
-        >
-          +1 MADE
-        </button>
+
+        <!-- HOME / AWAY -->
+
+        <fieldset class="form-group">
+
+          <legend>
+            Location
+          </legend>
+
+          <div class="segmented-control">
+
+            <input
+              type="radio"
+              name="gameLocation"
+              id="locationHome"
+              value="Home"
+              checked
+            >
+
+            <label for="locationHome">
+              Home
+            </label>
+
+
+            <input
+              type="radio"
+              name="gameLocation"
+              id="locationAway"
+              value="Away"
+            >
+
+            <label for="locationAway">
+              Away
+            </label>
+
+          </div>
+
+        </fieldset>
+
+
+        <!-- GAME TYPE -->
+
+        <fieldset class="form-group">
+
+          <legend>
+            Game Type
+          </legend>
+
+          <div class="game-type-options">
+
+            <input
+              type="radio"
+              name="gameType"
+              id="typeRegular"
+              value="Regular Season"
+              checked
+            >
+
+            <label for="typeRegular">
+              Regular Season
+            </label>
+
+
+            <input
+              type="radio"
+              name="gameType"
+              id="typeTournament"
+              value="Tournament"
+            >
+
+            <label for="typeTournament">
+              Tournament
+            </label>
+
+
+            <input
+              type="radio"
+              name="gameType"
+              id="typeClub"
+              value="Club"
+            >
+
+            <label for="typeClub">
+              Club
+            </label>
+
+          </div>
+
+        </fieldset>
+
+
+        <p
+          class="form-message"
+          id="setupMessage"
+          aria-live="polite"
+        ></p>
+
 
         <button
-          type="button"
-          class="btn-miss"
-          data-action="ft-miss"
+          type="submit"
+          class="start-game-button"
         >
-          <span class="miss-x">×</span>
-          MISS
+          START GAME
         </button>
 
-      </div>
+      </form>
 
     </section>
 
 
     <!-- ==================================================
-         OTHER STATS
+         LIVE GAME SCREEN
     =================================================== -->
 
-    <section class="card other-stats-card">
-
-      <span class="eyebrow">
-        OTHER STATS
-      </span>
-
-
-      <div class="stat-buttons">
+    <section
+      class="screen"
+      id="gameScreen"
+    >
 
 
-        <!-- OFFENSIVE REBOUND -->
+      <!-- PLAYER / GAME HEADER -->
+
+      <section class="game-card">
+
+        <div class="game-header">
+
+          <div class="game-info">
+
+            <p
+              class="season-label"
+              id="gameSeasonLabel"
+            >
+              2026–27 SEASON · GAME 1
+            </p>
+
+
+            <div class="player-name-row">
+
+              <h1>
+                ADDYSON
+              </h1>
+
+              <span
+                class="player-number"
+                id="gamePlayerNumber"
+              >
+                #2
+              </span>
+
+            </div>
+
+
+            <p
+              class="opponent"
+              id="gameOpponent"
+            >
+              vs. Opponent · Home
+            </p>
+
+
+            <span
+              class="game-type-badge"
+              id="gameTypeBadge"
+            >
+              REGULAR SEASON
+            </span>
+
+          </div>
+
+
+          <div class="points-card">
+
+            <span>
+              POINTS
+            </span>
+
+            <strong id="points">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- LIVE STATS -->
+
+        <div class="stat-bar">
+
+          <div class="stat">
+            <span>REB</span>
+            <strong id="rebounds">0</strong>
+          </div>
+
+          <div class="stat">
+            <span>AST</span>
+            <strong id="assists">0</strong>
+          </div>
+
+          <div class="stat">
+            <span>STL</span>
+            <strong id="steals">0</strong>
+          </div>
+
+          <div class="stat">
+            <span>BLK</span>
+            <strong id="blocks">0</strong>
+          </div>
+
+          <div class="stat">
+            <span>TOV</span>
+            <strong id="turnovers">0</strong>
+          </div>
+
+          <div class="stat">
+            <span>PF</span>
+            <strong id="fouls">0</strong>
+          </div>
+
+          <div class="stat">
+            <span>FG%</span>
+            <strong id="fgPercent">—</strong>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- SHOOTING -->
+
+      <section class="card shooting-card">
+
+        <div class="section-header">
+
+          <div>
+
+            <span class="eyebrow">
+              SCORING
+            </span>
+
+            <h2>
+              Shots
+            </h2>
+
+          </div>
+
+
+          <div
+            class="shooting-summary"
+            id="shootingSummary"
+          >
+            FG 0/0 · 3PT 0/0 · FT 0/0
+          </div>
+
+        </div>
+
+
+        <!-- 2PT -->
+
+        <div class="shot-row">
+
+          <div class="shot-label">
+            2PT
+          </div>
+
+          <button
+            type="button"
+            class="btn-made"
+            data-action="2pt-made"
+          >
+            +2 MADE
+          </button>
+
+          <button
+            type="button"
+            class="btn-miss"
+            data-action="2pt-miss"
+          >
+            <span class="miss-x">×</span>
+            MISS
+          </button>
+
+        </div>
+
+
+        <!-- 3PT -->
+
+        <div class="shot-row">
+
+          <div class="shot-label">
+            3PT
+          </div>
+
+          <button
+            type="button"
+            class="btn-made"
+            data-action="3pt-made"
+          >
+            +3 MADE
+          </button>
+
+          <button
+            type="button"
+            class="btn-miss"
+            data-action="3pt-miss"
+          >
+            <span class="miss-x">×</span>
+            MISS
+          </button>
+
+        </div>
+
+
+        <!-- FT -->
+
+        <div class="shot-row">
+
+          <div class="shot-label">
+            FT
+          </div>
+
+          <button
+            type="button"
+            class="btn-made"
+            data-action="ft-made"
+          >
+            +1 MADE
+          </button>
+
+          <button
+            type="button"
+            class="btn-miss"
+            data-action="ft-miss"
+          >
+            <span class="miss-x">×</span>
+            MISS
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           OTHER STATS
+      =================================================== -->
+
+      <section class="card other-stats-card">
+
+        <span class="eyebrow">
+          OTHER STATS
+        </span>
+
+
+        <div class="stat-buttons">
+
+
+          <!-- OFFENSIVE REBOUND -->
+
+          <button
+            type="button"
+            data-action="oreb"
+          >
+
+            <span
+              class="stat-icon"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="12"
+                  cy="14"
+                  r="6"
+                ></circle>
+
+                <path d="M6.5 12h11"></path>
+                <path d="M6.5 16h11"></path>
+
+                <path
+                  d="
+                    M12 8
+                    C10.4 9.7 9.6 11.7 9.6 14
+                    S10.4 18.3 12 20
+                  "
+                ></path>
+
+                <path
+                  d="
+                    M12 8
+                    C13.6 9.7 14.4 11.7 14.4 14
+                    S13.6 18.3 12 20
+                  "
+                ></path>
+
+                <path d="M12 7V2"></path>
+                <path d="m9.5 4.5 2.5-2.5 2.5 2.5"></path>
+
+              </svg>
+
+            </span>
+
+            <span class="stat-button-label">
+              OFF REB
+            </span>
+
+          </button>
+
+
+          <!-- ASSIST -->
+
+          <button
+            type="button"
+            data-action="assist"
+          >
+
+            <span
+              class="stat-icon"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="7"
+                  cy="7"
+                  r="2.5"
+                ></circle>
+
+                <path
+                  d="
+                    M3 18
+                    C3.5 14.2 5 12.5 7.5 12.5
+                    C10 12.5 11.5 14.2 12 18
+                  "
+                ></path>
+
+                <path d="M13 10h7"></path>
+                <path d="m17 6 4 4-4 4"></path>
+
+              </svg>
+
+            </span>
+
+            <span class="stat-button-label">
+              ASSIST
+            </span>
+
+          </button>
+
+
+          <!-- BLOCK -->
+
+          <button
+            type="button"
+            data-action="block"
+          >
+
+            <span
+              class="stat-icon"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 24">
+
+                <path
+                  d="
+                    M12 3
+                    L19 6
+                    V11
+                    C19 15.5 16.3 19 12 21
+                    C7.7 19 5 15.5 5 11
+                    V6
+                    Z
+                  "
+                ></path>
+
+                <path
+                  d="
+                    M8.5 12
+                    L11 14.5
+                    L15.5 9.5
+                  "
+                ></path>
+
+              </svg>
+
+            </span>
+
+            <span class="stat-button-label">
+              BLOCK
+            </span>
+
+          </button>
+
+
+          <!-- DEFENSIVE REBOUND -->
+
+          <button
+            type="button"
+            data-action="dreb"
+          >
+
+            <span
+              class="stat-icon"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="12"
+                  cy="10"
+                  r="6"
+                ></circle>
+
+                <path d="M6.5 8h11"></path>
+                <path d="M6.5 12h11"></path>
+
+                <path
+                  d="
+                    M12 4
+                    C10.4 5.7 9.6 7.7 9.6 10
+                    S10.4 14.3 12 16
+                  "
+                ></path>
+
+                <path
+                  d="
+                    M12 4
+                    C13.6 5.7 14.4 7.7 14.4 10
+                    S13.6 14.3 12 16
+                  "
+                ></path>
+
+                <path d="M12 17v5"></path>
+                <path d="m9.5 19.5 2.5 2.5 2.5-2.5"></path>
+
+              </svg>
+
+            </span>
+
+            <span class="stat-button-label">
+              DEF REB
+            </span>
+
+          </button>
+
+
+          <!-- STEAL -->
+
+          <button
+            type="button"
+            data-action="steal"
+          >
+
+            <span
+              class="stat-icon"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="8"
+                  cy="12"
+                  r="4"
+                ></circle>
+
+                <path d="M12 12h8"></path>
+                <path d="m17 9 3 3-3 3"></path>
+
+              </svg>
+
+            </span>
+
+            <span class="stat-button-label">
+              STEAL
+            </span>
+
+          </button>
+
+
+          <!-- TURNOVER -->
+
+          <button
+            type="button"
+            data-action="turnover"
+          >
+
+            <span
+              class="stat-icon"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 24">
+
+                <path
+                  d="
+                    M18 8
+                    A7 7 0 0 0 6 6
+                  "
+                ></path>
+
+                <path d="M6 2v4h4"></path>
+
+                <path
+                  d="
+                    M6 16
+                    A7 7 0 0 0 18 18
+                  "
+                ></path>
+
+                <path d="M18 22v-4h-4"></path>
+
+              </svg>
+
+            </span>
+
+            <span class="stat-button-label">
+              TURNOVER
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <!-- PERSONAL FOUL -->
 
         <button
           type="button"
-          data-action="oreb"
+          class="foul-button"
+          data-action="foul"
         >
 
           <span
-            class="stat-icon"
+            class="foul-dot"
             aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
+          ></span>
 
-              <!-- Basketball -->
-              <circle cx="12" cy="14" r="6"></circle>
-              <path d="M6.5 12h11"></path>
-              <path d="M6.5 16h11"></path>
-              <path d="M12 8c-1.6 1.7-2.4 3.7-2.4 6s.8 4.3 2.4 6"></path>
-              <path d="M12 8c1.6 1.7 2.4 3.7 2.4 6s-.8 4.3-2.4 6"></path>
-
-              <!-- Up arrow -->
-              <path d="M12 7V2"></path>
-              <path d="m9.5 4.5 2.5-2.5 2.5 2.5"></path>
-
-            </svg>
-          </span>
-
-          <span class="stat-button-label">
-            OFF REB
-          </span>
+          PERSONAL FOUL
 
         </button>
 
+      </section>
 
-        <!-- ASSIST -->
+
+      <!-- GAME CONTROLS -->
+
+      <section class="game-controls">
 
         <button
           type="button"
-          data-action="assist"
+          id="undoButton"
+          class="undo-button"
+          disabled
         >
-
-          <span
-            class="stat-icon"
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
-
-              <circle
-                cx="7"
-                cy="7"
-                r="2.5"
-              ></circle>
-
-              <path
-                d="
-                  M3 18
-                  C3.5 14.2 5 12.5 7.5 12.5
-                  C10 12.5 11.5 14.2 12 18
-                "
-              ></path>
-
-              <path d="M13 10h7"></path>
-              <path d="m17 6 4 4-4 4"></path>
-
-            </svg>
-          </span>
-
-          <span class="stat-button-label">
-            ASSIST
-          </span>
-
+          ↶ Undo
         </button>
-
-
-        <!-- BLOCK -->
 
         <button
           type="button"
-          data-action="block"
+          id="endGameButton"
+          class="end-game-button"
         >
-
-          <span
-            class="stat-icon"
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
-
-              <!-- Shield -->
-              <path
-                d="M12 3L19 6V11C19 15.5 16.3 19 12 21C7.7 19 5 15.5 5 11V6L12 3Z"
-              ></path>
-
-              <!-- Check -->
-              <path
-                d="M8.5 12L11 14.5L15.5 9.5"
-              ></path>
-
-            </svg>
-          </span>
-
-          <span class="stat-button-label">
-            BLOCK
-          </span>
-
+          END GAME
         </button>
 
+      </section>
 
-        <!-- DEFENSIVE REBOUND -->
-
-        <button
-          type="button"
-          data-action="dreb"
-        >
-
-          <span
-            class="stat-icon"
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
-
-              <!-- Basketball -->
-              <circle cx="12" cy="10" r="6"></circle>
-              <path d="M6.5 8h11"></path>
-              <path d="M6.5 12h11"></path>
-              <path d="M12 4c-1.6 1.7-2.4 3.7-2.4 6s.8 4.3 2.4 6"></path>
-              <path d="M12 4c1.6 1.7 2.4 3.7 2.4 6s-.8 4.3-2.4 6"></path>
-
-              <!-- Down arrow -->
-              <path d="M12 17v5"></path>
-              <path d="m9.5 19.5 2.5 2.5 2.5-2.5"></path>
-
-            </svg>
-          </span>
-
-          <span class="stat-button-label">
-            DEF REB
-          </span>
-
-        </button>
-
-
-        <!-- STEAL -->
-
-        <button
-          type="button"
-          data-action="steal"
-        >
-
-          <span
-            class="stat-icon"
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
-
-              <circle
-                cx="8"
-                cy="12"
-                r="4"
-              ></circle>
-
-              <path d="M12 12h8"></path>
-              <path d="m17 9 3 3-3 3"></path>
-
-            </svg>
-          </span>
-
-          <span class="stat-button-label">
-            STEAL
-          </span>
-
-        </button>
-
-
-        <!-- TURNOVER -->
-
-        <button
-          type="button"
-          data-action="turnover"
-        >
-
-          <span
-            class="stat-icon"
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
-
-              <path
-                d="M18 8A7 7 0 0 0 6 6"
-              ></path>
-
-              <path
-                d="M6 2v4h4"
-              ></path>
-
-              <path
-                d="M6 16A7 7 0 0 0 18 18"
-              ></path>
-
-              <path
-                d="M18 22v-4h-4"
-              ></path>
-
-            </svg>
-          </span>
-
-          <span class="stat-button-label">
-            TURNOVER
-          </span>
-
-        </button>
-
-      </div>
-
-
-      <!-- PERSONAL FOUL -->
 
       <button
         type="button"
-        class="foul-button"
-        data-action="foul"
+        class="exit-game-button"
+        id="exitGameButton"
       >
-
-        <span
-          class="foul-dot"
-          aria-hidden="true"
-        ></span>
-
-        PERSONAL FOUL
-
-      </button>
-
-    </section>
-
-
-    <!-- ==================================================
-         GAME CONTROLS
-    =================================================== -->
-
-    <section class="game-controls">
-
-      <button
-        type="button"
-        id="undoButton"
-        class="undo-button"
-        disabled
-      >
-        ↶ Undo
-      </button>
-
-      <button
-        type="button"
-        id="endGameButton"
-        class="end-game-button"
-      >
-        END GAME
+        Cancel Game
       </button>
 
     </section>
@@ -562,6 +993,66 @@
           class="modal-confirm"
         >
           SAVE GAME
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- ==================================================
+       CANCEL GAME MODAL
+  =================================================== -->
+
+  <div
+    class="modal-backdrop"
+    id="cancelGameModal"
+    aria-hidden="true"
+  >
+
+    <section
+      class="end-game-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cancelGameTitle"
+    >
+
+      <div
+        class="modal-handle"
+        aria-hidden="true"
+      ></div>
+
+      <span class="eyebrow">
+        CANCEL GAME
+      </span>
+
+      <h2 id="cancelGameTitle">
+        Discard this game?
+      </h2>
+
+      <p class="modal-description">
+        All stats entered for this game will be cleared.
+      </p>
+
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          id="keepGameButton"
+          class="modal-cancel"
+        >
+          KEEP TRACKING
+        </button>
+
+        <button
+          type="button"
+          id="discardGameButton"
+          class="modal-confirm"
+        >
+          DISCARD GAME
         </button>
 
       </div>
