@@ -5,6 +5,7 @@
 :root {
   --red: #c8102e;
   --red-dark: #a90d27;
+
   --white: #ffffff;
 
   --background: #f4f7f8;
@@ -38,7 +39,6 @@ html {
 
 body {
   margin: 0;
-
   min-height: 100%;
 
   background: var(--background);
@@ -106,7 +106,7 @@ button {
 
 
 /* ======================================================
-   HOME
+   HOME HERO
 ====================================================== */
 
 .home-hero {
@@ -125,7 +125,6 @@ button {
   content: "";
 
   position: absolute;
-
   top: 0;
   left: 0;
 
@@ -155,7 +154,6 @@ button {
   font-weight: 900;
 
   line-height: 1;
-
   letter-spacing: -0.04em;
 }
 
@@ -178,7 +176,7 @@ button {
 
   background: var(--white);
 
-  border: 1px solid rgba(200, 16, 46, 0.25);
+  border: 1px solid rgba(200, 16, 46, 0.28);
   border-radius: var(--radius-large);
 
   box-shadow:
@@ -186,7 +184,7 @@ button {
 }
 
 .resume-game-card[hidden] {
-  display: none;
+  display: none !important;
 }
 
 .resume-game-top {
@@ -230,14 +228,23 @@ button {
   gap: 14px;
 }
 
+.resume-game-info {
+  min-width: 0;
+}
+
 .resume-opponent,
 .resume-details {
   display: block;
 }
 
 .resume-opponent {
+  overflow: hidden;
+
   font-size: 18px;
   font-weight: 900;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .resume-details {
@@ -347,7 +354,6 @@ button {
 
 .home-action-copy {
   flex: 1;
-
   min-width: 0;
 }
 
@@ -400,7 +406,6 @@ button {
   font-weight: 900;
 
   line-height: 1;
-
   letter-spacing: -0.03em;
 }
 
@@ -426,7 +431,7 @@ button {
 
 
 /* ======================================================
-   GAME SETUP
+   SETUP FORM
 ====================================================== */
 
 .setup-card {
@@ -470,7 +475,8 @@ button {
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  min-height: 52px;
+
+  height: 52px;
 
   margin: 0;
   padding: 0 14px;
@@ -496,78 +502,41 @@ button {
 
 
 /* ======================================================
-   IOS / CHROME DATE INPUT FIX
+   DATE INPUT
+
+   Important:
+   Do NOT absolutely position the calendar picker.
+   That was causing desktop Chrome to intercept clicks.
 ====================================================== */
 
-input[type="date"] {
-  display: block;
-
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  height: 52px;
-
-  padding: 0 14px;
-
-  appearance: none;
-  -webkit-appearance: none;
+.form-group input[type="date"] {
+  line-height: 52px;
 
   text-align: center;
 }
 
-input[type="date"]::-webkit-date-and-time-value {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: 100%;
+.form-group input[type="date"]::-webkit-date-and-time-value {
+  min-height: 52px;
 
   margin: 0;
-  padding: 0;
+
+  line-height: 52px;
 
   text-align: center;
 }
 
-input[type="date"]::-webkit-datetime-edit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: 100%;
-
-  margin: 0;
+.form-group input[type="date"]::-webkit-datetime-edit {
   padding: 0;
+
+  line-height: 52px;
 
   text-align: center;
 }
 
-input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 100%;
-
-  margin: 0;
-  padding: 0;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  margin: 0;
+.form-group input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   padding: 0;
 
-  opacity: 0;
-
-  cursor: pointer;
+  line-height: 52px;
 }
 
 
@@ -637,7 +606,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 /* ======================================================
-   SETUP
+   START GAME
 ====================================================== */
 
 .form-message {
@@ -652,6 +621,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .start-game-button {
+  position: relative;
+  z-index: 2;
+
   width: 100%;
   min-height: 55px;
 
@@ -667,7 +639,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 /* ======================================================
-   GAME CARD
+   GAME HEADER
 ====================================================== */
 
 .game-card {
@@ -678,11 +650,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border: 1px solid var(--border);
   border-radius: var(--radius-large);
 }
-
-
-/* ======================================================
-   GAME HEADER
-====================================================== */
 
 .game-header {
   position: relative;
@@ -739,7 +706,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-weight: 900;
 
   line-height: 1;
-
   letter-spacing: -0.04em;
 }
 
@@ -861,7 +827,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 /* ======================================================
-   STANDARD CARDS
+   CARDS
 ====================================================== */
 
 .card {
@@ -1018,11 +984,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border: 1px solid var(--border);
   border-radius: var(--radius-medium);
 }
-
-
-/* ======================================================
-   ICONS
-====================================================== */
 
 .stat-icon {
   display: flex;
@@ -1184,13 +1145,11 @@ button {
 
 button:active:not(:disabled) {
   transform: scale(0.97);
-
   opacity: 0.88;
 }
 
 button:focus-visible {
   outline: 3px solid rgba(200, 16, 46, 0.2);
-
   outline-offset: 2px;
 }
 
@@ -1249,7 +1208,7 @@ button:focus-visible {
   pointer-events: auto;
 }
 
-.end-game-modal {
+.bottom-sheet {
   width: 100%;
   max-width: var(--content-width);
 
@@ -1272,8 +1231,7 @@ button:focus-visible {
   transition: transform 0.2s ease;
 }
 
-.modal-backdrop.is-open
-.end-game-modal {
+.modal-backdrop.is-open .bottom-sheet {
   transform: translateY(0);
 }
 
@@ -1288,14 +1246,13 @@ button:focus-visible {
   border-radius: 999px;
 }
 
-.end-game-modal h2 {
+.bottom-sheet h2 {
   margin: 5px 0 6px;
 
   font-size: 25px;
   font-weight: 900;
 
   line-height: 1.1;
-
   letter-spacing: -0.03em;
 }
 
@@ -1465,7 +1422,7 @@ button:focus-visible {
 
 
 /* ======================================================
-   TABLET
+   TABLET / DESKTOP
 ====================================================== */
 
 @media (min-width: 600px) {
