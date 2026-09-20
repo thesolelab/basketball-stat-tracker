@@ -171,7 +171,7 @@
         <button
           type="button"
           class="secondary-home-action"
-          disabled
+          id="gameHistoryButton"
         >
 
           <span class="home-action-copy">
@@ -180,14 +180,146 @@
               Game History
             </strong>
 
-            <small>
-              Coming after game saving is connected
+            <small id="gameHistorySummary">
+              View completed games
             </small>
 
           </span>
 
+          <span
+            class="home-action-arrow"
+            aria-hidden="true"
+          >
+            ›
+          </span>
+
         </button>
 
+      </section>
+
+    </section>
+
+
+    <!-- ==================================================
+         GAME HISTORY
+    =================================================== -->
+
+    <section
+      class="screen"
+      id="historyScreen"
+    >
+
+      <div class="screen-topbar">
+
+        <button
+          type="button"
+          class="back-button"
+          id="historyBackButton"
+          aria-label="Back"
+        >
+          ‹
+        </button>
+
+        <div>
+          <span class="eyebrow">2026–27 SEASON</span>
+          <h1>Game History</h1>
+        </div>
+
+      </div>
+
+      <section class="history-summary-card">
+        <span>COMPLETED GAMES</span>
+        <strong id="historyGameCount">0</strong>
+      </section>
+
+      <section
+        class="history-list"
+        id="historyList"
+      ></section>
+
+      <section
+        class="history-empty"
+        id="historyEmpty"
+        hidden
+      >
+        <strong>No completed games yet</strong>
+        <span>Your saved games will appear here.</span>
+      </section>
+
+    </section>
+
+
+    <!-- ==================================================
+         GAME DETAIL
+    =================================================== -->
+
+    <section
+      class="screen"
+      id="gameDetailScreen"
+    >
+
+      <div class="screen-topbar">
+
+        <button
+          type="button"
+          class="back-button"
+          id="detailBackButton"
+          aria-label="Back"
+        >
+          ‹
+        </button>
+
+        <div>
+          <span class="eyebrow" id="detailSeasonLabel">2026–27 SEASON</span>
+          <h1 id="detailTitle">Game Details</h1>
+        </div>
+
+      </div>
+
+      <section class="detail-hero">
+        <div class="detail-hero-copy">
+          <span class="detail-game-number" id="detailGameNumber">GAME 1</span>
+          <h2 id="detailOpponent">vs. Opponent</h2>
+          <p id="detailMeta">Home · Regular Season · Date</p>
+        </div>
+
+        <div class="detail-points">
+          <span>PTS</span>
+          <strong id="detailPoints">0</strong>
+        </div>
+      </section>
+
+      <section class="detail-card">
+        <span class="eyebrow">BOX SCORE</span>
+
+        <div class="detail-stat-grid">
+          <div><strong id="detailRebounds">0</strong><span>REB</span></div>
+          <div><strong id="detailAssists">0</strong><span>AST</span></div>
+          <div><strong id="detailSteals">0</strong><span>STL</span></div>
+          <div><strong id="detailBlocks">0</strong><span>BLK</span></div>
+          <div><strong id="detailTurnovers">0</strong><span>TOV</span></div>
+          <div><strong id="detailFouls">0</strong><span>PF</span></div>
+        </div>
+      </section>
+
+      <section class="detail-card">
+        <span class="eyebrow">SHOOTING</span>
+
+        <div class="shooting-detail-list">
+          <div><span>Field Goals</span><strong id="detailFieldGoals">0/0 · —</strong></div>
+          <div><span>2PT</span><strong id="detailTwoPoint">0/0 · —</strong></div>
+          <div><span>3PT</span><strong id="detailThreePoint">0/0 · —</strong></div>
+          <div><span>Free Throws</span><strong id="detailFreeThrows">0/0 · —</strong></div>
+        </div>
+      </section>
+
+      <section class="detail-card">
+        <span class="eyebrow">REBOUNDING</span>
+
+        <div class="rebound-detail-grid">
+          <div><strong id="detailOffensiveRebounds">0</strong><span>OFF REB</span></div>
+          <div><strong id="detailDefensiveRebounds">0</strong><span>DEF REB</span></div>
+        </div>
       </section>
 
     </section>
