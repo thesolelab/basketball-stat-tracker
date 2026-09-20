@@ -28,11 +28,12 @@ const stats = {
   fouls: 0
 };
 
+
 const actionHistory = [];
 
 
 /* ======================================================
-   DOM ELEMENTS
+   DOM
 ====================================================== */
 
 const pointsElement =
@@ -62,14 +63,13 @@ const fgPercentElement =
 const shootingSummaryElement =
   document.getElementById("shootingSummary");
 
+
 const undoButton =
   document.getElementById("undoButton");
 
 const endGameButton =
   document.getElementById("endGameButton");
 
-
-/* Modal */
 
 const endGameModal =
   document.getElementById("endGameModal");
@@ -79,6 +79,7 @@ const cancelEndGameButton =
 
 const confirmEndGameButton =
   document.getElementById("confirmEndGame");
+
 
 const finalPointsElement =
   document.getElementById("finalPoints");
@@ -101,32 +102,43 @@ const finalShootingElement =
 ====================================================== */
 
 function calculatePoints() {
+
   return (
     stats.twoMade * 2 +
     stats.threeMade * 3 +
     stats.freeThrowMade
   );
+
 }
 
 
 function calculateRebounds() {
+
   return (
     stats.offensiveRebounds +
     stats.defensiveRebounds
   );
+
 }
 
 
 function calculateFieldGoalsMade() {
-  return stats.twoMade + stats.threeMade;
+
+  return (
+    stats.twoMade +
+    stats.threeMade
+  );
+
 }
 
 
 function calculateFieldGoalAttempts() {
+
   return (
     stats.twoAttempted +
     stats.threeAttempted
   );
+
 }
 
 
@@ -138,16 +150,23 @@ function calculateFieldGoalPercentage() {
   const attempts =
     calculateFieldGoalAttempts();
 
+
   if (attempts === 0) {
     return "—";
   }
 
-  return `${Math.round((made / attempts) * 100)}%`;
+
+  return (
+    Math.round(
+      (made / attempts) * 100
+    ) + "%"
+  );
+
 }
 
 
 /* ======================================================
-   SHOOTING TEXT
+   SHOOTING SUMMARY
 ====================================================== */
 
 function getShootingSummary() {
@@ -158,16 +177,18 @@ function getShootingSummary() {
   const fieldGoalAttempts =
     calculateFieldGoalAttempts();
 
+
   return (
     `FG ${fieldGoalsMade}/${fieldGoalAttempts} · ` +
     `3PT ${stats.threeMade}/${stats.threeAttempted} · ` +
     `FT ${stats.freeThrowMade}/${stats.freeThrowAttempted}`
   );
+
 }
 
 
 /* ======================================================
-   UPDATE SCREEN
+   UPDATE DISPLAY
 ====================================================== */
 
 function updateDisplay() {
@@ -175,56 +196,72 @@ function updateDisplay() {
   pointsElement.textContent =
     calculatePoints();
 
+
   reboundsElement.textContent =
     calculateRebounds();
+
 
   assistsElement.textContent =
     stats.assists;
 
+
   stealsElement.textContent =
     stats.steals;
+
 
   blocksElement.textContent =
     stats.blocks;
 
+
   turnoversElement.textContent =
     stats.turnovers;
+
 
   foulsElement.textContent =
     stats.fouls;
 
+
   fgPercentElement.textContent =
     calculateFieldGoalPercentage();
+
 
   shootingSummaryElement.textContent =
     getShootingSummary();
 
 
-  /*
-    Undo only becomes available after at least
-    one action has been recorded.
-  */
-
   undoButton.disabled =
     actionHistory.length === 0;
+
 }
 
 
 /* ======================================================
-   TAP FEEDBACK
+   BUTTON FEEDBACK
 ====================================================== */
 
 function showTapFeedback(button) {
 
-  button.classList.remove("stat-recorded");
+  button.classList.remove(
+    "stat-recorded"
+  );
+
 
   void button.offsetWidth;
 
-  button.classList.add("stat-recorded");
+
+  button.classList.add(
+    "stat-recorded"
+  );
+
 
   window.setTimeout(() => {
-    button.classList.remove("stat-recorded");
+
+    button.classList.remove(
+      "stat-recorded"
+    );
+
   }, 220);
+
 }
 
 
@@ -237,67 +274,111 @@ function recordAction(action) {
   switch (action) {
 
     case "2pt-made":
+
       stats.twoMade++;
       stats.twoAttempted++;
+
       break;
+
 
     case "2pt-miss":
+
       stats.twoAttempted++;
+
       break;
+
 
     case "3pt-made":
+
       stats.threeMade++;
       stats.threeAttempted++;
+
       break;
+
 
     case "3pt-miss":
+
       stats.threeAttempted++;
+
       break;
+
 
     case "ft-made":
+
       stats.freeThrowMade++;
       stats.freeThrowAttempted++;
+
       break;
+
 
     case "ft-miss":
+
       stats.freeThrowAttempted++;
+
       break;
+
 
     case "oreb":
+
       stats.offensiveRebounds++;
+
       break;
+
 
     case "dreb":
+
       stats.defensiveRebounds++;
+
       break;
+
 
     case "assist":
+
       stats.assists++;
+
       break;
+
 
     case "steal":
+
       stats.steals++;
+
       break;
+
 
     case "block":
+
       stats.blocks++;
+
       break;
+
 
     case "turnover":
+
       stats.turnovers++;
+
       break;
+
 
     case "foul":
+
       stats.fouls++;
+
       break;
 
+
     default:
+
       return;
+
   }
+
 
   actionHistory.push(action);
 
+
   updateDisplay();
+
 }
 
 
@@ -311,68 +392,111 @@ function undoLastAction() {
     return;
   }
 
+
   const action =
     actionHistory.pop();
+
 
   switch (action) {
 
     case "2pt-made":
+
       stats.twoMade--;
       stats.twoAttempted--;
+
       break;
+
 
     case "2pt-miss":
+
       stats.twoAttempted--;
+
       break;
+
 
     case "3pt-made":
+
       stats.threeMade--;
       stats.threeAttempted--;
+
       break;
+
 
     case "3pt-miss":
+
       stats.threeAttempted--;
+
       break;
+
 
     case "ft-made":
+
       stats.freeThrowMade--;
       stats.freeThrowAttempted--;
+
       break;
+
 
     case "ft-miss":
+
       stats.freeThrowAttempted--;
+
       break;
+
 
     case "oreb":
+
       stats.offensiveRebounds--;
+
       break;
+
 
     case "dreb":
+
       stats.defensiveRebounds--;
+
       break;
+
 
     case "assist":
+
       stats.assists--;
+
       break;
+
 
     case "steal":
+
       stats.steals--;
+
       break;
+
 
     case "block":
+
       stats.blocks--;
+
       break;
+
 
     case "turnover":
+
       stats.turnovers--;
+
       break;
+
 
     case "foul":
+
       stats.fouls--;
+
       break;
+
   }
 
+
   updateDisplay();
+
 }
 
 
@@ -381,20 +505,28 @@ function undoLastAction() {
 ====================================================== */
 
 const statButtons =
-  document.querySelectorAll("[data-action]");
+  document.querySelectorAll(
+    "[data-action]"
+  );
+
 
 statButtons.forEach((button) => {
 
-  button.addEventListener("click", () => {
+  button.addEventListener(
+    "click",
+    () => {
 
-    const action =
-      button.dataset.action;
+      const action =
+        button.dataset.action;
 
-    recordAction(action);
 
-    showTapFeedback(button);
+      recordAction(action);
 
-  });
+
+      showTapFeedback(button);
+
+    }
+  );
 
 });
 
@@ -418,35 +550,58 @@ function openEndGameModal() {
   finalPointsElement.textContent =
     calculatePoints();
 
+
   finalReboundsElement.textContent =
     calculateRebounds();
+
 
   finalAssistsElement.textContent =
     stats.assists;
 
+
   finalStealsElement.textContent =
     stats.steals;
+
 
   finalShootingElement.textContent =
     getShootingSummary();
 
-  endGameModal.classList.add("is-open");
+
+  endGameModal.classList.add(
+    "is-open"
+  );
+
 
   endGameModal.setAttribute(
     "aria-hidden",
     "false"
   );
+
+
+  document.body.classList.add(
+    "modal-open"
+  );
+
 }
 
 
 function closeEndGameModal() {
 
-  endGameModal.classList.remove("is-open");
+  endGameModal.classList.remove(
+    "is-open"
+  );
+
 
   endGameModal.setAttribute(
     "aria-hidden",
     "true"
   );
+
+
+  document.body.classList.remove(
+    "modal-open"
+  );
+
 }
 
 
@@ -466,8 +621,12 @@ endGameModal.addEventListener(
   "click",
   (event) => {
 
-    if (event.target === endGameModal) {
+    if (
+      event.target === endGameModal
+    ) {
+
       closeEndGameModal();
+
     }
 
   }
@@ -483,14 +642,56 @@ confirmEndGameButton.addEventListener(
   () => {
 
     /*
-      Google Sheets connection will replace
-      this temporary behavior.
+      Google Sheets connection comes later.
+
+      For now this confirms that the complete
+      final stat object is available to save.
     */
 
     console.log(
       "Final Game Stats:",
-      stats
+      {
+        points:
+          calculatePoints(),
+
+        rebounds:
+          calculateRebounds(),
+
+        assists:
+          stats.assists,
+
+        steals:
+          stats.steals,
+
+        blocks:
+          stats.blocks,
+
+        turnovers:
+          stats.turnovers,
+
+        fouls:
+          stats.fouls,
+
+        twoMade:
+          stats.twoMade,
+
+        twoAttempted:
+          stats.twoAttempted,
+
+        threeMade:
+          stats.threeMade,
+
+        threeAttempted:
+          stats.threeAttempted,
+
+        freeThrowMade:
+          stats.freeThrowMade,
+
+        freeThrowAttempted:
+          stats.freeThrowAttempted
+      }
     );
+
 
     closeEndGameModal();
 
