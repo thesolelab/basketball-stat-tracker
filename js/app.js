@@ -2,12 +2,14 @@
    BASKETBALL STAT TRACKER
 ====================================================== */
 
-
 /* ======================================================
    APP SETTINGS
 ====================================================== */
 
 const CURRENT_SEASON = "2026–27";
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbznVw8zvjDEZt6-jRwLwqNI4xZ5bkEZLVnPZ8VX6Fv9t-Lgt9w44UcadPvHm7l5Tfet/exec";
 
 const ACTIVE_GAME_KEY =
   "basketballStatTracker.activeGame";
@@ -21,9 +23,13 @@ const COMPLETED_GAMES_KEY =
 const NEXT_GAME_NUMBER_KEY =
   "basketballStatTracker.nextGameNumber";
 
+const DELETED_GAME_IDS_KEY =
+  "basketballStatTracker.deletedGameIds";
+
 let currentGameNumber = 1;
 let gameIsActive = false;
-
+let currentSeasonFilter = "All";
+let syncPromise = null;
 
 /* ======================================================
    CURRENT GAME
@@ -37,7 +43,6 @@ let currentGame = {
   type: "Regular Season"
 };
 
-
 /* ======================================================
    STATS
 ====================================================== */
@@ -45,16 +50,12 @@ let currentGame = {
 const stats = {
   twoMade: 0,
   twoAttempted: 0,
-
   threeMade: 0,
   threeAttempted: 0,
-
   freeThrowMade: 0,
   freeThrowAttempted: 0,
-
   offensiveRebounds: 0,
   defensiveRebounds: 0,
-
   assists: 0,
   steals: 0,
   blocks: 0,
@@ -64,381 +65,157 @@ const stats = {
 
 const actionHistory = [];
 
-
 /* ======================================================
    DOM
 ====================================================== */
 
-const homeScreen =
-  document.getElementById("homeScreen");
-
-const setupScreen =
-  document.getElementById("setupScreen");
-
-const gameScreen =
-  document.getElementById("gameScreen");
-
-const historyScreen =
-  document.getElementById("historyScreen");
-
-const gameDetailScreen =
-  document.getElementById("gameDetailScreen");
-
-const seasonStatsScreen =
-  document.getElementById("seasonStatsScreen");
-
-
-const seasonStatsButton =
-  document.getElementById("seasonStatsButton");
-
-const seasonStatsSummary =
-  document.getElementById("seasonStatsSummary");
-
-const seasonStatsBackButton =
-  document.getElementById("seasonStatsBackButton");
-
-const seasonFilterButtons =
-  document.querySelectorAll("[data-season-filter]");
-
-const seasonStatsEmpty =
-  document.getElementById("seasonStatsEmpty");
-
-const seasonFilterLabel =
-  document.getElementById("seasonFilterLabel");
-
-const seasonGamesPlayed =
-  document.getElementById("seasonGamesPlayed");
-
-const seasonPpg =
-  document.getElementById("seasonPpg");
-
-const seasonRpg =
-  document.getElementById("seasonRpg");
-
-const seasonApg =
-  document.getElementById("seasonApg");
-
-const seasonSpg =
-  document.getElementById("seasonSpg");
-
-const seasonBpg =
-  document.getElementById("seasonBpg");
-
-const seasonTovpg =
-  document.getElementById("seasonTovpg");
-
-const seasonPfpg =
-  document.getElementById("seasonPfpg");
-
-const seasonFgPercent =
-  document.getElementById("seasonFgPercent");
-
-const seasonFgTotals =
-  document.getElementById("seasonFgTotals");
-
-const seasonThreePercent =
-  document.getElementById("seasonThreePercent");
-
-const seasonThreeTotals =
-  document.getElementById("seasonThreeTotals");
-
-const seasonFtPercent =
-  document.getElementById("seasonFtPercent");
-
-const seasonFtTotals =
-  document.getElementById("seasonFtTotals");
-
-const seasonTotalPoints =
-  document.getElementById("seasonTotalPoints");
-
-const seasonTotalRebounds =
-  document.getElementById("seasonTotalRebounds");
-
-const seasonTotalAssists =
-  document.getElementById("seasonTotalAssists");
-
-const seasonTotalSteals =
-  document.getElementById("seasonTotalSteals");
-
-const seasonTotalBlocks =
-  document.getElementById("seasonTotalBlocks");
-
-const seasonTotalOreb =
-  document.getElementById("seasonTotalOreb");
-
-const seasonTotalDreb =
-  document.getElementById("seasonTotalDreb");
-
-let currentSeasonFilter = "All";
-
-
-const newGameButton =
-  document.getElementById("newGameButton");
-
-const gameHistoryButton =
-  document.getElementById("gameHistoryButton");
-
-const gameHistorySummary =
-  document.getElementById("gameHistorySummary");
-
-const historyBackButton =
-  document.getElementById("historyBackButton");
-
-const detailBackButton =
-  document.getElementById("detailBackButton");
-
-const historyGameCount =
-  document.getElementById("historyGameCount");
-
-const historyList =
-  document.getElementById("historyList");
-
-const historyEmpty =
-  document.getElementById("historyEmpty");
-
-const resumeGameCard =
-  document.getElementById("resumeGameCard");
-
-const resumeGameButton =
-  document.getElementById("resumeGameButton");
-
-const resumeOpponent =
-  document.getElementById("resumeOpponent");
-
-const resumeDetails =
-  document.getElementById("resumeDetails");
-
-const resumeGameType =
-  document.getElementById("resumeGameType");
-
-
-const setupBackButton =
-  document.getElementById("setupBackButton");
-
-const gameSetupForm =
-  document.getElementById("gameSetupForm");
-
-const playerNumberInput =
-  document.getElementById("playerNumber");
-
-const opponentInput =
-  document.getElementById("opponentInput");
-
-const gameDateInput =
-  document.getElementById("gameDate");
-
-const setupMessage =
-  document.getElementById("setupMessage");
-
-const locationHome =
-  document.getElementById("locationHome");
-
-const typeRegular =
-  document.getElementById("typeRegular");
-
-
-const gameSeasonLabel =
-  document.getElementById("gameSeasonLabel");
-
-const gamePlayerNumber =
-  document.getElementById("gamePlayerNumber");
-
-const gameOpponent =
-  document.getElementById("gameOpponent");
-
-const gameTypeBadge =
-  document.getElementById("gameTypeBadge");
-
-
-const pointsElement =
-  document.getElementById("points");
-
-const reboundsElement =
-  document.getElementById("rebounds");
-
-const assistsElement =
-  document.getElementById("assists");
-
-const stealsElement =
-  document.getElementById("steals");
-
-const blocksElement =
-  document.getElementById("blocks");
-
-const turnoversElement =
-  document.getElementById("turnovers");
-
-const foulsElement =
-  document.getElementById("fouls");
-
-const fgPercentElement =
-  document.getElementById("fgPercent");
-
-const shootingSummaryElement =
-  document.getElementById("shootingSummary");
-
-
-const undoButton =
-  document.getElementById("undoButton");
-
-const endGameButton =
-  document.getElementById("endGameButton");
-
-const exitGameButton =
-  document.getElementById("exitGameButton");
-
-
-const endGameModal =
-  document.getElementById("endGameModal");
-
-const cancelEndGameButton =
-  document.getElementById("cancelEndGame");
-
-const confirmEndGameButton =
-  document.getElementById("confirmEndGame");
-
-const finalPointsElement =
-  document.getElementById("finalPoints");
-
-const finalReboundsElement =
-  document.getElementById("finalRebounds");
-
-const finalAssistsElement =
-  document.getElementById("finalAssists");
-
-const finalStealsElement =
-  document.getElementById("finalSteals");
-
-const finalShootingElement =
-  document.getElementById("finalShooting");
-
-
-const cancelGameModal =
-  document.getElementById("cancelGameModal");
-
-const keepGameButton =
-  document.getElementById("keepGameButton");
-
-const discardGameButton =
-  document.getElementById("discardGameButton");
-
-
-const replaceGameModal =
-  document.getElementById("replaceGameModal");
-
-const resumeInsteadButton =
-  document.getElementById("resumeInsteadButton");
-
-const replaceGameButton =
-  document.getElementById("replaceGameButton");
-
-
-const detailSeasonLabel =
-  document.getElementById("detailSeasonLabel");
-
-const detailTitle =
-  document.getElementById("detailTitle");
-
-const detailGameNumber =
-  document.getElementById("detailGameNumber");
-
-const detailOpponent =
-  document.getElementById("detailOpponent");
-
-const detailMeta =
-  document.getElementById("detailMeta");
-
-const detailPoints =
-  document.getElementById("detailPoints");
-
-const detailRebounds =
-  document.getElementById("detailRebounds");
-
-const detailAssists =
-  document.getElementById("detailAssists");
-
-const detailSteals =
-  document.getElementById("detailSteals");
-
-const detailBlocks =
-  document.getElementById("detailBlocks");
-
-const detailTurnovers =
-  document.getElementById("detailTurnovers");
-
-const detailFouls =
-  document.getElementById("detailFouls");
-
-const detailFieldGoals =
-  document.getElementById("detailFieldGoals");
-
-const detailTwoPoint =
-  document.getElementById("detailTwoPoint");
-
-const detailThreePoint =
-  document.getElementById("detailThreePoint");
-
-const detailFreeThrows =
-  document.getElementById("detailFreeThrows");
-
-const detailOffensiveRebounds =
-  document.getElementById("detailOffensiveRebounds");
-
-const detailDefensiveRebounds =
-  document.getElementById("detailDefensiveRebounds");
-
-
-const statButtons =
-  document.querySelectorAll("[data-action]");
-
+const homeScreen = document.getElementById("homeScreen");
+const setupScreen = document.getElementById("setupScreen");
+const gameScreen = document.getElementById("gameScreen");
+const historyScreen = document.getElementById("historyScreen");
+const gameDetailScreen = document.getElementById("gameDetailScreen");
+const seasonStatsScreen = document.getElementById("seasonStatsScreen");
+
+const seasonStatsButton = document.getElementById("seasonStatsButton");
+const seasonStatsSummary = document.getElementById("seasonStatsSummary");
+const seasonStatsBackButton = document.getElementById("seasonStatsBackButton");
+const seasonFilterButtons = document.querySelectorAll("[data-season-filter]");
+const seasonStatsEmpty = document.getElementById("seasonStatsEmpty");
+const seasonFilterLabel = document.getElementById("seasonFilterLabel");
+const seasonGamesPlayed = document.getElementById("seasonGamesPlayed");
+const seasonPpg = document.getElementById("seasonPpg");
+const seasonRpg = document.getElementById("seasonRpg");
+const seasonApg = document.getElementById("seasonApg");
+const seasonSpg = document.getElementById("seasonSpg");
+const seasonBpg = document.getElementById("seasonBpg");
+const seasonTovpg = document.getElementById("seasonTovpg");
+const seasonPfpg = document.getElementById("seasonPfpg");
+const seasonFgPercent = document.getElementById("seasonFgPercent");
+const seasonFgTotals = document.getElementById("seasonFgTotals");
+const seasonThreePercent = document.getElementById("seasonThreePercent");
+const seasonThreeTotals = document.getElementById("seasonThreeTotals");
+const seasonFtPercent = document.getElementById("seasonFtPercent");
+const seasonFtTotals = document.getElementById("seasonFtTotals");
+const seasonTotalPoints = document.getElementById("seasonTotalPoints");
+const seasonTotalRebounds = document.getElementById("seasonTotalRebounds");
+const seasonTotalAssists = document.getElementById("seasonTotalAssists");
+const seasonTotalSteals = document.getElementById("seasonTotalSteals");
+const seasonTotalBlocks = document.getElementById("seasonTotalBlocks");
+const seasonTotalOreb = document.getElementById("seasonTotalOreb");
+const seasonTotalDreb = document.getElementById("seasonTotalDreb");
+
+const newGameButton = document.getElementById("newGameButton");
+const gameHistoryButton = document.getElementById("gameHistoryButton");
+const gameHistorySummary = document.getElementById("gameHistorySummary");
+const historyBackButton = document.getElementById("historyBackButton");
+const detailBackButton = document.getElementById("detailBackButton");
+const historyGameCount = document.getElementById("historyGameCount");
+const historyList = document.getElementById("historyList");
+const historyEmpty = document.getElementById("historyEmpty");
+
+const resumeGameCard = document.getElementById("resumeGameCard");
+const resumeGameButton = document.getElementById("resumeGameButton");
+const resumeOpponent = document.getElementById("resumeOpponent");
+const resumeDetails = document.getElementById("resumeDetails");
+const resumeGameType = document.getElementById("resumeGameType");
+
+const setupBackButton = document.getElementById("setupBackButton");
+const gameSetupForm = document.getElementById("gameSetupForm");
+const playerNumberInput = document.getElementById("playerNumber");
+const opponentInput = document.getElementById("opponentInput");
+const gameDateInput = document.getElementById("gameDate");
+const setupMessage = document.getElementById("setupMessage");
+const locationHome = document.getElementById("locationHome");
+const typeRegular = document.getElementById("typeRegular");
+
+const gameSeasonLabel = document.getElementById("gameSeasonLabel");
+const gamePlayerNumber = document.getElementById("gamePlayerNumber");
+const gameOpponent = document.getElementById("gameOpponent");
+const gameTypeBadge = document.getElementById("gameTypeBadge");
+
+const pointsElement = document.getElementById("points");
+const reboundsElement = document.getElementById("rebounds");
+const assistsElement = document.getElementById("assists");
+const stealsElement = document.getElementById("steals");
+const blocksElement = document.getElementById("blocks");
+const turnoversElement = document.getElementById("turnovers");
+const foulsElement = document.getElementById("fouls");
+const fgPercentElement = document.getElementById("fgPercent");
+const shootingSummaryElement = document.getElementById("shootingSummary");
+
+const undoButton = document.getElementById("undoButton");
+const endGameButton = document.getElementById("endGameButton");
+const exitGameButton = document.getElementById("exitGameButton");
+
+const endGameModal = document.getElementById("endGameModal");
+const cancelEndGameButton = document.getElementById("cancelEndGame");
+const confirmEndGameButton = document.getElementById("confirmEndGame");
+const finalPointsElement = document.getElementById("finalPoints");
+const finalReboundsElement = document.getElementById("finalRebounds");
+const finalAssistsElement = document.getElementById("finalAssists");
+const finalStealsElement = document.getElementById("finalSteals");
+const finalShootingElement = document.getElementById("finalShooting");
+
+const cancelGameModal = document.getElementById("cancelGameModal");
+const keepGameButton = document.getElementById("keepGameButton");
+const discardGameButton = document.getElementById("discardGameButton");
+
+const replaceGameModal = document.getElementById("replaceGameModal");
+const resumeInsteadButton = document.getElementById("resumeInsteadButton");
+const replaceGameButton = document.getElementById("replaceGameButton");
+
+const detailSeasonLabel = document.getElementById("detailSeasonLabel");
+const detailTitle = document.getElementById("detailTitle");
+const detailGameNumber = document.getElementById("detailGameNumber");
+const detailOpponent = document.getElementById("detailOpponent");
+const detailMeta = document.getElementById("detailMeta");
+const detailPoints = document.getElementById("detailPoints");
+const detailRebounds = document.getElementById("detailRebounds");
+const detailAssists = document.getElementById("detailAssists");
+const detailSteals = document.getElementById("detailSteals");
+const detailBlocks = document.getElementById("detailBlocks");
+const detailTurnovers = document.getElementById("detailTurnovers");
+const detailFouls = document.getElementById("detailFouls");
+const detailFieldGoals = document.getElementById("detailFieldGoals");
+const detailTwoPoint = document.getElementById("detailTwoPoint");
+const detailThreePoint = document.getElementById("detailThreePoint");
+const detailFreeThrows = document.getElementById("detailFreeThrows");
+const detailOffensiveRebounds = document.getElementById("detailOffensiveRebounds");
+const detailDefensiveRebounds = document.getElementById("detailDefensiveRebounds");
+
+const statButtons = document.querySelectorAll("[data-action]");
 
 /* ======================================================
    SCREEN NAVIGATION
 ====================================================== */
 
 function showScreen(screen) {
-
-  document
-    .querySelectorAll(".screen")
-    .forEach((item) => {
-      item.classList.remove("active-screen");
-    });
+  document.querySelectorAll(".screen").forEach((item) => {
+    item.classList.remove("active-screen");
+  });
 
   screen.classList.add("active-screen");
-
   window.scrollTo(0, 0);
 }
-
 
 /* ======================================================
    DATE
 ====================================================== */
 
 function getTodayForDateInput() {
-
   const now = new Date();
-
-  const year =
-    now.getFullYear();
-
-  const month =
-    String(now.getMonth() + 1)
-      .padStart(2, "0");
-
-  const day =
-    String(now.getDate())
-      .padStart(2, "0");
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
 }
-
 
 /* ======================================================
    CALCULATIONS
 ====================================================== */
 
 function calculatePoints() {
-
   return (
     stats.twoMade * 2 +
     stats.threeMade * 3 +
@@ -446,56 +223,29 @@ function calculatePoints() {
   );
 }
 
-
 function calculateRebounds() {
-
-  return (
-    stats.offensiveRebounds +
-    stats.defensiveRebounds
-  );
+  return stats.offensiveRebounds + stats.defensiveRebounds;
 }
-
 
 function calculateFieldGoalsMade() {
-
-  return (
-    stats.twoMade +
-    stats.threeMade
-  );
+  return stats.twoMade + stats.threeMade;
 }
-
 
 function calculateFieldGoalAttempts() {
-
-  return (
-    stats.twoAttempted +
-    stats.threeAttempted
-  );
+  return stats.twoAttempted + stats.threeAttempted;
 }
 
-
 function calculateFieldGoalPercentage() {
-
-  const attempts =
-    calculateFieldGoalAttempts();
+  const attempts = calculateFieldGoalAttempts();
 
   if (attempts === 0) {
     return "—";
   }
 
-  return (
-    Math.round(
-      (
-        calculateFieldGoalsMade() /
-        attempts
-      ) * 100
-    ) + "%"
-  );
+  return `${Math.round((calculateFieldGoalsMade() / attempts) * 100)}%`;
 }
 
-
 function getShootingSummary() {
-
   return (
     `FG ${calculateFieldGoalsMade()}/${calculateFieldGoalAttempts()} · ` +
     `3PT ${stats.threeMade}/${stats.threeAttempted} · ` +
@@ -503,389 +253,531 @@ function getShootingSummary() {
   );
 }
 
+function safeNumber(value) {
+  return Number(value) || 0;
+}
+
+function formatPercentage(made, attempted) {
+  const attempts = safeNumber(attempted);
+  const makes = safeNumber(made);
+
+  if (attempts === 0) {
+    return "—";
+  }
+
+  return `${Math.round((makes / attempts) * 100)}%`;
+}
+
+function formatAverage(total, gamesPlayed) {
+  if (gamesPlayed === 0) {
+    return "0.0";
+  }
+
+  return (total / gamesPlayed).toFixed(1);
+}
 
 /* ======================================================
-   LOCAL STORAGE CHECK
+   LOCAL STORAGE
 ====================================================== */
 
 function storageAvailable() {
-
   try {
-
-    const testKey =
-      "__basketball_storage_test__";
-
-    localStorage.setItem(
-      testKey,
-      "1"
-    );
-
-    localStorage.removeItem(
-      testKey
-    );
-
+    const testKey = "__basketball_storage_test__";
+    localStorage.setItem(testKey, "1");
+    localStorage.removeItem(testKey);
     return true;
-
   } catch (error) {
-
-    console.error(
-      "Local storage unavailable:",
-      error
-    );
-
+    console.error("Local storage unavailable:", error);
     return false;
   }
 }
 
-
-const canUseStorage =
-  storageAvailable();
-
+const canUseStorage = storageAvailable();
 
 /* ======================================================
    ACTIVE GAME STORAGE
 ====================================================== */
 
 function readActiveGame() {
-
   if (!canUseStorage) {
     return null;
   }
 
   try {
-
-    const raw =
-      localStorage.getItem(
-        ACTIVE_GAME_KEY
-      );
+    const raw = localStorage.getItem(ACTIVE_GAME_KEY);
 
     if (!raw) {
       return null;
     }
 
-    const saved =
-      JSON.parse(raw);
+    const saved = JSON.parse(raw);
 
-    if (
-      !saved ||
-      saved.active !== true ||
-      !saved.game ||
-      !saved.stats
-    ) {
+    if (!saved || saved.active !== true || !saved.game || !saved.stats) {
       return null;
     }
 
     return saved;
-
   } catch (error) {
-
-    console.error(
-      "Could not read active game:",
-      error
-    );
-
+    console.error("Could not read active game:", error);
     return null;
   }
 }
 
-
 function writeActiveGame() {
-
-  if (
-    !canUseStorage ||
-    !gameIsActive
-  ) {
+  if (!canUseStorage || !gameIsActive) {
     return;
   }
 
   const payload = {
-
     version: 2,
-
     active: true,
-
-    season:
-      CURRENT_SEASON,
-
-    gameNumber:
-      currentGameNumber,
-
-    game: {
-      ...currentGame
-    },
-
-    stats: {
-      ...stats
-    },
-
-    history: [
-      ...actionHistory
-    ],
-
-    savedAt:
-      new Date().toISOString()
+    season: CURRENT_SEASON,
+    gameNumber: currentGameNumber,
+    game: { ...currentGame },
+    stats: { ...stats },
+    history: [...actionHistory],
+    savedAt: new Date().toISOString()
   };
 
   try {
-
-    localStorage.setItem(
-      ACTIVE_GAME_KEY,
-      JSON.stringify(payload)
-    );
-
+    localStorage.setItem(ACTIVE_GAME_KEY, JSON.stringify(payload));
   } catch (error) {
-
-    console.error(
-      "Could not save active game:",
-      error
-    );
+    console.error("Could not save active game:", error);
   }
 }
 
-
 function deleteActiveGame() {
-
   if (!canUseStorage) {
     return;
   }
 
   try {
-
-    localStorage.removeItem(
-      ACTIVE_GAME_KEY
-    );
-
+    localStorage.removeItem(ACTIVE_GAME_KEY);
   } catch (error) {
-
-    console.error(
-      "Could not remove active game:",
-      error
-    );
+    console.error("Could not remove active game:", error);
   }
 }
-
 
 /* ======================================================
    COMPLETED GAME STORAGE
 ====================================================== */
 
 function readCompletedGames() {
-
   if (!canUseStorage) {
     return [];
   }
 
   try {
-
-    const raw =
-      localStorage.getItem(
-        COMPLETED_GAMES_KEY
-      );
+    const raw = localStorage.getItem(COMPLETED_GAMES_KEY);
 
     if (!raw) {
       return [];
     }
 
-    const saved =
-      JSON.parse(raw);
-
-    return Array.isArray(saved)
-      ? saved
-      : [];
-
+    const saved = JSON.parse(raw);
+    return Array.isArray(saved) ? saved : [];
   } catch (error) {
-
-    console.error(
-      "Could not read completed games:",
-      error
-    );
-
+    console.error("Could not read completed games:", error);
     return [];
   }
 }
 
-
 function writeCompletedGames(games) {
-
   if (!canUseStorage) {
     return false;
   }
 
   try {
-
-    localStorage.setItem(
-      COMPLETED_GAMES_KEY,
-      JSON.stringify(games)
-    );
-
+    localStorage.setItem(COMPLETED_GAMES_KEY, JSON.stringify(games));
     return true;
-
   } catch (error) {
-
-    console.error(
-      "Could not save completed games:",
-      error
-    );
-
+    console.error("Could not save completed games:", error);
     return false;
   }
 }
-
 
 function saveCompletedGame(game) {
-
-  const games =
-    readCompletedGames();
-
+  const games = readCompletedGames();
   games.push(game);
-
-  return writeCompletedGames(
-    games
-  );
+  return writeCompletedGames(games);
 }
 
-
-function readStoredNextGameNumber() {
-
+function readDeletedGameIds() {
   if (!canUseStorage) {
-    return 1;
+    return [];
   }
 
   try {
+    const raw = localStorage.getItem(DELETED_GAME_IDS_KEY);
 
-    return (
-      Number(
-        localStorage.getItem(
-          NEXT_GAME_NUMBER_KEY
-        )
-      ) || 1
-    );
+    if (!raw) {
+      return [];
+    }
 
+    const ids = JSON.parse(raw);
+    return Array.isArray(ids) ? ids : [];
   } catch (error) {
-
-    return 1;
+    console.error("Could not read pending deletes:", error);
+    return [];
   }
 }
 
-
-function writeStoredNextGameNumber(number) {
-
+function writeDeletedGameIds(ids) {
   if (!canUseStorage) {
     return;
   }
 
   try {
-
     localStorage.setItem(
-      NEXT_GAME_NUMBER_KEY,
-      String(number)
+      DELETED_GAME_IDS_KEY,
+      JSON.stringify([...new Set(ids)])
     );
-
   } catch (error) {
-
-    console.error(
-      "Could not save next game number:",
-      error
-    );
+    console.error("Could not save pending deletes:", error);
   }
 }
 
+function queueDeletedGameId(gameId) {
+  const ids = readDeletedGameIds();
+
+  if (!ids.includes(gameId)) {
+    ids.push(gameId);
+    writeDeletedGameIds(ids);
+  }
+}
+
+function clearDeletedGameId(gameId) {
+  writeDeletedGameIds(
+    readDeletedGameIds().filter((id) => id !== gameId)
+  );
+}
+
+/* ======================================================
+   GAME NUMBER STORAGE
+====================================================== */
+
+function readStoredNextGameNumber() {
+  if (!canUseStorage) {
+    return 1;
+  }
+
+  try {
+    return Number(localStorage.getItem(NEXT_GAME_NUMBER_KEY)) || 1;
+  } catch (error) {
+    return 1;
+  }
+}
+
+function writeStoredNextGameNumber(number) {
+  if (!canUseStorage) {
+    return;
+  }
+
+  try {
+    localStorage.setItem(NEXT_GAME_NUMBER_KEY, String(number));
+  } catch (error) {
+    console.error("Could not save next game number:", error);
+  }
+}
 
 function getNextGameNumber() {
-
-  const seasonGames =
-    readCompletedGames().filter(
-      (game) =>
-        game.season === CURRENT_SEASON
-    );
+  const seasonGames = readCompletedGames().filter(
+    (game) => game.season === CURRENT_SEASON
+  );
 
   const highestCompletedGameNumber =
     seasonGames.length === 0
       ? 0
       : Math.max(
-          ...seasonGames.map(
-            (game) =>
-              Number(game.gameNumber) || 0
-          )
+          ...seasonGames.map((game) => Number(game.gameNumber) || 0)
         );
 
-  const activeGame =
-    readActiveGame();
+  const activeGame = readActiveGame();
 
   const activeGameNumber =
-    activeGame &&
-    activeGame.season === CURRENT_SEASON
+    activeGame && activeGame.season === CURRENT_SEASON
       ? Number(activeGame.gameNumber) || 0
       : 0;
 
-  const calculatedNext =
-    Math.max(
-      highestCompletedGameNumber + 1,
-      activeGameNumber + 1,
-      readStoredNextGameNumber(),
-      1
-    );
-
-  writeStoredNextGameNumber(
-    calculatedNext
+  const calculatedNext = Math.max(
+    highestCompletedGameNumber + 1,
+    activeGameNumber + 1,
+    readStoredNextGameNumber(),
+    1
   );
 
+  writeStoredNextGameNumber(calculatedNext);
   return calculatedNext;
 }
 
-
 function advanceNextGameNumber(completedGameNumber) {
-
-  const nextNumber =
-    Math.max(
-      Number(completedGameNumber) + 1,
-      readStoredNextGameNumber()
-    );
-
-  writeStoredNextGameNumber(
-    nextNumber
+  const nextNumber = Math.max(
+    Number(completedGameNumber) + 1,
+    readStoredNextGameNumber()
   );
+
+  writeStoredNextGameNumber(nextNumber);
 }
 
-
 function createGameId() {
-
   if (
     window.crypto &&
     typeof window.crypto.randomUUID === "function"
   ) {
-
     return window.crypto.randomUUID();
   }
 
-  return (
-    `game-${Date.now()}-` +
-    Math.random()
-      .toString(36)
-      .slice(2, 10)
+  return `game-${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 10)}`;
+}
+
+/* ======================================================
+   GOOGLE SHEETS SYNC
+====================================================== */
+
+async function apiGetGames() {
+  const response = await fetch(
+    `${API_URL}?t=${Date.now()}`,
+    {
+      method: "GET",
+      cache: "no-store"
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Game sync failed with HTTP ${response.status}.`
+    );
+  }
+
+  const data = await response.json();
+
+  if (
+    !data ||
+    data.success !== true ||
+    !Array.isArray(data.games)
+  ) {
+    throw new Error(
+      data?.error ||
+        "Could not load games from Google Sheets."
+    );
+  }
+
+  return data.games;
+}
+
+async function apiPost(payload) {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(payload),
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Game sync failed with HTTP ${response.status}.`
+    );
+  }
+
+  const data = await response.json();
+
+  if (!data || data.success !== true) {
+    throw new Error(
+      data?.error ||
+        "Google Sheets request failed."
+    );
+  }
+
+  return data;
+}
+
+function markGameSynced(gameId) {
+  const games = readCompletedGames();
+  const game = games.find(
+    (item) => item.id === gameId
+  );
+
+  if (!game) {
+    return;
+  }
+
+  game.syncStatus = "synced";
+  writeCompletedGames(games);
+}
+
+async function syncPendingDeletes() {
+  const ids = readDeletedGameIds();
+
+  for (const gameId of ids) {
+    try {
+      await apiPost({
+        action: "deleteGame",
+        id: gameId
+      });
+
+      clearDeletedGameId(gameId);
+    } catch (error) {
+      console.warn(
+        `Could not sync deletion for ${gameId}:`,
+        error
+      );
+    }
+  }
+}
+
+async function syncPendingGames() {
+  const deletedIds = new Set(
+    readDeletedGameIds()
+  );
+
+  const games = readCompletedGames();
+
+  for (const game of games) {
+    if (
+      !game.id ||
+      deletedIds.has(game.id) ||
+      game.syncStatus === "synced"
+    ) {
+      continue;
+    }
+
+    try {
+      await apiPost({
+        action: "saveGame",
+        game
+      });
+
+      markGameSynced(game.id);
+    } catch (error) {
+      console.warn(
+        `Could not sync game ${game.id}:`,
+        error
+      );
+    }
+  }
+}
+
+async function refreshGamesFromServer() {
+  const remoteGames =
+    await apiGetGames();
+
+  const deletedIds = new Set(
+    readDeletedGameIds()
+  );
+
+  const localGames =
+    readCompletedGames();
+
+  const pendingLocalGames =
+    localGames.filter(
+      (game) =>
+        game.id &&
+        game.syncStatus !== "synced" &&
+        !deletedIds.has(game.id)
+    );
+
+  const merged = new Map();
+
+  remoteGames.forEach((game) => {
+    if (
+      !game.id ||
+      deletedIds.has(game.id)
+    ) {
+      return;
+    }
+
+    merged.set(game.id, {
+      ...game,
+      syncStatus: "synced"
+    });
+  });
+
+  pendingLocalGames.forEach((game) => {
+    if (!merged.has(game.id)) {
+      merged.set(
+        game.id,
+        game
+      );
+    }
+  });
+
+  writeCompletedGames(
+    [...merged.values()]
   );
 }
 
+async function synchronizeCompletedGames() {
+  if (syncPromise) {
+    return syncPromise;
+  }
+
+  syncPromise = (async () => {
+    try {
+      await syncPendingDeletes();
+      await syncPendingGames();
+      await refreshGamesFromServer();
+    } catch (error) {
+      console.warn(
+        "Google Sheets sync unavailable. Using local data.",
+        error
+      );
+    } finally {
+      currentGameNumber =
+        getNextGameNumber();
+
+      refreshGameHistorySummary();
+      refreshSeasonStatsSummary();
+
+      if (
+        historyScreen.classList.contains(
+          "active-screen"
+        )
+      ) {
+        renderGameHistory();
+      }
+
+      if (
+        seasonStatsScreen.classList.contains(
+          "active-screen"
+        )
+      ) {
+        renderSeasonStats(
+          currentSeasonFilter
+        );
+      }
+    }
+  })().finally(() => {
+    syncPromise = null;
+  });
+
+  return syncPromise;
+}
+
+/* ======================================================
+   FORMATTING
+====================================================== */
 
 function formatGameDate(dateString) {
-
   if (!dateString) {
     return "Date unavailable";
   }
 
   const parts =
-    dateString.split("-");
+    String(dateString).split("-");
 
   if (parts.length !== 3) {
-    return dateString;
+    return String(dateString);
   }
 
-  const date =
-    new Date(
-      Number(parts[0]),
-      Number(parts[1]) - 1,
-      Number(parts[2])
-    );
+  const date = new Date(
+    Number(parts[0]),
+    Number(parts[1]) - 1,
+    Number(parts[2])
+  );
 
   return date.toLocaleDateString(
     undefined,
@@ -897,60 +789,20 @@ function formatGameDate(dateString) {
   );
 }
 
-
-function formatPercentage(
-  made,
-  attempted
-) {
-
-  const attempts =
-    Number(attempted) || 0;
-
-  const makes =
-    Number(made) || 0;
-
-  if (attempts === 0) {
-    return "—";
-  }
-
-  return (
-    `${Math.round(
-      (makes / attempts) * 100
-    )}%`
-  );
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
-
-
-function safeNumber(value) {
-
-  return Number(value) || 0;
-}
-
-
-function formatAverage(
-  total,
-  gamesPlayed
-) {
-
-  if (gamesPlayed === 0) {
-    return "0.0";
-  }
-
-  return (
-    total /
-    gamesPlayed
-  ).toFixed(1);
-}
-
 
 /* ======================================================
    SEASON STATS
 ====================================================== */
 
-function getSeasonGames(
-  filter = "All"
-) {
-
+function getSeasonGames(filter = "All") {
   return readCompletedGames()
     .filter(
       (game) =>
@@ -963,200 +815,147 @@ function getSeasonGames(
     );
 }
 
-
-function calculateSeasonStats(
-  games
-) {
-
+function calculateSeasonStats(games) {
   const totals = {
-
     points: 0,
-
     offensiveRebounds: 0,
     defensiveRebounds: 0,
     rebounds: 0,
-
     assists: 0,
     steals: 0,
     blocks: 0,
     turnovers: 0,
     fouls: 0,
-
     fieldGoalsMade: 0,
     fieldGoalAttempts: 0,
-
     threeMade: 0,
     threeAttempted: 0,
-
     freeThrowMade: 0,
     freeThrowAttempted: 0
   };
 
+  games.forEach((game) => {
+    totals.points +=
+      safeNumber(game.points);
 
-  games.forEach(
-    (game) => {
+    totals.offensiveRebounds +=
+      safeNumber(
+        game.offensiveRebounds
+      );
 
-      totals.points +=
-        safeNumber(game.points);
+    totals.defensiveRebounds +=
+      safeNumber(
+        game.defensiveRebounds
+      );
 
-      totals.offensiveRebounds +=
-        safeNumber(
-          game.offensiveRebounds
-        );
+    totals.rebounds +=
+      safeNumber(game.rebounds);
 
-      totals.defensiveRebounds +=
-        safeNumber(
-          game.defensiveRebounds
-        );
+    totals.assists +=
+      safeNumber(game.assists);
 
-      totals.rebounds +=
-        safeNumber(
-          game.rebounds
-        );
+    totals.steals +=
+      safeNumber(game.steals);
 
-      totals.assists +=
-        safeNumber(
-          game.assists
-        );
+    totals.blocks +=
+      safeNumber(game.blocks);
 
-      totals.steals +=
-        safeNumber(
-          game.steals
-        );
+    totals.turnovers +=
+      safeNumber(game.turnovers);
 
-      totals.blocks +=
-        safeNumber(
-          game.blocks
-        );
+    totals.fouls +=
+      safeNumber(game.fouls);
 
-      totals.turnovers +=
-        safeNumber(
-          game.turnovers
-        );
+    totals.fieldGoalsMade +=
+      safeNumber(
+        game.fieldGoalsMade
+      );
 
-      totals.fouls +=
-        safeNumber(
-          game.fouls
-        );
+    totals.fieldGoalAttempts +=
+      safeNumber(
+        game.fieldGoalAttempts
+      );
 
-      totals.fieldGoalsMade +=
-        safeNumber(
-          game.fieldGoalsMade
-        );
+    totals.threeMade +=
+      safeNumber(game.threeMade);
 
-      totals.fieldGoalAttempts +=
-        safeNumber(
-          game.fieldGoalAttempts
-        );
+    totals.threeAttempted +=
+      safeNumber(
+        game.threeAttempted
+      );
 
-      totals.threeMade +=
-        safeNumber(
-          game.threeMade
-        );
+    totals.freeThrowMade +=
+      safeNumber(
+        game.freeThrowMade
+      );
 
-      totals.threeAttempted +=
-        safeNumber(
-          game.threeAttempted
-        );
-
-      totals.freeThrowMade +=
-        safeNumber(
-          game.freeThrowMade
-        );
-
-      totals.freeThrowAttempted +=
-        safeNumber(
-          game.freeThrowAttempted
-        );
-    }
-  );
-
+    totals.freeThrowAttempted +=
+      safeNumber(
+        game.freeThrowAttempted
+      );
+  });
 
   return {
-    gamesPlayed:
-      games.length,
-
-    totals:
-      totals
+    gamesPlayed: games.length,
+    totals
   };
 }
 
-
-function getSeasonFilterLabel(
-  filter
-) {
-
-  if (filter === "All") {
-    return "All Games";
-  }
-
-  return filter;
+function getSeasonFilterLabel(filter) {
+  return filter === "All"
+    ? "All Games"
+    : filter;
 }
 
-
 function refreshSeasonStatsSummary() {
-
   const games =
     getSeasonGames("All");
 
   const seasonData =
-    calculateSeasonStats(
-      games
-    );
+    calculateSeasonStats(games);
 
   const count =
     seasonData.gamesPlayed;
 
-
   if (count === 0) {
-
     seasonStatsSummary.textContent =
       "No completed games yet";
-
     return;
   }
 
-
   seasonStatsSummary.textContent =
-    `${count} ${count === 1 ? "game" : "games"} · ` +
+    `${count} ${
+      count === 1
+        ? "game"
+        : "games"
+    } · ` +
     `${formatAverage(
       seasonData.totals.points,
       count
     )} PPG`;
 }
 
-
 function renderSeasonStats(
   filter = currentSeasonFilter
 ) {
-
-  currentSeasonFilter =
-    filter;
-
+  currentSeasonFilter = filter;
 
   const games =
     getSeasonGames(
       currentSeasonFilter
     );
 
-
   const seasonData =
-    calculateSeasonStats(
-      games
-    );
-
+    calculateSeasonStats(games);
 
   const totals =
     seasonData.totals;
 
-
   const gamesPlayed =
     seasonData.gamesPlayed;
 
-
   seasonFilterButtons.forEach(
     (button) => {
-
       button.classList.toggle(
         "is-active",
         button.dataset.seasonFilter ===
@@ -1165,20 +964,16 @@ function renderSeasonStats(
     }
   );
 
-
   seasonStatsEmpty.hidden =
     gamesPlayed !== 0;
-
 
   seasonFilterLabel.textContent =
     getSeasonFilterLabel(
       currentSeasonFilter
     );
 
-
   seasonGamesPlayed.textContent =
     gamesPlayed;
-
 
   seasonPpg.textContent =
     formatAverage(
@@ -1186,13 +981,11 @@ function renderSeasonStats(
       gamesPlayed
     );
 
-
   seasonRpg.textContent =
     formatAverage(
       totals.rebounds,
       gamesPlayed
     );
-
 
   seasonApg.textContent =
     formatAverage(
@@ -1200,13 +993,11 @@ function renderSeasonStats(
       gamesPlayed
     );
 
-
   seasonSpg.textContent =
     formatAverage(
       totals.steals,
       gamesPlayed
     );
-
 
   seasonBpg.textContent =
     formatAverage(
@@ -1214,13 +1005,11 @@ function renderSeasonStats(
       gamesPlayed
     );
 
-
   seasonTovpg.textContent =
     formatAverage(
       totals.turnovers,
       gamesPlayed
     );
-
 
   seasonPfpg.textContent =
     formatAverage(
@@ -1228,17 +1017,15 @@ function renderSeasonStats(
       gamesPlayed
     );
 
-
   seasonFgPercent.textContent =
     formatPercentage(
       totals.fieldGoalsMade,
       totals.fieldGoalAttempts
     );
 
-
   seasonFgTotals.textContent =
-    `${totals.fieldGoalsMade}/${totals.fieldGoalAttempts}`;
-
+    `${totals.fieldGoalsMade}/` +
+    `${totals.fieldGoalAttempts}`;
 
   seasonThreePercent.textContent =
     formatPercentage(
@@ -1246,10 +1033,9 @@ function renderSeasonStats(
       totals.threeAttempted
     );
 
-
   seasonThreeTotals.textContent =
-    `${totals.threeMade}/${totals.threeAttempted}`;
-
+    `${totals.threeMade}/` +
+    `${totals.threeAttempted}`;
 
   seasonFtPercent.textContent =
     formatPercentage(
@@ -1257,63 +1043,57 @@ function renderSeasonStats(
       totals.freeThrowAttempted
     );
 
-
   seasonFtTotals.textContent =
-    `${totals.freeThrowMade}/${totals.freeThrowAttempted}`;
-
+    `${totals.freeThrowMade}/` +
+    `${totals.freeThrowAttempted}`;
 
   seasonTotalPoints.textContent =
     totals.points;
 
-
   seasonTotalRebounds.textContent =
     totals.rebounds;
-
 
   seasonTotalAssists.textContent =
     totals.assists;
 
-
   seasonTotalSteals.textContent =
     totals.steals;
-
 
   seasonTotalBlocks.textContent =
     totals.blocks;
 
-
   seasonTotalOreb.textContent =
     totals.offensiveRebounds;
-
 
   seasonTotalDreb.textContent =
     totals.defensiveRebounds;
 }
-
 
 /* ======================================================
    GAME HISTORY
 ====================================================== */
 
 function refreshGameHistorySummary() {
-
   const count =
     readCompletedGames()
       .filter(
         (game) =>
-          game.season === CURRENT_SEASON
+          game.season ===
+          CURRENT_SEASON
       )
       .length;
 
   gameHistorySummary.textContent =
     count === 0
       ? "No completed games yet"
-      : `${count} completed ${count === 1 ? "game" : "games"}`;
+      : `${count} completed ${
+          count === 1
+            ? "game"
+            : "games"
+        }`;
 }
 
-
 function deleteCompletedGame(gameId) {
-
   const games =
     readCompletedGames();
 
@@ -1350,18 +1130,20 @@ function deleteCompletedGame(gameId) {
     return;
   }
 
+  queueDeletedGameId(gameId);
+
   renderGameHistory();
   refreshGameHistorySummary();
   refreshSeasonStatsSummary();
-}
 
+  void synchronizeCompletedGames();
+}
 
 function attachSwipeToDelete(
   row,
   card,
   deleteButton
 ) {
-
   const revealDistance = 92;
 
   let startX = 0;
@@ -1371,7 +1153,6 @@ function attachSwipeToDelete(
   let horizontalSwipe = false;
 
   function setOffset(offset) {
-
     const clamped =
       Math.max(
         -revealDistance,
@@ -1394,13 +1175,12 @@ function attachSwipeToDelete(
     setOffset(0);
   }
 
-
   card.addEventListener(
     "pointerdown",
     (event) => {
-
       if (
-        event.pointerType === "mouse" &&
+        event.pointerType ===
+          "mouse" &&
         event.button !== 0
       ) {
         return;
@@ -1412,12 +1192,8 @@ function attachSwipeToDelete(
       startY =
         event.clientY;
 
-      swiping =
-        true;
-
-      horizontalSwipe =
-        false;
-
+      swiping = true;
+      horizontalSwipe = false;
 
       card.setPointerCapture?.(
         event.pointerId
@@ -1425,11 +1201,9 @@ function attachSwipeToDelete(
     }
   );
 
-
   card.addEventListener(
     "pointermove",
     (event) => {
-
       if (!swiping) {
         return;
       }
@@ -1442,7 +1216,6 @@ function attachSwipeToDelete(
         event.clientY -
         startY;
 
-
       if (
         !horizontalSwipe &&
         Math.abs(deltaX) < 8 &&
@@ -1451,25 +1224,17 @@ function attachSwipeToDelete(
         return;
       }
 
-
       if (
         !horizontalSwipe &&
         Math.abs(deltaY) >
           Math.abs(deltaX)
       ) {
-
-        swiping =
-          false;
-
+        swiping = false;
         closeRow();
-
         return;
       }
 
-
-      horizontalSwipe =
-        true;
-
+      horizontalSwipe = true;
 
       setOffset(
         Math.min(
@@ -1480,71 +1245,53 @@ function attachSwipeToDelete(
     }
   );
 
-
   function finishSwipe() {
-
     if (!swiping) {
       return;
     }
 
-    swiping =
-      false;
-
+    swiping = false;
 
     if (
       horizontalSwipe &&
       currentX <=
         -(revealDistance / 2)
     ) {
-
       setOffset(
         -revealDistance
       );
-
     } else {
-
       closeRow();
     }
   }
-
 
   card.addEventListener(
     "pointerup",
     finishSwipe
   );
 
-
   card.addEventListener(
     "pointercancel",
     finishSwipe
   );
 
-
   card.addEventListener(
     "click",
     (event) => {
-
       if (horizontalSwipe) {
-
         event.preventDefault();
-
         event.stopPropagation();
 
-        horizontalSwipe =
-          false;
-
+        horizontalSwipe = false;
         return;
       }
-
 
       if (
         row.classList.contains(
           "is-delete-open"
         )
       ) {
-
         event.preventDefault();
-
         event.stopPropagation();
 
         closeRow();
@@ -1553,29 +1300,30 @@ function attachSwipeToDelete(
     true
   );
 
-
   deleteButton.addEventListener(
     "click",
     (event) => {
-
       event.stopPropagation();
     }
   );
 }
 
-
 function renderGameHistory() {
-
   const games =
     readCompletedGames()
       .filter(
         (game) =>
-          game.season === CURRENT_SEASON
+          game.season ===
+          CURRENT_SEASON
       )
       .sort(
         (a, b) =>
-          (Number(b.gameNumber) || 0) -
-          (Number(a.gameNumber) || 0)
+          (Number(
+            b.gameNumber
+          ) || 0) -
+          (Number(
+            a.gameNumber
+          ) || 0)
       );
 
   historyGameCount.textContent =
@@ -1586,240 +1334,243 @@ function renderGameHistory() {
   historyEmpty.hidden =
     games.length !== 0;
 
-
-  games.forEach(
-    (game) => {
-
-      const row =
-        document.createElement(
-          "div"
-        );
-
-      row.className =
-        "history-swipe-row";
-
-
-      const deleteButton =
-        document.createElement(
-          "button"
-        );
-
-      deleteButton.type =
-        "button";
-
-      deleteButton.className =
-        "history-delete-button";
-
-      deleteButton.textContent =
-        "DELETE";
-
-      deleteButton.setAttribute(
-        "aria-label",
-        `Delete Game ${game.gameNumber} vs. ${game.opponent}`
+  games.forEach((game) => {
+    const row =
+      document.createElement(
+        "div"
       );
 
+    row.className =
+      "history-swipe-row";
 
-      const button =
-        document.createElement(
-          "button"
-        );
+    const deleteButton =
+      document.createElement(
+        "button"
+      );
 
-      button.type =
-        "button";
+    deleteButton.type =
+      "button";
 
-      button.className =
-        "history-game-card";
+    deleteButton.className =
+      "history-delete-button";
 
+    deleteButton.textContent =
+      "DELETE";
 
-      button.innerHTML = `
-        <div class="history-game-card-top">
+    deleteButton.setAttribute(
+      "aria-label",
+      `Delete Game ${game.gameNumber} vs. ${game.opponent}`
+    );
 
-          <div class="history-game-copy">
+    const button =
+      document.createElement(
+        "button"
+      );
 
-            <span class="history-game-label">
-              GAME ${game.gameNumber}
-            </span>
+    button.type =
+      "button";
 
-            <strong class="history-game-opponent">
-              vs. ${escapeHtml(game.opponent)}
-            </strong>
+    button.className =
+      "history-game-card";
 
-            <span class="history-game-meta">
-              ${escapeHtml(formatGameDate(game.date))} ·
-              ${escapeHtml(game.location)} ·
-              ${escapeHtml(game.type)}
-            </span>
+    button.innerHTML = `
+      <div class="history-game-card-top">
+        <div class="history-game-copy">
 
-          </div>
+          <span class="history-game-label">
+            GAME ${game.gameNumber}
+          </span>
 
-          <div class="history-game-points">
+          <strong class="history-game-opponent">
+            vs. ${escapeHtml(
+              game.opponent
+            )}
+          </strong>
 
-            <strong>
-              ${Number(game.points) || 0}
-            </strong>
-
-            <span>
-              PTS
-            </span>
-
-          </div>
+          <span class="history-game-meta">
+            ${escapeHtml(
+              formatGameDate(
+                game.date
+              )
+            )} ·
+            ${escapeHtml(
+              game.location
+            )} ·
+            ${escapeHtml(
+              game.type
+            )}
+          </span>
 
         </div>
 
-        <div class="history-game-stats">
+        <div class="history-game-points">
+          <strong>
+            ${safeNumber(
+              game.points
+            )}
+          </strong>
 
-          <div>
-            <strong>
-              ${Number(game.rebounds) || 0}
-            </strong>
-            <span>REB</span>
-          </div>
-
-          <div>
-            <strong>
-              ${Number(game.assists) || 0}
-            </strong>
-            <span>AST</span>
-          </div>
-
-          <div>
-            <strong>
-              ${Number(game.steals) || 0}
-            </strong>
-            <span>STL</span>
-          </div>
-
-          <div>
-            <strong>
-              ${Number(game.blocks) || 0}
-            </strong>
-            <span>BLK</span>
-          </div>
-
+          <span>
+            PTS
+          </span>
         </div>
-      `;
+      </div>
 
+      <div class="history-game-stats">
 
-      button.addEventListener(
-        "click",
-        () => {
+        <div>
+          <strong>
+            ${safeNumber(
+              game.rebounds
+            )}
+          </strong>
+          <span>REB</span>
+        </div>
 
-          if (
-            row.classList.contains(
-              "is-delete-open"
-            )
-          ) {
-            return;
-          }
+        <div>
+          <strong>
+            ${safeNumber(
+              game.assists
+            )}
+          </strong>
+          <span>AST</span>
+        </div>
 
-          renderGameDetail(
-            game
-          );
+        <div>
+          <strong>
+            ${safeNumber(
+              game.steals
+            )}
+          </strong>
+          <span>STL</span>
+        </div>
 
-          showScreen(
-            gameDetailScreen
-          );
+        <div>
+          <strong>
+            ${safeNumber(
+              game.blocks
+            )}
+          </strong>
+          <span>BLK</span>
+        </div>
+
+      </div>
+    `;
+
+    button.addEventListener(
+      "click",
+      () => {
+        if (
+          row.classList.contains(
+            "is-delete-open"
+          )
+        ) {
+          return;
         }
-      );
 
+        renderGameDetail(
+          game
+        );
 
-      deleteButton.addEventListener(
-        "click",
-        () => {
+        showScreen(
+          gameDetailScreen
+        );
+      }
+    );
 
-          deleteCompletedGame(
-            game.id
-          );
-        }
-      );
+    deleteButton.addEventListener(
+      "click",
+      () => {
+        deleteCompletedGame(
+          game.id
+        );
+      }
+    );
 
+    row.appendChild(
+      deleteButton
+    );
 
-      row.appendChild(
-        deleteButton
-      );
+    row.appendChild(
+      button
+    );
 
-      row.appendChild(
-        button
-      );
+    attachSwipeToDelete(
+      row,
+      button,
+      deleteButton
+    );
 
-
-      attachSwipeToDelete(
-        row,
-        button,
-        deleteButton
-      );
-
-
-      historyList.appendChild(
-        row
-      );
-    }
-  );
+    historyList.appendChild(
+      row
+    );
+  });
 }
 
-
 function renderGameDetail(game) {
-
   const fieldGoalsMade =
-    Number(
+    safeNumber(
       game.fieldGoalsMade
-    ) || 0;
+    );
 
   const fieldGoalAttempts =
-    Number(
+    safeNumber(
       game.fieldGoalAttempts
-    ) || 0;
-
+    );
 
   detailSeasonLabel.textContent =
     `${game.season || CURRENT_SEASON} SEASON`;
 
-
   detailTitle.textContent =
     `Game ${game.gameNumber}`;
-
 
   detailGameNumber.textContent =
     `GAME ${game.gameNumber}`;
 
-
   detailOpponent.textContent =
     `vs. ${game.opponent || "Opponent"}`;
-
 
   detailMeta.textContent =
     `${game.location || "Home"} · ` +
     `${game.type || "Regular Season"} · ` +
-    `${formatGameDate(game.date)}`;
-
+    `${formatGameDate(
+      game.date
+    )}`;
 
   detailPoints.textContent =
-    Number(game.points) || 0;
-
+    safeNumber(
+      game.points
+    );
 
   detailRebounds.textContent =
-    Number(game.rebounds) || 0;
-
+    safeNumber(
+      game.rebounds
+    );
 
   detailAssists.textContent =
-    Number(game.assists) || 0;
-
+    safeNumber(
+      game.assists
+    );
 
   detailSteals.textContent =
-    Number(game.steals) || 0;
-
+    safeNumber(
+      game.steals
+    );
 
   detailBlocks.textContent =
-    Number(game.blocks) || 0;
-
+    safeNumber(
+      game.blocks
+    );
 
   detailTurnovers.textContent =
-    Number(game.turnovers) || 0;
-
+    safeNumber(
+      game.turnovers
+    );
 
   detailFouls.textContent =
-    Number(game.fouls) || 0;
-
+    safeNumber(
+      game.fouls
+    );
 
   detailFieldGoals.textContent =
     `${fieldGoalsMade}/${fieldGoalAttempts} · ` +
@@ -1828,79 +1579,65 @@ function renderGameDetail(game) {
       fieldGoalAttempts
     )}`;
 
-
   detailTwoPoint.textContent =
-    `${Number(game.twoMade) || 0}/` +
-    `${Number(game.twoAttempted) || 0} · ` +
+    `${safeNumber(
+      game.twoMade
+    )}/${safeNumber(
+      game.twoAttempted
+    )} · ` +
     `${formatPercentage(
       game.twoMade,
       game.twoAttempted
     )}`;
 
-
   detailThreePoint.textContent =
-    `${Number(game.threeMade) || 0}/` +
-    `${Number(game.threeAttempted) || 0} · ` +
+    `${safeNumber(
+      game.threeMade
+    )}/${safeNumber(
+      game.threeAttempted
+    )} · ` +
     `${formatPercentage(
       game.threeMade,
       game.threeAttempted
     )}`;
 
-
   detailFreeThrows.textContent =
-    `${Number(game.freeThrowMade) || 0}/` +
-    `${Number(game.freeThrowAttempted) || 0} · ` +
+    `${safeNumber(
+      game.freeThrowMade
+    )}/${safeNumber(
+      game.freeThrowAttempted
+    )} · ` +
     `${formatPercentage(
       game.freeThrowMade,
       game.freeThrowAttempted
     )}`;
 
-
   detailOffensiveRebounds.textContent =
-    Number(
+    safeNumber(
       game.offensiveRebounds
-    ) || 0;
-
+    );
 
   detailDefensiveRebounds.textContent =
-    Number(
+    safeNumber(
       game.defensiveRebounds
-    ) || 0;
+    );
 }
-
-
-function escapeHtml(value) {
-
-  return String(
-    value ?? ""
-  )
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
 
 /* ======================================================
    PLAYER NUMBER STORAGE
 ====================================================== */
 
 function savePlayerNumber(number) {
-
   if (!canUseStorage) {
     return;
   }
 
   try {
-
     localStorage.setItem(
       PLAYER_NUMBER_KEY,
       number
     );
-
   } catch (error) {
-
     console.error(
       "Could not save player number:",
       error
@@ -1908,27 +1645,21 @@ function savePlayerNumber(number) {
   }
 }
 
-
 function getSavedPlayerNumber() {
-
   if (!canUseStorage) {
     return "2";
   }
 
   try {
-
     return (
       localStorage.getItem(
         PLAYER_NUMBER_KEY
       ) || "2"
     );
-
   } catch (error) {
-
     return "2";
   }
 }
-
 
 /* ======================================================
    RESUME CARD
@@ -1937,27 +1668,29 @@ function getSavedPlayerNumber() {
 function calculateSavedPoints(
   savedStats
 ) {
-
   return (
-    (Number(savedStats.twoMade) || 0) * 2 +
-    (Number(savedStats.threeMade) || 0) * 3 +
-    (Number(savedStats.freeThrowMade) || 0)
+    safeNumber(
+      savedStats.twoMade
+    ) *
+      2 +
+    safeNumber(
+      savedStats.threeMade
+    ) *
+      3 +
+    safeNumber(
+      savedStats.freeThrowMade
+    )
   );
 }
 
-
 function refreshResumeCard() {
-
   const saved =
     readActiveGame();
 
   if (!saved) {
-
     resumeGameCard.hidden = true;
-
     return;
   }
-
 
   const opponent =
     saved.game.opponent ||
@@ -1976,7 +1709,6 @@ function refreshResumeCard() {
       saved.stats
     );
 
-
   resumeOpponent.textContent =
     `vs. ${opponent}`;
 
@@ -1989,13 +1721,11 @@ function refreshResumeCard() {
   resumeGameCard.hidden = false;
 }
 
-
 /* ======================================================
    RESTORE ACTIVE GAME
 ====================================================== */
 
 function restoreActiveGame() {
-
   const saved =
     readActiveGame();
 
@@ -2003,15 +1733,12 @@ function restoreActiveGame() {
     return false;
   }
 
-
   currentGameNumber =
     Number(
       saved.gameNumber
     ) || 1;
 
-
   currentGame = {
-
     playerNumber:
       String(
         saved.game.playerNumber ||
@@ -2043,51 +1770,40 @@ function restoreActiveGame() {
       )
   };
 
-
   Object.keys(
     stats
-  ).forEach(
-    (key) => {
-
-      stats[key] =
-        Number(
-          saved.stats[key]
-        ) || 0;
-    }
-  );
-
+  ).forEach((key) => {
+    stats[key] =
+      Number(
+        saved.stats[key]
+      ) || 0;
+  });
 
   actionHistory.length = 0;
-
 
   if (
     Array.isArray(
       saved.history
     )
   ) {
-
     actionHistory.push(
       ...saved.history
     );
   }
 
-
   gameIsActive = true;
 
   updateGameHeader();
-
   updateDisplay();
 
   return true;
 }
-
 
 /* ======================================================
    NEW GAME FORM
 ====================================================== */
 
 function prepareNewGameForm() {
-
   currentGameNumber =
     getNextGameNumber();
 
@@ -2100,19 +1816,16 @@ function prepareNewGameForm() {
     getTodayForDateInput();
 
   locationHome.checked = true;
-
   typeRegular.checked = true;
 
   setupMessage.textContent = "";
 }
-
 
 /* ======================================================
    GAME HEADER
 ====================================================== */
 
 function updateGameHeader() {
-
   gameSeasonLabel.textContent =
     `${CURRENT_SEASON} SEASON · GAME ${currentGameNumber}`;
 
@@ -2126,13 +1839,11 @@ function updateGameHeader() {
     currentGame.type.toUpperCase();
 }
 
-
 /* ======================================================
    DISPLAY
 ====================================================== */
 
 function updateDisplay() {
-
   pointsElement.textContent =
     calculatePoints();
 
@@ -2164,27 +1875,17 @@ function updateDisplay() {
     actionHistory.length === 0;
 }
 
-
-/* ======================================================
-   RESET STATS
-====================================================== */
-
 function resetGameStats() {
-
   Object.keys(
     stats
-  ).forEach(
-    (key) => {
-
-      stats[key] = 0;
-    }
-  );
+  ).forEach((key) => {
+    stats[key] = 0;
+  });
 
   actionHistory.length = 0;
 
   updateDisplay();
 }
-
 
 /* ======================================================
    HOME EVENTS
@@ -2192,13 +1893,11 @@ function resetGameStats() {
 
 newGameButton.addEventListener(
   "click",
-  () => {
-
+  async () => {
     const savedGame =
       readActiveGame();
 
     if (savedGame) {
-
       openModal(
         replaceGameModal
       );
@@ -2206,6 +1905,7 @@ newGameButton.addEventListener(
       return;
     }
 
+    await synchronizeCompletedGames();
 
     prepareNewGameForm();
 
@@ -2215,15 +1915,12 @@ newGameButton.addEventListener(
   }
 );
 
-
 resumeGameButton.addEventListener(
   "click",
   () => {
-
     if (
       restoreActiveGame()
     ) {
-
       showScreen(
         gameScreen
       );
@@ -2231,11 +1928,9 @@ resumeGameButton.addEventListener(
   }
 );
 
-
 seasonStatsButton.addEventListener(
   "click",
   () => {
-
     currentSeasonFilter =
       "All";
 
@@ -2246,14 +1941,14 @@ seasonStatsButton.addEventListener(
     showScreen(
       seasonStatsScreen
     );
+
+    void synchronizeCompletedGames();
   }
 );
-
 
 seasonStatsBackButton.addEventListener(
   "click",
   () => {
-
     refreshSeasonStatsSummary();
 
     showScreen(
@@ -2262,14 +1957,11 @@ seasonStatsBackButton.addEventListener(
   }
 );
 
-
 seasonFilterButtons.forEach(
   (button) => {
-
     button.addEventListener(
       "click",
       () => {
-
         renderSeasonStats(
           button.dataset.seasonFilter
         );
@@ -2278,24 +1970,22 @@ seasonFilterButtons.forEach(
   }
 );
 
-
 gameHistoryButton.addEventListener(
   "click",
   () => {
-
     renderGameHistory();
 
     showScreen(
       historyScreen
     );
+
+    void synchronizeCompletedGames();
   }
 );
-
 
 historyBackButton.addEventListener(
   "click",
   () => {
-
     refreshGameHistorySummary();
 
     showScreen(
@@ -2304,11 +1994,9 @@ historyBackButton.addEventListener(
   }
 );
 
-
 detailBackButton.addEventListener(
   "click",
   () => {
-
     renderGameHistory();
 
     showScreen(
@@ -2317,17 +2005,14 @@ detailBackButton.addEventListener(
   }
 );
 
-
 setupBackButton.addEventListener(
   "click",
   () => {
-
     showScreen(
       homeScreen
     );
   }
 );
-
 
 /* ======================================================
    START GAME
@@ -2336,38 +2021,28 @@ setupBackButton.addEventListener(
 gameSetupForm.addEventListener(
   "submit",
   (event) => {
-
     event.preventDefault();
 
-
     const playerNumber =
-      playerNumberInput.value
-        .trim();
-
+      playerNumberInput.value.trim();
 
     const opponent =
-      opponentInput.value
-        .trim();
-
+      opponentInput.value.trim();
 
     const date =
       gameDateInput.value;
-
 
     const locationInput =
       document.querySelector(
         'input[name="gameLocation"]:checked'
       );
 
-
     const typeInput =
       document.querySelector(
         'input[name="gameType"]:checked'
       );
 
-
     if (!playerNumber) {
-
       setupMessage.textContent =
         "Enter a player number.";
 
@@ -2376,9 +2051,7 @@ gameSetupForm.addEventListener(
       return;
     }
 
-
     if (!opponent) {
-
       setupMessage.textContent =
         "Enter an opponent.";
 
@@ -2387,9 +2060,7 @@ gameSetupForm.addEventListener(
       return;
     }
 
-
     if (!date) {
-
       setupMessage.textContent =
         "Select a game date.";
 
@@ -2398,57 +2069,38 @@ gameSetupForm.addEventListener(
       return;
     }
 
-
     if (
       !locationInput ||
       !typeInput
     ) {
-
       setupMessage.textContent =
         "Complete the game details.";
 
       return;
     }
 
-
     currentGame = {
-
-      playerNumber:
-        playerNumber,
-
-      opponent:
-        opponent,
-
-      date:
-        date,
-
+      playerNumber,
+      opponent,
+      date,
       location:
         locationInput.value,
-
       type:
         typeInput.value
     };
-
 
     resetGameStats();
 
     gameIsActive = true;
 
-
     savePlayerNumber(
       playerNumber
     );
 
-
     updateGameHeader();
-
     updateDisplay();
-
-
     writeActiveGame();
-
     refreshResumeCard();
-
 
     showScreen(
       gameScreen
@@ -2456,13 +2108,11 @@ gameSetupForm.addEventListener(
   }
 );
 
-
 /* ======================================================
    BUTTON FEEDBACK
 ====================================================== */
 
 function showTapFeedback(button) {
-
   button.classList.remove(
     "stat-recorded"
   );
@@ -2473,157 +2123,94 @@ function showTapFeedback(button) {
     "stat-recorded"
   );
 
-
-  window.setTimeout(
-    () => {
-
-      button.classList.remove(
-        "stat-recorded"
-      );
-
-    },
-    220
-  );
+  window.setTimeout(() => {
+    button.classList.remove(
+      "stat-recorded"
+    );
+  }, 220);
 }
-
 
 /* ======================================================
    RECORD STAT
 ====================================================== */
 
 function recordAction(action) {
-
   switch (action) {
-
     case "2pt-made":
-
       stats.twoMade++;
-
       stats.twoAttempted++;
-
       break;
-
 
     case "2pt-miss":
-
       stats.twoAttempted++;
-
       break;
-
 
     case "3pt-made":
-
       stats.threeMade++;
-
       stats.threeAttempted++;
-
       break;
-
 
     case "3pt-miss":
-
       stats.threeAttempted++;
-
       break;
-
 
     case "ft-made":
-
       stats.freeThrowMade++;
-
       stats.freeThrowAttempted++;
-
       break;
-
 
     case "ft-miss":
-
       stats.freeThrowAttempted++;
-
       break;
-
 
     case "oreb":
-
       stats.offensiveRebounds++;
-
       break;
-
 
     case "dreb":
-
       stats.defensiveRebounds++;
-
       break;
-
 
     case "assist":
-
       stats.assists++;
-
       break;
-
 
     case "steal":
-
       stats.steals++;
-
       break;
-
 
     case "block":
-
       stats.blocks++;
-
       break;
-
 
     case "turnover":
-
       stats.turnovers++;
-
       break;
-
 
     case "foul":
-
       stats.fouls++;
-
       break;
 
-
     default:
-
       return;
   }
-
 
   actionHistory.push(
     action
   );
 
-
   updateDisplay();
-
   writeActiveGame();
 }
 
-
-/* ======================================================
-   STAT BUTTON EVENTS
-====================================================== */
-
 statButtons.forEach(
   (button) => {
-
     button.addEventListener(
       "click",
       () => {
-
         recordAction(
           button.dataset.action
         );
-
 
         showTapFeedback(
           button
@@ -2633,143 +2220,91 @@ statButtons.forEach(
   }
 );
 
-
 /* ======================================================
    UNDO
 ====================================================== */
 
 function undoLastAction() {
-
   if (
     actionHistory.length === 0
   ) {
-
     return;
   }
-
 
   const action =
     actionHistory.pop();
 
-
   switch (action) {
-
     case "2pt-made":
-
       stats.twoMade--;
-
       stats.twoAttempted--;
-
       break;
-
 
     case "2pt-miss":
-
       stats.twoAttempted--;
-
       break;
-
 
     case "3pt-made":
-
       stats.threeMade--;
-
       stats.threeAttempted--;
-
       break;
-
 
     case "3pt-miss":
-
       stats.threeAttempted--;
-
       break;
-
 
     case "ft-made":
-
       stats.freeThrowMade--;
-
       stats.freeThrowAttempted--;
-
       break;
-
 
     case "ft-miss":
-
       stats.freeThrowAttempted--;
-
       break;
-
 
     case "oreb":
-
       stats.offensiveRebounds--;
-
       break;
-
 
     case "dreb":
-
       stats.defensiveRebounds--;
-
       break;
-
 
     case "assist":
-
       stats.assists--;
-
       break;
-
 
     case "steal":
-
       stats.steals--;
-
       break;
-
 
     case "block":
-
       stats.blocks--;
-
       break;
-
 
     case "turnover":
-
       stats.turnovers--;
-
       break;
 
-
     case "foul":
-
       stats.fouls--;
-
       break;
   }
 
-
   updateDisplay();
-
   writeActiveGame();
 }
-
 
 undoButton.addEventListener(
   "click",
   undoLastAction
 );
 
-
 /* ======================================================
    MODALS
 ====================================================== */
 
 function openModal(modal) {
-
   modal.classList.add(
     "is-open"
   );
@@ -2784,9 +2319,7 @@ function openModal(modal) {
   );
 }
 
-
 function closeModal(modal) {
-
   modal.classList.remove(
     "is-open"
   );
@@ -2801,7 +2334,6 @@ function closeModal(modal) {
   );
 }
 
-
 /* ======================================================
    END GAME
 ====================================================== */
@@ -2809,7 +2341,6 @@ function closeModal(modal) {
 endGameButton.addEventListener(
   "click",
   () => {
-
     finalPointsElement.textContent =
       calculatePoints();
 
@@ -2825,24 +2356,20 @@ endGameButton.addEventListener(
     finalShootingElement.textContent =
       getShootingSummary();
 
-
     openModal(
       endGameModal
     );
   }
 );
 
-
 cancelEndGameButton.addEventListener(
   "click",
   () => {
-
     closeModal(
       endGameModal
     );
   }
 );
-
 
 /* ======================================================
    SAVE COMPLETED GAME
@@ -2851,15 +2378,12 @@ cancelEndGameButton.addEventListener(
 confirmEndGameButton.addEventListener(
   "click",
   () => {
-
     const completedGame = {
-
       id:
         createGameId(),
 
       completedAt:
-        new Date()
-          .toISOString(),
+        new Date().toISOString(),
 
       syncStatus:
         "pending",
@@ -2937,15 +2461,12 @@ confirmEndGameButton.addEventListener(
         calculateFieldGoalAttempts()
     };
 
-
     const savedSuccessfully =
       saveCompletedGame(
         completedGame
       );
 
-
     if (!savedSuccessfully) {
-
       console.error(
         "Completed game could not be saved."
       );
@@ -2953,43 +2474,34 @@ confirmEndGameButton.addEventListener(
       return;
     }
 
-
     gameIsActive = false;
-
 
     advanceNextGameNumber(
       currentGameNumber
     );
 
-
     deleteActiveGame();
-
 
     currentGameNumber =
       getNextGameNumber();
-
 
     closeModal(
       endGameModal
     );
 
-
     resetGameStats();
 
-
     refreshResumeCard();
-
     refreshGameHistorySummary();
-
     refreshSeasonStatsSummary();
-
 
     showScreen(
       homeScreen
     );
+
+    void synchronizeCompletedGames();
   }
 );
-
 
 /* ======================================================
    CANCEL GAME
@@ -2998,52 +2510,40 @@ confirmEndGameButton.addEventListener(
 exitGameButton.addEventListener(
   "click",
   () => {
-
     openModal(
       cancelGameModal
     );
   }
 );
 
-
 keepGameButton.addEventListener(
   "click",
   () => {
-
     closeModal(
       cancelGameModal
     );
   }
 );
 
-
 discardGameButton.addEventListener(
   "click",
   () => {
-
     gameIsActive = false;
 
-
     deleteActiveGame();
-
 
     closeModal(
       cancelGameModal
     );
 
-
     resetGameStats();
-
-
     refreshResumeCard();
-
 
     showScreen(
       homeScreen
     );
   }
 );
-
 
 /* ======================================================
    EXISTING ACTIVE GAME
@@ -3052,16 +2552,13 @@ discardGameButton.addEventListener(
 resumeInsteadButton.addEventListener(
   "click",
   () => {
-
     closeModal(
       replaceGameModal
     );
 
-
     if (
       restoreActiveGame()
     ) {
-
       showScreen(
         gameScreen
       );
@@ -3069,37 +2566,29 @@ resumeInsteadButton.addEventListener(
   }
 );
 
-
 replaceGameButton.addEventListener(
   "click",
-  () => {
-
+  async () => {
     gameIsActive = false;
 
-
     deleteActiveGame();
-
 
     closeModal(
       replaceGameModal
     );
 
-
     resetGameStats();
-
-
     refreshResumeCard();
 
+    await synchronizeCompletedGames();
 
     prepareNewGameForm();
-
 
     showScreen(
       setupScreen
     );
   }
 );
-
 
 /* ======================================================
    MODAL BACKDROP
@@ -3109,92 +2598,80 @@ replaceGameButton.addEventListener(
   endGameModal,
   cancelGameModal,
   replaceGameModal
-].forEach(
-  (modal) => {
-
-    modal.addEventListener(
-      "click",
-      (event) => {
-
-        if (
-          event.target === modal
-        ) {
-
-          closeModal(
-            modal
-          );
-        }
+].forEach((modal) => {
+  modal.addEventListener(
+    "click",
+    (event) => {
+      if (
+        event.target === modal
+      ) {
+        closeModal(
+          modal
+        );
       }
-    );
-  }
-);
-
+    }
+  );
+});
 
 /* ======================================================
-   MOBILE / BROWSER AUTOSAVE
+   AUTOSAVE / SYNC EVENTS
 ====================================================== */
 
 document.addEventListener(
   "visibilitychange",
   () => {
-
     if (
-      document.visibilityState === "hidden" &&
+      document.visibilityState ===
+        "hidden" &&
       gameIsActive
     ) {
-
       writeActiveGame();
     }
   }
 );
-
 
 window.addEventListener(
   "pagehide",
   () => {
-
     if (
       gameIsActive
     ) {
-
       writeActiveGame();
     }
   }
 );
 
+window.addEventListener(
+  "online",
+  () => {
+    void synchronizeCompletedGames();
+  }
+);
 
 /* ======================================================
    INITIALIZE APP
 ====================================================== */
 
 function initializeApp() {
-
   currentGameNumber =
     getNextGameNumber();
-
 
   playerNumberInput.value =
     getSavedPlayerNumber();
 
-
   gameDateInput.value =
     getTodayForDateInput();
 
-
   updateDisplay();
-
-
   refreshResumeCard();
-
   refreshGameHistorySummary();
-
   refreshSeasonStatsSummary();
-
 
   showScreen(
     homeScreen
   );
-}
 
+  void synchronizeCompletedGames();
+}
 
 initializeApp();
