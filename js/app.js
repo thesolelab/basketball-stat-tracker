@@ -107,6 +107,8 @@ const seasonTotalDreb = document.getElementById("seasonTotalDreb");
 const newGameButton = document.getElementById("newGameButton");
 const gameHistoryButton = document.getElementById("gameHistoryButton");
 const gameHistorySummary = document.getElementById("gameHistorySummary");
+const syncStatus = document.getElementById("syncStatus");
+const syncStatusText = document.getElementById("syncStatusText");
 const historyBackButton = document.getElementById("historyBackButton");
 const detailBackButton = document.getElementById("detailBackButton");
 const historyGameCount = document.getElementById("historyGameCount");
@@ -709,27 +711,89 @@ async function refreshGamesFromServer() {
     [...merged.values()]
   );
 }
+function setSyncStatus(status) {
+  if (
+    !syncStatus ||
+    !syncStatusText
+  ) {
+    return;
+  }
 
+  syncStatus.classList.remove(
+    "is-synced",
+    "is-syncing",
+    "is-offline"
+  );
+
+  if (status === "syncing") {
+    syncStatus.classList.add(
+      "is-syncing"
+    );
+
+    syncStatusText.textContent =
+      "Syncing…";
+
+    return;
+  }
+
+  if (status === "offline") {
+    syncStatus.classList.add(
+      "is-offline"
+    );
+
+    syncStatusText.textContent =
+      "Offline — will sync later";
+
+    return;
+  }
+
+  syncStatus.classList.add(
+    "is-synced"
+  );
+
+  syncStatusText.textContent =
+    "Synced";
+}
 async function synchronizeCompletedGames() {
   if (syncPromise) {
     return syncPromise;
   }
 
+  if (!navigator.onLine) {
+    setSyncStatus("offline");
+    return;
+  }
+
+  setSyncStatus("syncing");
+
   syncPromise = (async () => {
     try {
       await syncPendingDeletes();
+
       await syncPendingGames();
+
       await refreshGamesFromServer();
+
+      setSyncStatus("synced");
+
     } catch (error) {
       console.warn(
         "Google Sheets sync unavailable. Using local data.",
         error
       );
+
+      setSyncStatus(
+        navigator.onLine
+          ? "offline"
+          : "offline"
+      );
+
     } finally {
       currentGameNumber =
         getNextGameNumber();
 
       refreshGameHistorySummary();
+
       refreshSeasonStatsSummary();
 
       if (
@@ -756,7 +820,6 @@ async function synchronizeCompletedGames() {
 
   return syncPromise;
 }
-
 /* ======================================================
    FORMATTING
 ====================================================== */
@@ -2631,13 +2694,18 @@ document.addEventListener(
 );
 
 window.addEventListener(
-  "pagehide",
+  "online",
   () => {
-    if (
-      gameIsActive
-    ) {
-      writeActiveGame();
-    }
+    setSyncStatus("syncing");
+
+    void synchronizeCompletedGames();
+  }
+);
+
+window.addEventListener(
+  "offline",
+  () => {
+    setSyncStatus("offline");
   }
 );
 
@@ -2670,7 +2738,11 @@ function initializeApp() {
   showScreen(
     homeScreen
   );
-
+setSyncStatus(
+  navigator.onLine
+    ? "syncing"
+    : "offline"
+);
   void synchronizeCompletedGames();
 }
 
