@@ -9,11 +9,18 @@
 
 const CURRENT_SEASON = "2026–27";
 
+const ACTIVE_GAME_KEY =
+  "basketballStatTracker.activeGame";
+
+const PLAYER_NUMBER_KEY =
+  "basketballStatTracker.playerNumber";
+
 let currentGameNumber = 1;
+let gameIsActive = false;
 
 
 /* ======================================================
-   CURRENT GAME INFORMATION
+   CURRENT GAME
 ====================================================== */
 
 let currentGame = {
@@ -26,7 +33,7 @@ let currentGame = {
 
 
 /* ======================================================
-   GAME STATS
+   STATS
 ====================================================== */
 
 const stats = {
@@ -49,15 +56,12 @@ const stats = {
   fouls: 0
 };
 
-
 const actionHistory = [];
 
 
 /* ======================================================
-   DOM REFERENCES
+   DOM
 ====================================================== */
-
-/* Screens */
 
 const homeScreen =
   document.getElementById("homeScreen");
@@ -69,13 +73,24 @@ const gameScreen =
   document.getElementById("gameScreen");
 
 
-/* Home */
-
 const newGameButton =
   document.getElementById("newGameButton");
 
+const resumeGameCard =
+  document.getElementById("resumeGameCard");
 
-/* Setup */
+const resumeGameButton =
+  document.getElementById("resumeGameButton");
+
+const resumeOpponent =
+  document.getElementById("resumeOpponent");
+
+const resumeDetails =
+  document.getElementById("resumeDetails");
+
+const resumeGameType =
+  document.getElementById("resumeGameType");
+
 
 const setupBackButton =
   document.getElementById("setupBackButton");
@@ -96,7 +111,12 @@ const setupMessage =
   document.getElementById("setupMessage");
 
 
-/* Game Header */
+const locationHome =
+  document.getElementById("locationHome");
+
+const typeRegular =
+  document.getElementById("typeRegular");
+
 
 const gameSeasonLabel =
   document.getElementById("gameSeasonLabel");
@@ -110,8 +130,6 @@ const gameOpponent =
 const gameTypeBadge =
   document.getElementById("gameTypeBadge");
 
-
-/* Live Stats */
 
 const pointsElement =
   document.getElementById("points");
@@ -141,8 +159,6 @@ const shootingSummaryElement =
   document.getElementById("shootingSummary");
 
 
-/* Game Controls */
-
 const undoButton =
   document.getElementById("undoButton");
 
@@ -152,8 +168,6 @@ const endGameButton =
 const exitGameButton =
   document.getElementById("exitGameButton");
 
-
-/* End Game Modal */
 
 const endGameModal =
   document.getElementById("endGameModal");
@@ -180,8 +194,6 @@ const finalShootingElement =
   document.getElementById("finalShooting");
 
 
-/* Cancel Game Modal */
-
 const cancelGameModal =
   document.getElementById("cancelGameModal");
 
@@ -192,7 +204,15 @@ const discardGameButton =
   document.getElementById("discardGameButton");
 
 
-/* Stat Buttons */
+const replaceGameModal =
+  document.getElementById("replaceGameModal");
+
+const resumeInsteadButton =
+  document.getElementById("resumeInsteadButton");
+
+const replaceGameButton =
+  document.getElementById("replaceGameButton");
+
 
 const statButtons =
   document.querySelectorAll("[data-action]");
@@ -207,21 +227,12 @@ function showScreen(screen) {
   document
     .querySelectorAll(".screen")
     .forEach((item) => {
-
       item.classList.remove("active-screen");
-
     });
-
 
   screen.classList.add("active-screen");
 
-
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "instant"
-  });
-
+  window.scrollTo(0, 0);
 }
 
 
@@ -237,189 +248,14 @@ function getTodayForDateInput() {
     now.getFullYear();
 
   const month =
-    String(
-      now.getMonth() + 1
-    ).padStart(2, "0");
+    String(now.getMonth() + 1)
+      .padStart(2, "0");
 
   const day =
-    String(
-      now.getDate()
-    ).padStart(2, "0");
-
+    String(now.getDate())
+      .padStart(2, "0");
 
   return `${year}-${month}-${day}`;
-
-}
-
-
-/* ======================================================
-   NEW GAME FORM
-====================================================== */
-
-function prepareNewGameForm() {
-
-  opponentInput.value = "";
-
-  setupMessage.textContent = "";
-
-  gameDateInput.value =
-    getTodayForDateInput();
-
-}
-
-
-newGameButton.addEventListener(
-  "click",
-  () => {
-
-    prepareNewGameForm();
-
-    showScreen(setupScreen);
-
-  }
-);
-
-
-setupBackButton.addEventListener(
-  "click",
-  () => {
-
-    showScreen(homeScreen);
-
-  }
-);
-
-
-/* ======================================================
-   START GAME
-====================================================== */
-
-gameSetupForm.addEventListener(
-  "submit",
-  (event) => {
-
-    event.preventDefault();
-
-
-    const playerNumber =
-      playerNumberInput.value.trim();
-
-    const opponent =
-      opponentInput.value.trim();
-
-    const date =
-      gameDateInput.value;
-
-    const locationInput =
-      document.querySelector(
-        'input[name="gameLocation"]:checked'
-      );
-
-    const typeInput =
-      document.querySelector(
-        'input[name="gameType"]:checked'
-      );
-
-
-    if (!playerNumber) {
-
-      setupMessage.textContent =
-        "Enter a player number.";
-
-      playerNumberInput.focus();
-
-      return;
-
-    }
-
-
-    if (!opponent) {
-
-      setupMessage.textContent =
-        "Enter an opponent.";
-
-      opponentInput.focus();
-
-      return;
-
-    }
-
-
-    if (!date) {
-
-      setupMessage.textContent =
-        "Select a game date.";
-
-      gameDateInput.focus();
-
-      return;
-
-    }
-
-
-    if (!locationInput) {
-
-      setupMessage.textContent =
-        "Select Home or Away.";
-
-      return;
-
-    }
-
-
-    if (!typeInput) {
-
-      setupMessage.textContent =
-        "Select a game type.";
-
-      return;
-
-    }
-
-
-    currentGame = {
-      playerNumber,
-      opponent,
-      date,
-      location: locationInput.value,
-      type: typeInput.value
-    };
-
-
-    setupMessage.textContent = "";
-
-
-    resetGameStats();
-
-    updateGameHeader();
-
-    showScreen(gameScreen);
-
-  }
-);
-
-
-/* ======================================================
-   GAME HEADER
-====================================================== */
-
-function updateGameHeader() {
-
-  gameSeasonLabel.textContent =
-    `${CURRENT_SEASON} SEASON · GAME ${currentGameNumber}`;
-
-
-  gamePlayerNumber.textContent =
-    `#${currentGame.playerNumber}`;
-
-
-  gameOpponent.textContent =
-    `vs. ${currentGame.opponent} · ${currentGame.location}`;
-
-
-  gameTypeBadge.textContent =
-    currentGame.type.toUpperCase();
-
 }
 
 
@@ -434,7 +270,6 @@ function calculatePoints() {
     stats.threeMade * 3 +
     stats.freeThrowMade
   );
-
 }
 
 
@@ -444,7 +279,6 @@ function calculateRebounds() {
     stats.offensiveRebounds +
     stats.defensiveRebounds
   );
-
 }
 
 
@@ -454,7 +288,6 @@ function calculateFieldGoalsMade() {
     stats.twoMade +
     stats.threeMade
   );
-
 }
 
 
@@ -464,32 +297,26 @@ function calculateFieldGoalAttempts() {
     stats.twoAttempted +
     stats.threeAttempted
   );
-
 }
 
 
 function calculateFieldGoalPercentage() {
 
-  const made =
-    calculateFieldGoalsMade();
-
   const attempts =
     calculateFieldGoalAttempts();
 
-
   if (attempts === 0) {
-
     return "—";
-
   }
-
 
   return (
     Math.round(
-      (made / attempts) * 100
+      (
+        calculateFieldGoalsMade() /
+        attempts
+      ) * 100
     ) + "%"
   );
-
 }
 
 
@@ -500,12 +327,395 @@ function getShootingSummary() {
     `3PT ${stats.threeMade}/${stats.threeAttempted} · ` +
     `FT ${stats.freeThrowMade}/${stats.freeThrowAttempted}`
   );
-
 }
 
 
 /* ======================================================
-   UPDATE DISPLAY
+   LOCAL STORAGE CHECK
+====================================================== */
+
+function storageAvailable() {
+
+  try {
+
+    const testKey =
+      "__basketball_storage_test__";
+
+    localStorage.setItem(
+      testKey,
+      "1"
+    );
+
+    localStorage.removeItem(
+      testKey
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "Local storage unavailable:",
+      error
+    );
+
+    return false;
+  }
+}
+
+
+const canUseStorage =
+  storageAvailable();
+
+
+/* ======================================================
+   ACTIVE GAME STORAGE
+====================================================== */
+
+function readActiveGame() {
+
+  if (!canUseStorage) {
+    return null;
+  }
+
+  try {
+
+    const raw =
+      localStorage.getItem(
+        ACTIVE_GAME_KEY
+      );
+
+    if (!raw) {
+      return null;
+    }
+
+    const saved =
+      JSON.parse(raw);
+
+    if (
+      !saved ||
+      saved.active !== true ||
+      !saved.game ||
+      !saved.stats
+    ) {
+      return null;
+    }
+
+    return saved;
+
+  } catch (error) {
+
+    console.error(
+      "Could not read active game:",
+      error
+    );
+
+    return null;
+  }
+}
+
+
+function writeActiveGame() {
+
+  if (
+    !canUseStorage ||
+    !gameIsActive
+  ) {
+    return;
+  }
+
+  const payload = {
+
+    version: 2,
+
+    active: true,
+
+    season:
+      CURRENT_SEASON,
+
+    gameNumber:
+      currentGameNumber,
+
+    game: {
+      ...currentGame
+    },
+
+    stats: {
+      ...stats
+    },
+
+    history: [
+      ...actionHistory
+    ],
+
+    savedAt:
+      new Date().toISOString()
+  };
+
+  try {
+
+    localStorage.setItem(
+      ACTIVE_GAME_KEY,
+      JSON.stringify(payload)
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Could not save active game:",
+      error
+    );
+  }
+}
+
+
+function deleteActiveGame() {
+
+  if (!canUseStorage) {
+    return;
+  }
+
+  try {
+
+    localStorage.removeItem(
+      ACTIVE_GAME_KEY
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Could not remove active game:",
+      error
+    );
+  }
+}
+
+
+/* ======================================================
+   PLAYER NUMBER STORAGE
+====================================================== */
+
+function savePlayerNumber(number) {
+
+  if (!canUseStorage) {
+    return;
+  }
+
+  try {
+
+    localStorage.setItem(
+      PLAYER_NUMBER_KEY,
+      number
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Could not save player number:",
+      error
+    );
+  }
+}
+
+
+function getSavedPlayerNumber() {
+
+  if (!canUseStorage) {
+    return "2";
+  }
+
+  try {
+
+    return (
+      localStorage.getItem(
+        PLAYER_NUMBER_KEY
+      ) || "2"
+    );
+
+  } catch (error) {
+
+    return "2";
+  }
+}
+
+
+/* ======================================================
+   RESUME CARD
+====================================================== */
+
+function calculateSavedPoints(savedStats) {
+
+  return (
+    (Number(savedStats.twoMade) || 0) * 2 +
+    (Number(savedStats.threeMade) || 0) * 3 +
+    (Number(savedStats.freeThrowMade) || 0)
+  );
+}
+
+
+function refreshResumeCard() {
+
+  const saved =
+    readActiveGame();
+
+  if (!saved) {
+
+    resumeGameCard.hidden = true;
+
+    return;
+  }
+
+  const opponent =
+    saved.game.opponent || "Opponent";
+
+  const location =
+    saved.game.location || "Home";
+
+  const type =
+    saved.game.type || "Regular Season";
+
+  const points =
+    calculateSavedPoints(
+      saved.stats
+    );
+
+  resumeOpponent.textContent =
+    `vs. ${opponent}`;
+
+  resumeDetails.textContent =
+    `${location} · ${points} PTS`;
+
+  resumeGameType.textContent =
+    type.toUpperCase();
+
+  resumeGameCard.hidden = false;
+}
+
+
+/* ======================================================
+   RESTORE ACTIVE GAME
+====================================================== */
+
+function restoreActiveGame() {
+
+  const saved =
+    readActiveGame();
+
+  if (!saved) {
+    return false;
+  }
+
+  currentGameNumber =
+    Number(saved.gameNumber) || 1;
+
+  currentGame = {
+
+    playerNumber:
+      String(
+        saved.game.playerNumber || "2"
+      ),
+
+    opponent:
+      String(
+        saved.game.opponent || ""
+      ),
+
+    date:
+      String(
+        saved.game.date || ""
+      ),
+
+    location:
+      String(
+        saved.game.location || "Home"
+      ),
+
+    type:
+      String(
+        saved.game.type || "Regular Season"
+      )
+  };
+
+
+  Object.keys(stats).forEach(
+    (key) => {
+
+      stats[key] =
+        Number(
+          saved.stats[key]
+        ) || 0;
+    }
+  );
+
+
+  actionHistory.length = 0;
+
+
+  if (
+    Array.isArray(
+      saved.history
+    )
+  ) {
+
+    actionHistory.push(
+      ...saved.history
+    );
+  }
+
+
+  gameIsActive = true;
+
+  updateGameHeader();
+  updateDisplay();
+
+  return true;
+}
+
+
+/* ======================================================
+   NEW GAME FORM
+====================================================== */
+
+function prepareNewGameForm() {
+
+  playerNumberInput.value =
+    getSavedPlayerNumber();
+
+  opponentInput.value = "";
+
+  gameDateInput.value =
+    getTodayForDateInput();
+
+  locationHome.checked = true;
+
+  typeRegular.checked = true;
+
+  setupMessage.textContent = "";
+}
+
+
+/* ======================================================
+   GAME HEADER
+====================================================== */
+
+function updateGameHeader() {
+
+  gameSeasonLabel.textContent =
+    `${CURRENT_SEASON} SEASON · GAME ${currentGameNumber}`;
+
+  gamePlayerNumber.textContent =
+    `#${currentGame.playerNumber}`;
+
+  gameOpponent.textContent =
+    `vs. ${currentGame.opponent} · ${currentGame.location}`;
+
+  gameTypeBadge.textContent =
+    currentGame.type.toUpperCase();
+}
+
+
+/* ======================================================
+   DISPLAY
 ====================================================== */
 
 function updateDisplay() {
@@ -539,35 +749,210 @@ function updateDisplay() {
 
   undoButton.disabled =
     actionHistory.length === 0;
-
 }
 
 
 /* ======================================================
-   RESET GAME
+   RESET STATS
 ====================================================== */
 
 function resetGameStats() {
 
   Object.keys(stats).forEach(
     (key) => {
-
       stats[key] = 0;
-
     }
   );
 
-
   actionHistory.length = 0;
 
-
   updateDisplay();
-
 }
 
 
 /* ======================================================
-   TAP FEEDBACK
+   HOME EVENTS
+====================================================== */
+
+newGameButton.addEventListener(
+  "click",
+  () => {
+
+    const savedGame =
+      readActiveGame();
+
+    if (savedGame) {
+
+      openModal(
+        replaceGameModal
+      );
+
+      return;
+    }
+
+    prepareNewGameForm();
+
+    showScreen(
+      setupScreen
+    );
+  }
+);
+
+
+resumeGameButton.addEventListener(
+  "click",
+  () => {
+
+    if (
+      restoreActiveGame()
+    ) {
+
+      showScreen(
+        gameScreen
+      );
+    }
+  }
+);
+
+
+setupBackButton.addEventListener(
+  "click",
+  () => {
+
+    showScreen(
+      homeScreen
+    );
+  }
+);
+
+
+/* ======================================================
+   START GAME
+====================================================== */
+
+gameSetupForm.addEventListener(
+  "submit",
+  (event) => {
+
+    event.preventDefault();
+
+    const playerNumber =
+      playerNumberInput.value.trim();
+
+    const opponent =
+      opponentInput.value.trim();
+
+    const date =
+      gameDateInput.value;
+
+    const locationInput =
+      document.querySelector(
+        'input[name="gameLocation"]:checked'
+      );
+
+    const typeInput =
+      document.querySelector(
+        'input[name="gameType"]:checked'
+      );
+
+
+    if (!playerNumber) {
+
+      setupMessage.textContent =
+        "Enter a player number.";
+
+      playerNumberInput.focus();
+
+      return;
+    }
+
+
+    if (!opponent) {
+
+      setupMessage.textContent =
+        "Enter an opponent.";
+
+      opponentInput.focus();
+
+      return;
+    }
+
+
+    if (!date) {
+
+      setupMessage.textContent =
+        "Select a game date.";
+
+      gameDateInput.focus();
+
+      return;
+    }
+
+
+    if (
+      !locationInput ||
+      !typeInput
+    ) {
+
+      setupMessage.textContent =
+        "Complete the game details.";
+
+      return;
+    }
+
+
+    currentGame = {
+
+      playerNumber:
+        playerNumber,
+
+      opponent:
+        opponent,
+
+      date:
+        date,
+
+      location:
+        locationInput.value,
+
+      type:
+        typeInput.value
+    };
+
+
+    resetGameStats();
+
+    gameIsActive = true;
+
+    savePlayerNumber(
+      playerNumber
+    );
+
+    updateGameHeader();
+
+    updateDisplay();
+
+
+    /*
+      IMPORTANT:
+      Save the game immediately when
+      START GAME is pressed.
+    */
+
+    writeActiveGame();
+
+    refreshResumeCard();
+
+
+    showScreen(
+      gameScreen
+    );
+  }
+);
+
+
+/* ======================================================
+   BUTTON FEEDBACK
 ====================================================== */
 
 function showTapFeedback(button) {
@@ -582,7 +967,6 @@ function showTapFeedback(button) {
     "stat-recorded"
   );
 
-
   window.setTimeout(
     () => {
 
@@ -593,12 +977,11 @@ function showTapFeedback(button) {
     },
     220
   );
-
 }
 
 
 /* ======================================================
-   RECORD ACTION
+   RECORD STAT
 ====================================================== */
 
 function recordAction(action) {
@@ -702,14 +1085,21 @@ function recordAction(action) {
     default:
 
       return;
-
   }
 
 
-  actionHistory.push(action);
+  actionHistory.push(
+    action
+  );
 
   updateDisplay();
 
+
+  /*
+    Save after every recorded action.
+  */
+
+  writeActiveGame();
 }
 
 
@@ -728,11 +1118,11 @@ statButtons.forEach(
           button.dataset.action
         );
 
-        showTapFeedback(button);
-
+        showTapFeedback(
+          button
+        );
       }
     );
-
   }
 );
 
@@ -746,9 +1136,7 @@ function undoLastAction() {
   if (
     actionHistory.length === 0
   ) {
-
     return;
-
   }
 
 
@@ -850,12 +1238,12 @@ function undoLastAction() {
       stats.fouls--;
 
       break;
-
   }
 
 
   updateDisplay();
 
+  writeActiveGame();
 }
 
 
@@ -866,12 +1254,14 @@ undoButton.addEventListener(
 
 
 /* ======================================================
-   MODAL HELPERS
+   MODALS
 ====================================================== */
 
 function openModal(modal) {
 
-  modal.classList.add("is-open");
+  modal.classList.add(
+    "is-open"
+  );
 
   modal.setAttribute(
     "aria-hidden",
@@ -881,13 +1271,14 @@ function openModal(modal) {
   document.body.classList.add(
     "modal-open"
   );
-
 }
 
 
 function closeModal(modal) {
 
-  modal.classList.remove("is-open");
+  modal.classList.remove(
+    "is-open"
+  );
 
   modal.setAttribute(
     "aria-hidden",
@@ -897,7 +1288,6 @@ function closeModal(modal) {
   document.body.classList.remove(
     "modal-open"
   );
-
 }
 
 
@@ -905,32 +1295,29 @@ function closeModal(modal) {
    END GAME
 ====================================================== */
 
-function openEndGameModal() {
-
-  finalPointsElement.textContent =
-    calculatePoints();
-
-  finalReboundsElement.textContent =
-    calculateRebounds();
-
-  finalAssistsElement.textContent =
-    stats.assists;
-
-  finalStealsElement.textContent =
-    stats.steals;
-
-  finalShootingElement.textContent =
-    getShootingSummary();
-
-
-  openModal(endGameModal);
-
-}
-
-
 endGameButton.addEventListener(
   "click",
-  openEndGameModal
+  () => {
+
+    finalPointsElement.textContent =
+      calculatePoints();
+
+    finalReboundsElement.textContent =
+      calculateRebounds();
+
+    finalAssistsElement.textContent =
+      stats.assists;
+
+    finalStealsElement.textContent =
+      stats.steals;
+
+    finalShootingElement.textContent =
+      getShootingSummary();
+
+    openModal(
+      endGameModal
+    );
+  }
 );
 
 
@@ -938,31 +1325,15 @@ cancelEndGameButton.addEventListener(
   "click",
   () => {
 
-    closeModal(endGameModal);
-
-  }
-);
-
-
-endGameModal.addEventListener(
-  "click",
-  (event) => {
-
-    if (
-      event.target === endGameModal
-    ) {
-
-      closeModal(endGameModal);
-
-    }
-
+    closeModal(
+      endGameModal
+    );
   }
 );
 
 
 /* ======================================================
-   SAVE GAME
-   Temporary until Google Sheets is connected
+   SAVE COMPLETED GAME
 ====================================================== */
 
 confirmEndGameButton.addEventListener(
@@ -1042,7 +1413,6 @@ confirmEndGameButton.addEventListener(
 
       fieldGoalAttempts:
         calculateFieldGoalAttempts()
-
     };
 
 
@@ -1053,20 +1423,29 @@ confirmEndGameButton.addEventListener(
 
 
     /*
-      Google Sheets saving will replace
-      this temporary save behavior.
+      Google Sheets connection comes next.
+
+      For now, SAVE GAME ends the active
+      game and removes the recovery copy.
     */
 
+    gameIsActive = false;
+
+    deleteActiveGame();
 
     currentGameNumber++;
 
-
-    closeModal(endGameModal);
+    closeModal(
+      endGameModal
+    );
 
     resetGameStats();
 
-    showScreen(homeScreen);
+    refreshResumeCard();
 
+    showScreen(
+      homeScreen
+    );
   }
 );
 
@@ -1079,8 +1458,9 @@ exitGameButton.addEventListener(
   "click",
   () => {
 
-    openModal(cancelGameModal);
-
+    openModal(
+      cancelGameModal
+    );
   }
 );
 
@@ -1089,8 +1469,9 @@ keepGameButton.addEventListener(
   "click",
   () => {
 
-    closeModal(cancelGameModal);
-
+    closeModal(
+      cancelGameModal
+    );
   }
 );
 
@@ -1099,28 +1480,132 @@ discardGameButton.addEventListener(
   "click",
   () => {
 
-    closeModal(cancelGameModal);
+    gameIsActive = false;
+
+    deleteActiveGame();
+
+    closeModal(
+      cancelGameModal
+    );
 
     resetGameStats();
 
-    showScreen(homeScreen);
+    refreshResumeCard();
 
+    showScreen(
+      homeScreen
+    );
   }
 );
 
 
-cancelGameModal.addEventListener(
+/* ======================================================
+   EXISTING ACTIVE GAME
+====================================================== */
+
+resumeInsteadButton.addEventListener(
   "click",
-  (event) => {
+  () => {
+
+    closeModal(
+      replaceGameModal
+    );
 
     if (
-      event.target === cancelGameModal
+      restoreActiveGame()
     ) {
 
-      closeModal(cancelGameModal);
-
+      showScreen(
+        gameScreen
+      );
     }
+  }
+);
 
+
+replaceGameButton.addEventListener(
+  "click",
+  () => {
+
+    gameIsActive = false;
+
+    deleteActiveGame();
+
+    closeModal(
+      replaceGameModal
+    );
+
+    resetGameStats();
+
+    refreshResumeCard();
+
+    prepareNewGameForm();
+
+    showScreen(
+      setupScreen
+    );
+  }
+);
+
+
+/* ======================================================
+   MODAL BACKDROP
+====================================================== */
+
+[
+  endGameModal,
+  cancelGameModal,
+  replaceGameModal
+].forEach(
+  (modal) => {
+
+    modal.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target === modal
+        ) {
+
+          closeModal(
+            modal
+          );
+        }
+      }
+    );
+  }
+);
+
+
+/* ======================================================
+   MOBILE / BROWSER AUTOSAVE
+====================================================== */
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    if (
+      document.visibilityState === "hidden" &&
+      gameIsActive
+    ) {
+
+      writeActiveGame();
+    }
+  }
+);
+
+
+window.addEventListener(
+  "pagehide",
+  () => {
+
+    if (
+      gameIsActive
+    ) {
+
+      writeActiveGame();
+    }
   }
 );
 
@@ -1131,15 +1616,25 @@ cancelGameModal.addEventListener(
 
 function initializeApp() {
 
+  playerNumberInput.value =
+    getSavedPlayerNumber();
+
   gameDateInput.value =
     getTodayForDateInput();
-
 
   updateDisplay();
 
 
-  showScreen(homeScreen);
+  /*
+    Check for an unfinished game every
+    time the site loads.
+  */
 
+  refreshResumeCard();
+
+  showScreen(
+    homeScreen
+  );
 }
 
 
