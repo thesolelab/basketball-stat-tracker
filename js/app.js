@@ -2,6 +2,11 @@
    BASKETBALL STAT TRACKER
 ====================================================== */
 
+
+/* ======================================================
+   APP SETTINGS
+====================================================== */
+
 const CURRENT_SEASON = "2026–27";
 
 const ACTIVE_GAME_KEY =
@@ -13,9 +18,11 @@ const PLAYER_NUMBER_KEY =
 const COMPLETED_GAMES_KEY =
   "basketballStatTracker.completedGames";
 
+const NEXT_GAME_NUMBER_KEY =
+  "basketballStatTracker.nextGameNumber";
+
 let currentGameNumber = 1;
 let gameIsActive = false;
-let currentSeasonFilter = "All";
 
 
 /* ======================================================
@@ -38,12 +45,16 @@ let currentGame = {
 const stats = {
   twoMade: 0,
   twoAttempted: 0,
+
   threeMade: 0,
   threeAttempted: 0,
+
   freeThrowMade: 0,
   freeThrowAttempted: 0,
+
   offensiveRebounds: 0,
   defensiveRebounds: 0,
+
   assists: 0,
   steals: 0,
   blocks: 0,
@@ -76,9 +87,6 @@ const gameDetailScreen =
 const seasonStatsScreen =
   document.getElementById("seasonStatsScreen");
 
-
-const newGameButton =
-  document.getElementById("newGameButton");
 
 const seasonStatsButton =
   document.getElementById("seasonStatsButton");
@@ -161,6 +169,11 @@ const seasonTotalOreb =
 const seasonTotalDreb =
   document.getElementById("seasonTotalDreb");
 
+let currentSeasonFilter = "All";
+
+
+const newGameButton =
+  document.getElementById("newGameButton");
 
 const gameHistoryButton =
   document.getElementById("gameHistoryButton");
@@ -182,7 +195,6 @@ const historyList =
 
 const historyEmpty =
   document.getElementById("historyEmpty");
-
 
 const resumeGameCard =
   document.getElementById("resumeGameCard");
@@ -237,6 +249,7 @@ const gameOpponent =
 const gameTypeBadge =
   document.getElementById("gameTypeBadge");
 
+
 const pointsElement =
   document.getElementById("points");
 
@@ -263,6 +276,7 @@ const fgPercentElement =
 
 const shootingSummaryElement =
   document.getElementById("shootingSummary");
+
 
 const undoButton =
   document.getElementById("undoButton");
@@ -379,7 +393,7 @@ const statButtons =
 
 
 /* ======================================================
-   HELPERS
+   SCREEN NAVIGATION
 ====================================================== */
 
 function showScreen(screen) {
@@ -390,53 +404,38 @@ function showScreen(screen) {
       item.classList.remove("active-screen");
     });
 
-  screen.classList.add(
-    "active-screen"
-  );
+  screen.classList.add("active-screen");
 
-  window.scrollTo(
-    0,
-    0
-  );
+  window.scrollTo(0, 0);
 }
 
 
+/* ======================================================
+   DATE
+====================================================== */
+
 function getTodayForDateInput() {
 
-  const now =
-    new Date();
+  const now = new Date();
 
   const year =
     now.getFullYear();
 
   const month =
-    String(
-      now.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
+    String(now.getMonth() + 1)
+      .padStart(2, "0");
 
   const day =
-    String(
-      now.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
+    String(now.getDate())
+      .padStart(2, "0");
 
   return `${year}-${month}-${day}`;
 }
 
 
-function safeNumber(value) {
-
-  return (
-    Number(value) ||
-    0
-  );
-}
-
+/* ======================================================
+   CALCULATIONS
+====================================================== */
 
 function calculatePoints() {
 
@@ -480,21 +479,17 @@ function calculateFieldGoalPercentage() {
   const attempts =
     calculateFieldGoalAttempts();
 
-  if (
-    attempts === 0
-  ) {
-
+  if (attempts === 0) {
     return "—";
   }
 
   return (
-    `${Math.round(
+    Math.round(
       (
         calculateFieldGoalsMade() /
         attempts
-      ) *
-      100
-    )}%`
+      ) * 100
+    ) + "%"
   );
 }
 
@@ -509,142 +504,8 @@ function getShootingSummary() {
 }
 
 
-function formatPercentage(
-  made,
-  attempted
-) {
-
-  const attempts =
-    safeNumber(
-      attempted
-    );
-
-  const makes =
-    safeNumber(
-      made
-    );
-
-  if (
-    attempts === 0
-  ) {
-
-    return "—";
-  }
-
-  return (
-    `${Math.round(
-      (
-        makes /
-        attempts
-      ) *
-      100
-    )}%`
-  );
-}
-
-
-function formatAverage(
-  total,
-  gamesPlayed
-) {
-
-  if (
-    gamesPlayed === 0
-  ) {
-
-    return "0.0";
-  }
-
-  return (
-    total /
-    gamesPlayed
-  ).toFixed(
-    1
-  );
-}
-
-
-function formatGameDate(
-  dateString
-) {
-
-  if (
-    !dateString
-  ) {
-
-    return "Date unavailable";
-  }
-
-  const parts =
-    dateString.split(
-      "-"
-    );
-
-  if (
-    parts.length !== 3
-  ) {
-
-    return dateString;
-  }
-
-  const date =
-    new Date(
-      Number(
-        parts[0]
-      ),
-      Number(
-        parts[1]
-      ) - 1,
-      Number(
-        parts[2]
-      )
-    );
-
-  return (
-    date.toLocaleDateString(
-      undefined,
-      {
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-      }
-    )
-  );
-}
-
-
-function escapeHtml(
-  value
-) {
-
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-}
-
-
 /* ======================================================
-   STORAGE
+   LOCAL STORAGE CHECK
 ====================================================== */
 
 function storageAvailable() {
@@ -681,12 +542,13 @@ const canUseStorage =
   storageAvailable();
 
 
+/* ======================================================
+   ACTIVE GAME STORAGE
+====================================================== */
+
 function readActiveGame() {
 
-  if (
-    !canUseStorage
-  ) {
-
+  if (!canUseStorage) {
     return null;
   }
 
@@ -697,17 +559,12 @@ function readActiveGame() {
         ACTIVE_GAME_KEY
       );
 
-    if (
-      !raw
-    ) {
-
+    if (!raw) {
       return null;
     }
 
     const saved =
-      JSON.parse(
-        raw
-      );
+      JSON.parse(raw);
 
     if (
       !saved ||
@@ -715,7 +572,6 @@ function readActiveGame() {
       !saved.game ||
       !saved.stats
     ) {
-
       return null;
     }
 
@@ -739,17 +595,14 @@ function writeActiveGame() {
     !canUseStorage ||
     !gameIsActive
   ) {
-
     return;
   }
 
   const payload = {
 
-    version:
-      2,
+    version: 2,
 
-    active:
-      true,
+    active: true,
 
     season:
       CURRENT_SEASON,
@@ -770,17 +623,14 @@ function writeActiveGame() {
     ],
 
     savedAt:
-      new Date()
-        .toISOString()
+      new Date().toISOString()
   };
 
   try {
 
     localStorage.setItem(
       ACTIVE_GAME_KEY,
-      JSON.stringify(
-        payload
-      )
+      JSON.stringify(payload)
     );
 
   } catch (error) {
@@ -795,10 +645,7 @@ function writeActiveGame() {
 
 function deleteActiveGame() {
 
-  if (
-    !canUseStorage
-  ) {
-
+  if (!canUseStorage) {
     return;
   }
 
@@ -818,12 +665,13 @@ function deleteActiveGame() {
 }
 
 
+/* ======================================================
+   COMPLETED GAME STORAGE
+====================================================== */
+
 function readCompletedGames() {
 
-  if (
-    !canUseStorage
-  ) {
-
+  if (!canUseStorage) {
     return [];
   }
 
@@ -834,25 +682,16 @@ function readCompletedGames() {
         COMPLETED_GAMES_KEY
       );
 
-    if (
-      !raw
-    ) {
-
+    if (!raw) {
       return [];
     }
 
     const saved =
-      JSON.parse(
-        raw
-      );
+      JSON.parse(raw);
 
-    return (
-      Array.isArray(
-        saved
-      )
-        ? saved
-        : []
-    );
+    return Array.isArray(saved)
+      ? saved
+      : [];
 
   } catch (error) {
 
@@ -866,14 +705,9 @@ function readCompletedGames() {
 }
 
 
-function writeCompletedGames(
-  games
-) {
+function writeCompletedGames(games) {
 
-  if (
-    !canUseStorage
-  ) {
-
+  if (!canUseStorage) {
     return false;
   }
 
@@ -881,9 +715,7 @@ function writeCompletedGames(
 
     localStorage.setItem(
       COMPLETED_GAMES_KEY,
-      JSON.stringify(
-        games
-      )
+      JSON.stringify(games)
     );
 
     return true;
@@ -900,74 +732,61 @@ function writeCompletedGames(
 }
 
 
-function saveCompletedGame(
-  game
-) {
+function saveCompletedGame(game) {
 
   const games =
     readCompletedGames();
 
-  games.push(
-    game
-  );
+  games.push(game);
 
-  return (
-    writeCompletedGames(
-      games
-    )
+  return writeCompletedGames(
+    games
   );
 }
 
 
-function savePlayerNumber(
-  number
-) {
+function readStoredNextGameNumber() {
 
-  if (
-    !canUseStorage
-  ) {
+  if (!canUseStorage) {
+    return 1;
+  }
 
+  try {
+
+    return (
+      Number(
+        localStorage.getItem(
+          NEXT_GAME_NUMBER_KEY
+        )
+      ) || 1
+    );
+
+  } catch (error) {
+
+    return 1;
+  }
+}
+
+
+function writeStoredNextGameNumber(number) {
+
+  if (!canUseStorage) {
     return;
   }
 
   try {
 
     localStorage.setItem(
-      PLAYER_NUMBER_KEY,
-      number
+      NEXT_GAME_NUMBER_KEY,
+      String(number)
     );
 
   } catch (error) {
 
     console.error(
-      "Could not save player number:",
+      "Could not save next game number:",
       error
     );
-  }
-}
-
-
-function getSavedPlayerNumber() {
-
-  if (
-    !canUseStorage
-  ) {
-
-    return "2";
-  }
-
-  try {
-
-    return (
-      localStorage.getItem(
-        PLAYER_NUMBER_KEY
-      ) ||
-      "2"
-    );
-
-  } catch (error) {
-
-    return "2";
   }
 }
 
@@ -975,33 +794,56 @@ function getSavedPlayerNumber() {
 function getNextGameNumber() {
 
   const seasonGames =
-    readCompletedGames()
-      .filter(
-        (game) =>
-          game.season ===
-          CURRENT_SEASON
-      );
-
-  if (
-    seasonGames.length === 0
-  ) {
-
-    return 1;
-  }
-
-  const highestGameNumber =
-    Math.max(
-      ...seasonGames.map(
-        (game) =>
-          safeNumber(
-            game.gameNumber
-          )
-      )
+    readCompletedGames().filter(
+      (game) =>
+        game.season === CURRENT_SEASON
     );
 
-  return (
-    highestGameNumber +
-    1
+  const highestCompletedGameNumber =
+    seasonGames.length === 0
+      ? 0
+      : Math.max(
+          ...seasonGames.map(
+            (game) =>
+              Number(game.gameNumber) || 0
+          )
+        );
+
+  const activeGame =
+    readActiveGame();
+
+  const activeGameNumber =
+    activeGame &&
+    activeGame.season === CURRENT_SEASON
+      ? Number(activeGame.gameNumber) || 0
+      : 0;
+
+  const calculatedNext =
+    Math.max(
+      highestCompletedGameNumber + 1,
+      activeGameNumber + 1,
+      readStoredNextGameNumber(),
+      1
+    );
+
+  writeStoredNextGameNumber(
+    calculatedNext
+  );
+
+  return calculatedNext;
+}
+
+
+function advanceNextGameNumber(completedGameNumber) {
+
+  const nextNumber =
+    Math.max(
+      Number(completedGameNumber) + 1,
+      readStoredNextGameNumber()
+    );
+
+  writeStoredNextGameNumber(
+    nextNumber
   );
 }
 
@@ -1010,26 +852,94 @@ function createGameId() {
 
   if (
     window.crypto &&
-    typeof window.crypto.randomUUID ===
-      "function"
+    typeof window.crypto.randomUUID === "function"
   ) {
 
-    return (
-      window.crypto.randomUUID()
-    );
+    return window.crypto.randomUUID();
   }
 
   return (
     `game-${Date.now()}-` +
     Math.random()
-      .toString(
-        36
-      )
-      .slice(
-        2,
-        10
-      )
+      .toString(36)
+      .slice(2, 10)
   );
+}
+
+
+function formatGameDate(dateString) {
+
+  if (!dateString) {
+    return "Date unavailable";
+  }
+
+  const parts =
+    dateString.split("-");
+
+  if (parts.length !== 3) {
+    return dateString;
+  }
+
+  const date =
+    new Date(
+      Number(parts[0]),
+      Number(parts[1]) - 1,
+      Number(parts[2])
+    );
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }
+  );
+}
+
+
+function formatPercentage(
+  made,
+  attempted
+) {
+
+  const attempts =
+    Number(attempted) || 0;
+
+  const makes =
+    Number(made) || 0;
+
+  if (attempts === 0) {
+    return "—";
+  }
+
+  return (
+    `${Math.round(
+      (makes / attempts) * 100
+    )}%`
+  );
+}
+
+
+function safeNumber(value) {
+
+  return Number(value) || 0;
+}
+
+
+function formatAverage(
+  total,
+  gamesPlayed
+) {
+
+  if (gamesPlayed === 0) {
+    return "0.0";
+  }
+
+  return (
+    total /
+    gamesPlayed
+  ).toFixed(1);
 }
 
 
@@ -1041,20 +951,16 @@ function getSeasonGames(
   filter = "All"
 ) {
 
-  return (
-    readCompletedGames()
-      .filter(
-        (game) =>
-          game.season ===
-          CURRENT_SEASON
-      )
-      .filter(
-        (game) =>
-          filter === "All" ||
-          game.type ===
-            filter
-      )
-  );
+  return readCompletedGames()
+    .filter(
+      (game) =>
+        game.season === CURRENT_SEASON
+    )
+    .filter(
+      (game) =>
+        filter === "All" ||
+        game.type === filter
+    );
 }
 
 
@@ -1064,50 +970,26 @@ function calculateSeasonStats(
 
   const totals = {
 
-    points:
-      0,
+    points: 0,
 
-    offensiveRebounds:
-      0,
+    offensiveRebounds: 0,
+    defensiveRebounds: 0,
+    rebounds: 0,
 
-    defensiveRebounds:
-      0,
+    assists: 0,
+    steals: 0,
+    blocks: 0,
+    turnovers: 0,
+    fouls: 0,
 
-    rebounds:
-      0,
+    fieldGoalsMade: 0,
+    fieldGoalAttempts: 0,
 
-    assists:
-      0,
+    threeMade: 0,
+    threeAttempted: 0,
 
-    steals:
-      0,
-
-    blocks:
-      0,
-
-    turnovers:
-      0,
-
-    fouls:
-      0,
-
-    fieldGoalsMade:
-      0,
-
-    fieldGoalAttempts:
-      0,
-
-    threeMade:
-      0,
-
-    threeAttempted:
-      0,
-
-    freeThrowMade:
-      0,
-
-    freeThrowAttempted:
-      0
+    freeThrowMade: 0,
+    freeThrowAttempted: 0
   };
 
 
@@ -1115,9 +997,7 @@ function calculateSeasonStats(
     (game) => {
 
       totals.points +=
-        safeNumber(
-          game.points
-        );
+        safeNumber(game.points);
 
       totals.offensiveRebounds +=
         safeNumber(
@@ -1193,7 +1073,6 @@ function calculateSeasonStats(
 
 
   return {
-
     gamesPlayed:
       games.length,
 
@@ -1207,10 +1086,7 @@ function getSeasonFilterLabel(
   filter
 ) {
 
-  if (
-    filter === "All"
-  ) {
-
+  if (filter === "All") {
     return "All Games";
   }
 
@@ -1221,9 +1097,7 @@ function getSeasonFilterLabel(
 function refreshSeasonStatsSummary() {
 
   const games =
-    getSeasonGames(
-      "All"
-    );
+    getSeasonGames("All");
 
   const seasonData =
     calculateSeasonStats(
@@ -1234,9 +1108,7 @@ function refreshSeasonStatsSummary() {
     seasonData.gamesPlayed;
 
 
-  if (
-    count === 0
-  ) {
+  if (count === 0) {
 
     seasonStatsSummary.textContent =
       "No completed games yet";
@@ -1255,8 +1127,7 @@ function refreshSeasonStatsSummary() {
 
 
 function renderSeasonStats(
-  filter =
-    currentSeasonFilter
+  filter = currentSeasonFilter
 ) {
 
   currentSeasonFilter =
@@ -1430,16 +1301,266 @@ function refreshGameHistorySummary() {
     readCompletedGames()
       .filter(
         (game) =>
-          game.season ===
-          CURRENT_SEASON
+          game.season === CURRENT_SEASON
       )
       .length;
-
 
   gameHistorySummary.textContent =
     count === 0
       ? "No completed games yet"
       : `${count} completed ${count === 1 ? "game" : "games"}`;
+}
+
+
+function deleteCompletedGame(gameId) {
+
+  const games =
+    readCompletedGames();
+
+  const gameToDelete =
+    games.find(
+      (game) =>
+        game.id === gameId
+    );
+
+  if (!gameToDelete) {
+    return;
+  }
+
+  const confirmed =
+    window.confirm(
+      `Delete Game ${gameToDelete.gameNumber} vs. ${gameToDelete.opponent}? This cannot be undone.`
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const remainingGames =
+    games.filter(
+      (game) =>
+        game.id !== gameId
+    );
+
+  if (
+    !writeCompletedGames(
+      remainingGames
+    )
+  ) {
+    return;
+  }
+
+  renderGameHistory();
+  refreshGameHistorySummary();
+  refreshSeasonStatsSummary();
+}
+
+
+function attachSwipeToDelete(
+  row,
+  card,
+  deleteButton
+) {
+
+  const revealDistance = 92;
+
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let swiping = false;
+  let horizontalSwipe = false;
+
+  function setOffset(offset) {
+
+    const clamped =
+      Math.max(
+        -revealDistance,
+        Math.min(0, offset)
+      );
+
+    currentX = clamped;
+
+    card.style.transform =
+      `translateX(${clamped}px)`;
+
+    row.classList.toggle(
+      "is-delete-open",
+      clamped <=
+        -(revealDistance / 2)
+    );
+  }
+
+  function closeRow() {
+    setOffset(0);
+  }
+
+
+  card.addEventListener(
+    "pointerdown",
+    (event) => {
+
+      if (
+        event.pointerType === "mouse" &&
+        event.button !== 0
+      ) {
+        return;
+      }
+
+      startX =
+        event.clientX;
+
+      startY =
+        event.clientY;
+
+      swiping =
+        true;
+
+      horizontalSwipe =
+        false;
+
+
+      card.setPointerCapture?.(
+        event.pointerId
+      );
+    }
+  );
+
+
+  card.addEventListener(
+    "pointermove",
+    (event) => {
+
+      if (!swiping) {
+        return;
+      }
+
+      const deltaX =
+        event.clientX -
+        startX;
+
+      const deltaY =
+        event.clientY -
+        startY;
+
+
+      if (
+        !horizontalSwipe &&
+        Math.abs(deltaX) < 8 &&
+        Math.abs(deltaY) < 8
+      ) {
+        return;
+      }
+
+
+      if (
+        !horizontalSwipe &&
+        Math.abs(deltaY) >
+          Math.abs(deltaX)
+      ) {
+
+        swiping =
+          false;
+
+        closeRow();
+
+        return;
+      }
+
+
+      horizontalSwipe =
+        true;
+
+
+      setOffset(
+        Math.min(
+          0,
+          deltaX
+        )
+      );
+    }
+  );
+
+
+  function finishSwipe() {
+
+    if (!swiping) {
+      return;
+    }
+
+    swiping =
+      false;
+
+
+    if (
+      horizontalSwipe &&
+      currentX <=
+        -(revealDistance / 2)
+    ) {
+
+      setOffset(
+        -revealDistance
+      );
+
+    } else {
+
+      closeRow();
+    }
+  }
+
+
+  card.addEventListener(
+    "pointerup",
+    finishSwipe
+  );
+
+
+  card.addEventListener(
+    "pointercancel",
+    finishSwipe
+  );
+
+
+  card.addEventListener(
+    "click",
+    (event) => {
+
+      if (horizontalSwipe) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        horizontalSwipe =
+          false;
+
+        return;
+      }
+
+
+      if (
+        row.classList.contains(
+          "is-delete-open"
+        )
+      ) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        closeRow();
+      }
+    },
+    true
+  );
+
+
+  deleteButton.addEventListener(
+    "click",
+    (event) => {
+
+      event.stopPropagation();
+    }
+  );
 }
 
 
@@ -1449,30 +1570,18 @@ function renderGameHistory() {
     readCompletedGames()
       .filter(
         (game) =>
-          game.season ===
-          CURRENT_SEASON
+          game.season === CURRENT_SEASON
       )
       .sort(
-        (
-          a,
-          b
-        ) =>
-          safeNumber(
-            b.gameNumber
-          ) -
-          safeNumber(
-            a.gameNumber
-          )
+        (a, b) =>
+          (Number(b.gameNumber) || 0) -
+          (Number(a.gameNumber) || 0)
       );
-
 
   historyGameCount.textContent =
     games.length;
 
-
-  historyList.innerHTML =
-    "";
-
+  historyList.innerHTML = "";
 
   historyEmpty.hidden =
     games.length !== 0;
@@ -1481,15 +1590,42 @@ function renderGameHistory() {
   games.forEach(
     (game) => {
 
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "history-swipe-row";
+
+
+      const deleteButton =
+        document.createElement(
+          "button"
+        );
+
+      deleteButton.type =
+        "button";
+
+      deleteButton.className =
+        "history-delete-button";
+
+      deleteButton.textContent =
+        "DELETE";
+
+      deleteButton.setAttribute(
+        "aria-label",
+        `Delete Game ${game.gameNumber} vs. ${game.opponent}`
+      );
+
+
       const button =
         document.createElement(
           "button"
         );
 
-
       button.type =
         "button";
-
 
       button.className =
         "history-game-card";
@@ -1501,7 +1637,7 @@ function renderGameHistory() {
           <div class="history-game-copy">
 
             <span class="history-game-label">
-              GAME ${safeNumber(game.gameNumber)}
+              GAME ${game.gameNumber}
             </span>
 
             <strong class="history-game-opponent">
@@ -1519,7 +1655,7 @@ function renderGameHistory() {
           <div class="history-game-points">
 
             <strong>
-              ${safeNumber(game.points)}
+              ${Number(game.points) || 0}
             </strong>
 
             <span>
@@ -1534,28 +1670,28 @@ function renderGameHistory() {
 
           <div>
             <strong>
-              ${safeNumber(game.rebounds)}
+              ${Number(game.rebounds) || 0}
             </strong>
             <span>REB</span>
           </div>
 
           <div>
             <strong>
-              ${safeNumber(game.assists)}
+              ${Number(game.assists) || 0}
             </strong>
             <span>AST</span>
           </div>
 
           <div>
             <strong>
-              ${safeNumber(game.steals)}
+              ${Number(game.steals) || 0}
             </strong>
             <span>STL</span>
           </div>
 
           <div>
             <strong>
-              ${safeNumber(game.blocks)}
+              ${Number(game.blocks) || 0}
             </strong>
             <span>BLK</span>
           </div>
@@ -1568,6 +1704,14 @@ function renderGameHistory() {
         "click",
         () => {
 
+          if (
+            row.classList.contains(
+              "is-delete-open"
+            )
+          ) {
+            return;
+          }
+
           renderGameDetail(
             game
           );
@@ -1579,27 +1723,52 @@ function renderGameHistory() {
       );
 
 
-      historyList.appendChild(
+      deleteButton.addEventListener(
+        "click",
+        () => {
+
+          deleteCompletedGame(
+            game.id
+          );
+        }
+      );
+
+
+      row.appendChild(
+        deleteButton
+      );
+
+      row.appendChild(
         button
+      );
+
+
+      attachSwipeToDelete(
+        row,
+        button,
+        deleteButton
+      );
+
+
+      historyList.appendChild(
+        row
       );
     }
   );
 }
 
 
-function renderGameDetail(
-  game
-) {
+function renderGameDetail(game) {
 
   const fieldGoalsMade =
-    safeNumber(
+    Number(
       game.fieldGoalsMade
-    );
+    ) || 0;
 
   const fieldGoalAttempts =
-    safeNumber(
+    Number(
       game.fieldGoalAttempts
-    );
+    ) || 0;
 
 
   detailSeasonLabel.textContent =
@@ -1607,11 +1776,11 @@ function renderGameDetail(
 
 
   detailTitle.textContent =
-    `Game ${safeNumber(game.gameNumber)}`;
+    `Game ${game.gameNumber}`;
 
 
   detailGameNumber.textContent =
-    `GAME ${safeNumber(game.gameNumber)}`;
+    `GAME ${game.gameNumber}`;
 
 
   detailOpponent.textContent =
@@ -1625,45 +1794,31 @@ function renderGameDetail(
 
 
   detailPoints.textContent =
-    safeNumber(
-      game.points
-    );
+    Number(game.points) || 0;
 
 
   detailRebounds.textContent =
-    safeNumber(
-      game.rebounds
-    );
+    Number(game.rebounds) || 0;
 
 
   detailAssists.textContent =
-    safeNumber(
-      game.assists
-    );
+    Number(game.assists) || 0;
 
 
   detailSteals.textContent =
-    safeNumber(
-      game.steals
-    );
+    Number(game.steals) || 0;
 
 
   detailBlocks.textContent =
-    safeNumber(
-      game.blocks
-    );
+    Number(game.blocks) || 0;
 
 
   detailTurnovers.textContent =
-    safeNumber(
-      game.turnovers
-    );
+    Number(game.turnovers) || 0;
 
 
   detailFouls.textContent =
-    safeNumber(
-      game.fouls
-    );
+    Number(game.fouls) || 0;
 
 
   detailFieldGoals.textContent =
@@ -1675,7 +1830,8 @@ function renderGameDetail(
 
 
   detailTwoPoint.textContent =
-    `${safeNumber(game.twoMade)}/${safeNumber(game.twoAttempted)} · ` +
+    `${Number(game.twoMade) || 0}/` +
+    `${Number(game.twoAttempted) || 0} · ` +
     `${formatPercentage(
       game.twoMade,
       game.twoAttempted
@@ -1683,7 +1839,8 @@ function renderGameDetail(
 
 
   detailThreePoint.textContent =
-    `${safeNumber(game.threeMade)}/${safeNumber(game.threeAttempted)} · ` +
+    `${Number(game.threeMade) || 0}/` +
+    `${Number(game.threeAttempted) || 0} · ` +
     `${formatPercentage(
       game.threeMade,
       game.threeAttempted
@@ -1691,7 +1848,8 @@ function renderGameDetail(
 
 
   detailFreeThrows.textContent =
-    `${safeNumber(game.freeThrowMade)}/${safeNumber(game.freeThrowAttempted)} · ` +
+    `${Number(game.freeThrowMade) || 0}/` +
+    `${Number(game.freeThrowAttempted) || 0} · ` +
     `${formatPercentage(
       game.freeThrowMade,
       game.freeThrowAttempted
@@ -1699,20 +1857,81 @@ function renderGameDetail(
 
 
   detailOffensiveRebounds.textContent =
-    safeNumber(
+    Number(
       game.offensiveRebounds
-    );
+    ) || 0;
 
 
   detailDefensiveRebounds.textContent =
-    safeNumber(
+    Number(
       game.defensiveRebounds
-    );
+    ) || 0;
+}
+
+
+function escapeHtml(value) {
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 
 /* ======================================================
-   RESUME ACTIVE GAME
+   PLAYER NUMBER STORAGE
+====================================================== */
+
+function savePlayerNumber(number) {
+
+  if (!canUseStorage) {
+    return;
+  }
+
+  try {
+
+    localStorage.setItem(
+      PLAYER_NUMBER_KEY,
+      number
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Could not save player number:",
+      error
+    );
+  }
+}
+
+
+function getSavedPlayerNumber() {
+
+  if (!canUseStorage) {
+    return "2";
+  }
+
+  try {
+
+    return (
+      localStorage.getItem(
+        PLAYER_NUMBER_KEY
+      ) || "2"
+    );
+
+  } catch (error) {
+
+    return "2";
+  }
+}
+
+
+/* ======================================================
+   RESUME CARD
 ====================================================== */
 
 function calculateSavedPoints(
@@ -1720,17 +1939,9 @@ function calculateSavedPoints(
 ) {
 
   return (
-    safeNumber(
-      savedStats.twoMade
-    ) *
-      2 +
-    safeNumber(
-      savedStats.threeMade
-    ) *
-      3 +
-    safeNumber(
-      savedStats.freeThrowMade
-    )
+    (Number(savedStats.twoMade) || 0) * 2 +
+    (Number(savedStats.threeMade) || 0) * 3 +
+    (Number(savedStats.freeThrowMade) || 0)
   );
 }
 
@@ -1740,13 +1951,9 @@ function refreshResumeCard() {
   const saved =
     readActiveGame();
 
+  if (!saved) {
 
-  if (
-    !saved
-  ) {
-
-    resumeGameCard.hidden =
-      true;
+    resumeGameCard.hidden = true;
 
     return;
   }
@@ -1756,16 +1963,13 @@ function refreshResumeCard() {
     saved.game.opponent ||
     "Opponent";
 
-
   const location =
     saved.game.location ||
     "Home";
 
-
   const type =
     saved.game.type ||
     "Regular Season";
-
 
   const points =
     calculateSavedPoints(
@@ -1776,39 +1980,34 @@ function refreshResumeCard() {
   resumeOpponent.textContent =
     `vs. ${opponent}`;
 
-
   resumeDetails.textContent =
     `${location} · ${points} PTS`;
-
 
   resumeGameType.textContent =
     type.toUpperCase();
 
-
-  resumeGameCard.hidden =
-    false;
+  resumeGameCard.hidden = false;
 }
 
+
+/* ======================================================
+   RESTORE ACTIVE GAME
+====================================================== */
 
 function restoreActiveGame() {
 
   const saved =
     readActiveGame();
 
-
-  if (
-    !saved
-  ) {
-
+  if (!saved) {
     return false;
   }
 
 
   currentGameNumber =
-    safeNumber(
+    Number(
       saved.gameNumber
-    ) ||
-    1;
+    ) || 1;
 
 
   currentGame = {
@@ -1851,15 +2050,14 @@ function restoreActiveGame() {
     (key) => {
 
       stats[key] =
-        safeNumber(
+        Number(
           saved.stats[key]
-        );
+        ) || 0;
     }
   );
 
 
-  actionHistory.length =
-    0;
+  actionHistory.length = 0;
 
 
   if (
@@ -1874,21 +2072,18 @@ function restoreActiveGame() {
   }
 
 
-  gameIsActive =
-    true;
-
+  gameIsActive = true;
 
   updateGameHeader();
 
   updateDisplay();
-
 
   return true;
 }
 
 
 /* ======================================================
-   GAME SETUP / DISPLAY
+   NEW GAME FORM
 ====================================================== */
 
 function prepareNewGameForm() {
@@ -1896,94 +2091,83 @@ function prepareNewGameForm() {
   currentGameNumber =
     getNextGameNumber();
 
-
   playerNumberInput.value =
     getSavedPlayerNumber();
 
-
-  opponentInput.value =
-    "";
-
+  opponentInput.value = "";
 
   gameDateInput.value =
     getTodayForDateInput();
 
+  locationHome.checked = true;
 
-  locationHome.checked =
-    true;
+  typeRegular.checked = true;
 
-
-  typeRegular.checked =
-    true;
-
-
-  setupMessage.textContent =
-    "";
+  setupMessage.textContent = "";
 }
 
+
+/* ======================================================
+   GAME HEADER
+====================================================== */
 
 function updateGameHeader() {
 
   gameSeasonLabel.textContent =
     `${CURRENT_SEASON} SEASON · GAME ${currentGameNumber}`;
 
-
   gamePlayerNumber.textContent =
     `#${currentGame.playerNumber}`;
 
-
   gameOpponent.textContent =
     `vs. ${currentGame.opponent} · ${currentGame.location}`;
-
 
   gameTypeBadge.textContent =
     currentGame.type.toUpperCase();
 }
 
 
+/* ======================================================
+   DISPLAY
+====================================================== */
+
 function updateDisplay() {
 
   pointsElement.textContent =
     calculatePoints();
 
-
   reboundsElement.textContent =
     calculateRebounds();
-
 
   assistsElement.textContent =
     stats.assists;
 
-
   stealsElement.textContent =
     stats.steals;
-
 
   blocksElement.textContent =
     stats.blocks;
 
-
   turnoversElement.textContent =
     stats.turnovers;
-
 
   foulsElement.textContent =
     stats.fouls;
 
-
   fgPercentElement.textContent =
     calculateFieldGoalPercentage();
-
 
   shootingSummaryElement.textContent =
     getShootingSummary();
 
-
   undoButton.disabled =
-    actionHistory.length ===
-    0;
+    actionHistory.length === 0;
 }
 
+
+/* ======================================================
+   RESET STATS
+====================================================== */
 
 function resetGameStats() {
 
@@ -1992,22 +2176,18 @@ function resetGameStats() {
   ).forEach(
     (key) => {
 
-      stats[key] =
-        0;
+      stats[key] = 0;
     }
   );
 
-
-  actionHistory.length =
-    0;
-
+  actionHistory.length = 0;
 
   updateDisplay();
 }
 
 
 /* ======================================================
-   HOME / NAVIGATION EVENTS
+   HOME EVENTS
 ====================================================== */
 
 newGameButton.addEventListener(
@@ -2017,10 +2197,7 @@ newGameButton.addEventListener(
     const savedGame =
       readActiveGame();
 
-
-    if (
-      savedGame
-    ) {
+    if (savedGame) {
 
       openModal(
         replaceGameModal
@@ -2031,7 +2208,6 @@ newGameButton.addEventListener(
 
 
     prepareNewGameForm();
-
 
     showScreen(
       setupScreen
@@ -2063,11 +2239,9 @@ seasonStatsButton.addEventListener(
     currentSeasonFilter =
       "All";
 
-
     renderSeasonStats(
       currentSeasonFilter
     );
-
 
     showScreen(
       seasonStatsScreen
@@ -2081,7 +2255,6 @@ seasonStatsBackButton.addEventListener(
   () => {
 
     refreshSeasonStatsSummary();
-
 
     showScreen(
       homeScreen
@@ -2098,8 +2271,7 @@ seasonFilterButtons.forEach(
       () => {
 
         renderSeasonStats(
-          button.dataset
-            .seasonFilter
+          button.dataset.seasonFilter
         );
       }
     );
@@ -2112,7 +2284,6 @@ gameHistoryButton.addEventListener(
   () => {
 
     renderGameHistory();
-
 
     showScreen(
       historyScreen
@@ -2127,7 +2298,6 @@ historyBackButton.addEventListener(
 
     refreshGameHistorySummary();
 
-
     showScreen(
       homeScreen
     );
@@ -2140,7 +2310,6 @@ detailBackButton.addEventListener(
   () => {
 
     renderGameHistory();
-
 
     showScreen(
       historyScreen
@@ -2197,46 +2366,34 @@ gameSetupForm.addEventListener(
       );
 
 
-    if (
-      !playerNumber
-    ) {
+    if (!playerNumber) {
 
       setupMessage.textContent =
         "Enter a player number.";
 
-
       playerNumberInput.focus();
-
 
       return;
     }
 
 
-    if (
-      !opponent
-    ) {
+    if (!opponent) {
 
       setupMessage.textContent =
         "Enter an opponent.";
 
-
       opponentInput.focus();
-
 
       return;
     }
 
 
-    if (
-      !date
-    ) {
+    if (!date) {
 
       setupMessage.textContent =
         "Select a game date.";
 
-
       gameDateInput.focus();
-
 
       return;
     }
@@ -2249,7 +2406,6 @@ gameSetupForm.addEventListener(
 
       setupMessage.textContent =
         "Complete the game details.";
-
 
       return;
     }
@@ -2276,9 +2432,7 @@ gameSetupForm.addEventListener(
 
     resetGameStats();
 
-
-    gameIsActive =
-      true;
+    gameIsActive = true;
 
 
     savePlayerNumber(
@@ -2293,7 +2447,6 @@ gameSetupForm.addEventListener(
 
     writeActiveGame();
 
-
     refreshResumeCard();
 
 
@@ -2305,20 +2458,16 @@ gameSetupForm.addEventListener(
 
 
 /* ======================================================
-   STAT TRACKING
+   BUTTON FEEDBACK
 ====================================================== */
 
-function showTapFeedback(
-  button
-) {
+function showTapFeedback(button) {
 
   button.classList.remove(
     "stat-recorded"
   );
 
-
   void button.offsetWidth;
-
 
   button.classList.add(
     "stat-recorded"
@@ -2338,13 +2487,13 @@ function showTapFeedback(
 }
 
 
-function recordAction(
-  action
-) {
+/* ======================================================
+   RECORD STAT
+====================================================== */
 
-  switch (
-    action
-  ) {
+function recordAction(action) {
+
+  switch (action) {
 
     case "2pt-made":
 
@@ -2456,10 +2605,13 @@ function recordAction(
 
   updateDisplay();
 
-
   writeActiveGame();
 }
 
+
+/* ======================================================
+   STAT BUTTON EVENTS
+====================================================== */
 
 statButtons.forEach(
   (button) => {
@@ -2482,11 +2634,14 @@ statButtons.forEach(
 );
 
 
+/* ======================================================
+   UNDO
+====================================================== */
+
 function undoLastAction() {
 
   if (
-    actionHistory.length ===
-    0
+    actionHistory.length === 0
   ) {
 
     return;
@@ -2497,9 +2652,7 @@ function undoLastAction() {
     actionHistory.pop();
 
 
-  switch (
-    action
-  ) {
+  switch (action) {
 
     case "2pt-made":
 
@@ -2601,7 +2754,6 @@ function undoLastAction() {
 
   updateDisplay();
 
-
   writeActiveGame();
 }
 
@@ -2616,20 +2768,16 @@ undoButton.addEventListener(
    MODALS
 ====================================================== */
 
-function openModal(
-  modal
-) {
+function openModal(modal) {
 
   modal.classList.add(
     "is-open"
   );
 
-
   modal.setAttribute(
     "aria-hidden",
     "false"
   );
-
 
   document.body.classList.add(
     "modal-open"
@@ -2637,20 +2785,16 @@ function openModal(
 }
 
 
-function closeModal(
-  modal
-) {
+function closeModal(modal) {
 
   modal.classList.remove(
     "is-open"
   );
 
-
   modal.setAttribute(
     "aria-hidden",
     "true"
   );
-
 
   document.body.classList.remove(
     "modal-open"
@@ -2659,7 +2803,7 @@ function closeModal(
 
 
 /* ======================================================
-   END / SAVE GAME
+   END GAME
 ====================================================== */
 
 endGameButton.addEventListener(
@@ -2669,18 +2813,14 @@ endGameButton.addEventListener(
     finalPointsElement.textContent =
       calculatePoints();
 
-
     finalReboundsElement.textContent =
       calculateRebounds();
-
 
     finalAssistsElement.textContent =
       stats.assists;
 
-
     finalStealsElement.textContent =
       stats.steals;
-
 
     finalShootingElement.textContent =
       getShootingSummary();
@@ -2703,6 +2843,10 @@ cancelEndGameButton.addEventListener(
   }
 );
 
+
+/* ======================================================
+   SAVE COMPLETED GAME
+====================================================== */
 
 confirmEndGameButton.addEventListener(
   "click",
@@ -2800,21 +2944,22 @@ confirmEndGameButton.addEventListener(
       );
 
 
-    if (
-      !savedSuccessfully
-    ) {
+    if (!savedSuccessfully) {
 
       console.error(
         "Completed game could not be saved."
       );
 
-
       return;
     }
 
 
-    gameIsActive =
-      false;
+    gameIsActive = false;
+
+
+    advanceNextGameNumber(
+      currentGameNumber
+    );
 
 
     deleteActiveGame();
@@ -2834,9 +2979,7 @@ confirmEndGameButton.addEventListener(
 
     refreshResumeCard();
 
-
     refreshGameHistorySummary();
-
 
     refreshSeasonStatsSummary();
 
@@ -2849,7 +2992,7 @@ confirmEndGameButton.addEventListener(
 
 
 /* ======================================================
-   CANCEL GAME / ACTIVE GAME REPLACEMENT
+   CANCEL GAME
 ====================================================== */
 
 exitGameButton.addEventListener(
@@ -2878,8 +3021,7 @@ discardGameButton.addEventListener(
   "click",
   () => {
 
-    gameIsActive =
-      false;
+    gameIsActive = false;
 
 
     deleteActiveGame();
@@ -2902,6 +3044,10 @@ discardGameButton.addEventListener(
   }
 );
 
+
+/* ======================================================
+   EXISTING ACTIVE GAME
+====================================================== */
 
 resumeInsteadButton.addEventListener(
   "click",
@@ -2928,8 +3074,7 @@ replaceGameButton.addEventListener(
   "click",
   () => {
 
-    gameIsActive =
-      false;
+    gameIsActive = false;
 
 
     deleteActiveGame();
@@ -2956,6 +3101,10 @@ replaceGameButton.addEventListener(
 );
 
 
+/* ======================================================
+   MODAL BACKDROP
+====================================================== */
+
 [
   endGameModal,
   cancelGameModal,
@@ -2968,8 +3117,7 @@ replaceGameButton.addEventListener(
       (event) => {
 
         if (
-          event.target ===
-          modal
+          event.target === modal
         ) {
 
           closeModal(
@@ -2991,8 +3139,7 @@ document.addEventListener(
   () => {
 
     if (
-      document.visibilityState ===
-        "hidden" &&
+      document.visibilityState === "hidden" &&
       gameIsActive
     ) {
 
@@ -3017,7 +3164,7 @@ window.addEventListener(
 
 
 /* ======================================================
-   INITIALIZE
+   INITIALIZE APP
 ====================================================== */
 
 function initializeApp() {
@@ -3039,9 +3186,7 @@ function initializeApp() {
 
   refreshResumeCard();
 
-
   refreshGameHistorySummary();
-
 
   refreshSeasonStatsSummary();
 
