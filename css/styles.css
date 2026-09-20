@@ -2227,3 +2227,42 @@ button:focus-visible {
 
   opacity: 0.7;
 }
+/* ======================================================
+   SYNC STATUS
+====================================================== */
+
+.sync-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 5px;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.sync-status-dot {
+  width: 7px;
+  height: 7px;
+
+  background: #9ba5ae;
+
+  border-radius: 50%;
+}
+
+.sync-status.is-synced .sync-status-dot {
+  background: #2e9d59;
+}
+
+.sync-status.is-syncing .sync-status-dot {
+  background: #d99a23;
+}
+
+.sync-status.is-offline .sync-status-dot {
+  background: var(--red);
+}
