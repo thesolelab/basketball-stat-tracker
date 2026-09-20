@@ -98,7 +98,7 @@
         </div>
 
         <div class="shooting-summary" id="shootingSummary">
-          FG 0/0 · FT 0/0
+          FG 0/0 · 3PT 0/0 · FT 0/0
         </div>
       </div>
 
@@ -111,7 +111,7 @@
         </button>
 
         <button class="btn-miss" data-action="2pt-miss">
-          MISS
+          <span class="miss-x">×</span> MISS
         </button>
       </div>
 
@@ -124,7 +124,7 @@
         </button>
 
         <button class="btn-miss" data-action="3pt-miss">
-          MISS
+          <span class="miss-x">×</span> MISS
         </button>
       </div>
 
@@ -137,7 +137,7 @@
         </button>
 
         <button class="btn-miss" data-action="ft-miss">
-          MISS
+          <span class="miss-x">×</span> MISS
         </button>
       </div>
 
@@ -154,39 +154,81 @@
       <div class="stat-buttons">
 
         <button data-action="oreb">
-          <span>↑</span>
+          <span class="stat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 20V5"></path>
+              <path d="m6 11 6-6 6 6"></path>
+              <path d="M5 21h14"></path>
+            </svg>
+          </span>
           OFF REB
         </button>
 
         <button data-action="assist">
-          <span>A</span>
+          <span class="stat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="8" cy="8" r="3"></circle>
+              <path d="M3 19c.5-3.5 2.2-5 5-5s4.5 1.5 5 5"></path>
+              <path d="M14 9h7"></path>
+              <path d="m18 5 4 4-4 4"></path>
+            </svg>
+          </span>
           ASSIST
         </button>
 
         <button data-action="block">
-          <span>✋</span>
+          <span class="stat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M7 20V9"></path>
+              <path d="M11 20V5"></path>
+              <path d="M15 20V7"></path>
+              <path d="M19 20v-9"></path>
+              <path d="M4 14c0 4 3 7 7 7h3c4 0 6-2 6-6v-4"></path>
+            </svg>
+          </span>
           BLOCK
         </button>
 
         <button data-action="dreb">
-          <span>↓</span>
+          <span class="stat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 4v15"></path>
+              <path d="m18 13-6 6-6-6"></path>
+              <path d="M5 3h14"></path>
+            </svg>
+          </span>
           DEF REB
         </button>
 
         <button data-action="steal">
-          <span>S</span>
+          <span class="stat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="9" cy="14" r="5"></circle>
+              <path d="M14 14h5"></path>
+              <path d="m17 11 3 3-3 3"></path>
+              <path d="M7 12c1.5 1 2.5 2.5 3 5"></path>
+            </svg>
+          </span>
           STEAL
         </button>
 
         <button data-action="turnover">
-          <span>↩</span>
+          <span class="stat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M7 7h10a4 4 0 0 1 4 4v1"></path>
+              <path d="m17 4-3 3 3 3"></path>
+              <path d="M17 17H7a4 4 0 0 1-4-4v-1"></path>
+              <path d="m7 20 3-3-3-3"></path>
+            </svg>
+          </span>
           TURNOVER
         </button>
 
       </div>
 
       <button class="foul-button" data-action="foul">
-        ● PERSONAL FOUL
+        <span class="foul-dot"></span>
+        PERSONAL FOUL
       </button>
 
     </section>
@@ -197,7 +239,7 @@
     ========================== -->
     <section class="game-controls">
 
-      <button id="undoButton" class="undo-button">
+      <button id="undoButton" class="undo-button" disabled>
         ↶ Undo
       </button>
 
@@ -206,6 +248,82 @@
       </button>
 
     </section>
+
+  </div>
+
+
+  <!-- =========================
+       END GAME MODAL
+  ========================== -->
+  <div
+    class="modal-backdrop"
+    id="endGameModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="end-game-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="endGameTitle"
+    >
+
+      <div class="modal-handle"></div>
+
+      <span class="eyebrow">GAME COMPLETE</span>
+
+      <h2 id="endGameTitle">
+        End this game?
+      </h2>
+
+      <p class="modal-description">
+        Review the final stat line before saving the game.
+      </p>
+
+
+      <div class="final-stat-line">
+
+        <div>
+          <strong id="finalPoints">0</strong>
+          <span>PTS</span>
+        </div>
+
+        <div>
+          <strong id="finalRebounds">0</strong>
+          <span>REB</span>
+        </div>
+
+        <div>
+          <strong id="finalAssists">0</strong>
+          <span>AST</span>
+        </div>
+
+        <div>
+          <strong id="finalSteals">0</strong>
+          <span>STL</span>
+        </div>
+
+      </div>
+
+
+      <div class="final-shooting" id="finalShooting">
+        FG 0/0 · 3PT 0/0 · FT 0/0
+      </div>
+
+
+      <div class="modal-actions">
+
+        <button id="cancelEndGame" class="modal-cancel">
+          KEEP TRACKING
+        </button>
+
+        <button id="confirmEndGame" class="modal-confirm">
+          SAVE GAME
+        </button>
+
+      </div>
+
+    </div>
 
   </div>
 
