@@ -19,9 +19,8 @@
 
   <main class="app">
 
-
     <!-- ==================================================
-         HOME SCREEN
+         HOME
     =================================================== -->
 
     <section
@@ -35,9 +34,7 @@
           BASKETBALL STAT TRACKER
         </span>
 
-        <h1>
-          ADDYSON
-        </h1>
+        <h1>ADDYSON</h1>
 
         <p class="home-season">
           2026–27 Season
@@ -46,7 +43,7 @@
       </section>
 
 
-      <!-- ACTIVE GAME -->
+      <!-- SAVED ACTIVE GAME -->
 
       <section
         class="resume-game-card"
@@ -72,13 +69,13 @@
 
         <div class="resume-game-main">
 
-          <div>
+          <div class="resume-game-info">
 
             <strong
               class="resume-opponent"
               id="resumeOpponent"
             >
-              Opponent
+              vs. Opponent
             </strong>
 
             <span
@@ -104,6 +101,8 @@
       </section>
 
 
+      <!-- HOME ACTIONS -->
+
       <section class="home-actions">
 
         <button
@@ -112,7 +111,10 @@
           id="newGameButton"
         >
 
-          <span class="home-action-icon">
+          <span
+            class="home-action-icon"
+            aria-hidden="true"
+          >
 
             <svg viewBox="0 0 24 24">
               <path d="M12 5v14"></path>
@@ -120,6 +122,7 @@
             </svg>
 
           </span>
+
 
           <span class="home-action-copy">
 
@@ -133,7 +136,11 @@
 
           </span>
 
-          <span class="home-action-arrow">
+
+          <span
+            class="home-action-arrow"
+            aria-hidden="true"
+          >
             ›
           </span>
 
@@ -187,7 +194,7 @@
 
 
     <!-- ==================================================
-         NEW GAME SCREEN
+         NEW GAME
     =================================================== -->
 
     <section
@@ -205,6 +212,7 @@
         >
           ‹
         </button>
+
 
         <div>
 
@@ -226,6 +234,8 @@
         id="gameSetupForm"
       >
 
+        <!-- PLAYER NUMBER -->
+
         <div class="form-group">
 
           <label for="playerNumber">
@@ -243,6 +253,8 @@
 
         </div>
 
+
+        <!-- OPPONENT -->
 
         <div class="form-group">
 
@@ -262,6 +274,8 @@
         </div>
 
 
+        <!-- DATE -->
+
         <div class="form-group">
 
           <label for="gameDate">
@@ -276,6 +290,8 @@
 
         </div>
 
+
+        <!-- LOCATION -->
 
         <fieldset class="form-group">
 
@@ -313,6 +329,8 @@
 
         </fieldset>
 
+
+        <!-- GAME TYPE -->
 
         <fieldset class="form-group">
 
@@ -383,13 +401,15 @@
 
 
     <!-- ==================================================
-         LIVE GAME SCREEN
+         LIVE GAME
     =================================================== -->
 
     <section
       class="screen"
       id="gameScreen"
     >
+
+      <!-- HEADER -->
 
       <section class="game-card">
 
@@ -407,9 +427,7 @@
 
             <div class="player-name-row">
 
-              <h1>
-                ADDYSON
-              </h1>
+              <h1>ADDYSON</h1>
 
               <span
                 class="player-number"
@@ -454,6 +472,8 @@
         </div>
 
 
+        <!-- LIVE STAT BAR -->
+
         <div class="stat-bar">
 
           <div class="stat">
@@ -496,7 +516,9 @@
       </section>
 
 
-      <!-- SHOOTING -->
+      <!-- ==================================================
+           SHOOTING
+      =================================================== -->
 
       <section class="card shooting-card">
 
@@ -605,7 +627,9 @@
       </section>
 
 
-      <!-- OTHER STATS -->
+      <!-- ==================================================
+           OTHER STATS
+      =================================================== -->
 
       <section class="card other-stats-card">
 
@@ -907,7 +931,9 @@
       </section>
 
 
-      <!-- GAME CONTROLS -->
+      <!-- ==================================================
+           GAME CONTROLS
+      =================================================== -->
 
       <section class="game-controls">
 
@@ -955,7 +981,7 @@
   >
 
     <section
-      class="end-game-modal"
+      class="bottom-sheet"
       role="dialog"
       aria-modal="true"
       aria-labelledby="endGameTitle"
@@ -1048,7 +1074,7 @@
   >
 
     <section
-      class="end-game-modal"
+      class="bottom-sheet"
       role="dialog"
       aria-modal="true"
       aria-labelledby="cancelGameTitle"
@@ -1098,7 +1124,7 @@
 
 
   <!-- ==================================================
-       REPLACE ACTIVE GAME MODAL
+       ACTIVE GAME EXISTS MODAL
   =================================================== -->
 
   <div
@@ -1108,7 +1134,7 @@
   >
 
     <section
-      class="end-game-modal"
+      class="bottom-sheet"
       role="dialog"
       aria-modal="true"
       aria-labelledby="replaceGameTitle"
@@ -1128,7 +1154,7 @@
       </h2>
 
       <p class="modal-description">
-        Starting a new game will discard the unfinished game currently saved on this device.
+        You already have an unfinished game saved on this device.
       </p>
 
 
@@ -1147,7 +1173,7 @@
           id="replaceGameButton"
           class="modal-confirm"
         >
-          NEW GAME
+          DISCARD & NEW
         </button>
 
       </div>
