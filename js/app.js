@@ -2222,6 +2222,15 @@ detailBackButton.addEventListener(
   }
 );
 
+if (shareStatsButton) {
+  shareStatsButton.addEventListener(
+    "click",
+    () => {
+      void shareSelectedGame();
+    }
+  );
+}
+
 setupBackButton.addEventListener(
   "click",
   () => {
