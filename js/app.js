@@ -30,6 +30,7 @@ let currentGameNumber = 1;
 let gameIsActive = false;
 let currentSeasonFilter = "All";
 let syncPromise = null;
+let selectedDetailGame = null;
 
 /* ======================================================
    CURRENT GAME
@@ -184,6 +185,7 @@ const detailThreePoint = document.getElementById("detailThreePoint");
 const detailFreeThrows = document.getElementById("detailFreeThrows");
 const detailOffensiveRebounds = document.getElementById("detailOffensiveRebounds");
 const detailDefensiveRebounds = document.getElementById("detailDefensiveRebounds");
+const shareStatsButton = document.getElementById("shareStatsButton");
 
 const statButtons = document.querySelectorAll("[data-action]");
 
@@ -1571,6 +1573,8 @@ function renderGameHistory() {
 }
 
 function renderGameDetail(game) {
+  selectedDetailGame = game;
+   
   const fieldGoalsMade =
     safeNumber(
       game.fieldGoalsMade
@@ -1684,6 +1688,156 @@ function renderGameDetail(game) {
     safeNumber(
       game.defensiveRebounds
     );
+}
+
+/* ======================================================
+   SHARE GAME STATS
+====================================================== */
+
+function buildGameShareText(game) {
+  const fieldGoalsMade =
+    safeNumber(
+      game.fieldGoalsMade
+    );
+
+  const fieldGoalAttempts =
+    safeNumber(
+      game.fieldGoalAttempts
+    );
+
+  return [
+    `Addyson vs. ${game.opponent || "Opponent"}`,
+    formatGameDate(game.date),
+    "",
+    `${safeNumber(game.points)} PTS | ` +
+      `${safeNumber(game.rebounds)} REB | ` +
+      `${safeNumber(game.assists)} AST | ` +
+      `${safeNumber(game.steals)} STL | ` +
+      `${safeNumber(game.blocks)} BLK`,
+
+    `FG ${fieldGoalsMade}/${fieldGoalAttempts} ` +
+      `(${formatPercentage(
+        fieldGoalsMade,
+        fieldGoalAttempts
+      )}) | ` +
+      `3PT ${safeNumber(game.threeMade)}/` +
+      `${safeNumber(game.threeAttempted)} ` +
+      `(${formatPercentage(
+        game.threeMade,
+        game.threeAttempted
+      )}) | ` +
+      `FT ${safeNumber(game.freeThrowMade)}/` +
+      `${safeNumber(game.freeThrowAttempted)} ` +
+      `(${formatPercentage(
+        game.freeThrowMade,
+        game.freeThrowAttempted
+      )})`,
+
+    `${safeNumber(game.offensiveRebounds)} OREB | ` +
+      `${safeNumber(game.defensiveRebounds)} DREB | ` +
+      `${safeNumber(game.turnovers)} TOV | ` +
+      `${safeNumber(game.fouls)} PF`
+  ].join("\n");
+}
+
+
+async function shareSelectedGame() {
+  if (!selectedDetailGame) {
+    return;
+  }
+
+  const text =
+    buildGameShareText(
+      selectedDetailGame
+    );
+
+  try {
+
+    if (navigator.share) {
+      await navigator.share({
+        title:
+          `Addyson vs. ${
+            selectedDetailGame.opponent ||
+            "Opponent"
+          }`,
+        text
+      });
+
+      return;
+    }
+
+
+    if (
+      navigator.clipboard &&
+      window.isSecureContext
+    ) {
+      await navigator.clipboard.writeText(
+        text
+      );
+
+    } else {
+
+      const textarea =
+        document.createElement(
+          "textarea"
+        );
+
+      textarea.value =
+        text;
+
+      textarea.setAttribute(
+        "readonly",
+        ""
+      );
+
+      textarea.style.position =
+        "fixed";
+
+      textarea.style.opacity =
+        "0";
+
+      document.body.appendChild(
+        textarea
+      );
+
+      textarea.select();
+
+      document.execCommand(
+        "copy"
+      );
+
+      textarea.remove();
+    }
+
+
+    const originalText =
+      shareStatsButton.textContent;
+
+    shareStatsButton.textContent =
+      "COPIED";
+
+    window.setTimeout(
+      () => {
+        shareStatsButton.textContent =
+          originalText;
+      },
+      1500
+    );
+
+  } catch (error) {
+
+    if (
+      error &&
+      error.name === "AbortError"
+    ) {
+      return;
+    }
+
+    console.error(
+      "Could not share game stats:",
+      error
+    );
+  }
 }
 
 /* ======================================================
