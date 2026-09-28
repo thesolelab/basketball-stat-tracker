@@ -2,26 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
-
   <meta name="theme-color" content="#c8102e">
-
   <title>Basketball Stat Tracker</title>
-
-  <link rel="stylesheet" href="css/styles.css?v=20260920-3">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
   <main class="app">
-
-    <!-- ==================================================
-         HOME
-    =================================================== -->
 
     <section
       class="screen active-screen"
@@ -29,7 +21,6 @@
     >
 
       <section class="home-hero">
-
         <span class="home-eyebrow">
           BASKETBALL STAT TRACKER
         </span>
@@ -39,11 +30,8 @@
         <p class="home-season">
           2026–27 Season
         </p>
-
       </section>
 
-
-      <!-- SAVED ACTIVE GAME -->
 
       <section
         class="resume-game-card"
@@ -101,8 +89,6 @@
       </section>
 
 
-      <!-- HOME ACTIONS -->
-
       <section class="home-actions">
 
         <button
@@ -115,17 +101,13 @@
             class="home-action-icon"
             aria-hidden="true"
           >
-
             <svg viewBox="0 0 24 24">
               <path d="M12 5v14"></path>
               <path d="M5 12h14"></path>
             </svg>
-
           </span>
 
-
           <span class="home-action-copy">
-
             <strong>
               Start New Game
             </strong>
@@ -133,9 +115,7 @@
             <small>
               Set up opponent and game details
             </small>
-
           </span>
-
 
           <span
             class="home-action-arrow"
@@ -203,19 +183,26 @@
         </button>
 
       </section>
-      <div class="sync-status" id="syncStatus">
+
+
+      <div
+        class="sync-status"
+        id="syncStatus"
+      >
         <span class="sync-status-dot"></span>
-        <span id="syncStatusText">Checking sync…</span>
+
+        <span id="syncStatusText">
+          Checking sync…
+        </span>
       </div>
+
+
       <p class="build-version">
-        Build 2026.09.20.5
+        Build 2026.09.27.2
       </p>
+
     </section>
 
-
-    <!-- ==================================================
-         SEASON STATS
-    =================================================== -->
 
     <section
       class="screen"
@@ -234,8 +221,13 @@
         </button>
 
         <div>
-          <span class="eyebrow">2026–27 SEASON</span>
-          <h1>Season Stats</h1>
+          <span class="eyebrow">
+            2026–27 SEASON
+          </span>
+
+          <h1>
+            Season Stats
+          </h1>
         </div>
 
       </div>
@@ -291,8 +283,13 @@
         id="seasonStatsEmpty"
         hidden
       >
-        <strong>No games in this filter</strong>
-        <span>Completed games will be included automatically.</span>
+        <strong>
+          No games in this filter
+        </strong>
+
+        <span>
+          Completed games will be included automatically.
+        </span>
       </section>
 
 
@@ -301,32 +298,63 @@
         <div class="season-card-heading">
 
           <div>
-            <span class="eyebrow">SEASON AVERAGES</span>
-            <h2 id="seasonFilterLabel">All Games</h2>
+
+            <span class="eyebrow">
+              SEASON AVERAGES
+            </span>
+
+            <h2 id="seasonFilterLabel">
+              All Games
+            </h2>
+
           </div>
 
+
           <span class="season-games-badge">
-            <strong id="seasonGamesPlayed">0</strong>
+
+            <strong id="seasonGamesPlayed">
+              0
+            </strong>
+
             GAMES
+
           </span>
 
         </div>
 
+
         <div class="season-primary-grid">
 
           <div>
-            <strong id="seasonPpg">0.0</strong>
-            <span>PPG</span>
+            <strong id="seasonPpg">
+              0.0
+            </strong>
+
+            <span>
+              PPG
+            </span>
           </div>
 
-          <div>
-            <strong id="seasonRpg">0.0</strong>
-            <span>RPG</span>
-          </div>
 
           <div>
-            <strong id="seasonApg">0.0</strong>
-            <span>APG</span>
+            <strong id="seasonRpg">
+              0.0
+            </strong>
+
+            <span>
+              RPG
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="seasonApg">
+              0.0
+            </strong>
+
+            <span>
+              APG
+            </span>
           </div>
 
         </div>
@@ -343,23 +371,46 @@
         <div class="season-stat-grid">
 
           <div>
-            <strong id="seasonSpg">0.0</strong>
-            <span>SPG</span>
+            <strong id="seasonSpg">
+              0.0
+            </strong>
+
+            <span>
+              SPG
+            </span>
           </div>
 
-          <div>
-            <strong id="seasonBpg">0.0</strong>
-            <span>BPG</span>
-          </div>
 
           <div>
-            <strong id="seasonTovpg">0.0</strong>
-            <span>TOV/G</span>
+            <strong id="seasonBpg">
+              0.0
+            </strong>
+
+            <span>
+              BPG
+            </span>
           </div>
 
+
           <div>
-            <strong id="seasonPfpg">0.0</strong>
-            <span>PF/G</span>
+            <strong id="seasonTovpg">
+              0.0
+            </strong>
+
+            <span>
+              TOV/G
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="seasonPfpg">
+              0.0
+            </strong>
+
+            <span>
+              PF/G
+            </span>
           </div>
 
         </div>
@@ -373,33 +424,63 @@
           SHOOTING
         </span>
 
+
         <div class="season-shooting-list">
 
           <div>
-            <span>Field Goals</span>
+
+            <span>
+              Field Goals
+            </span>
 
             <div>
-              <strong id="seasonFgPercent">—</strong>
-              <small id="seasonFgTotals">0/0</small>
+              <strong id="seasonFgPercent">
+                —
+              </strong>
+
+              <small id="seasonFgTotals">
+                0/0
+              </small>
             </div>
+
           </div>
 
+
           <div>
-            <span>3PT</span>
+
+            <span>
+              3PT
+            </span>
 
             <div>
-              <strong id="seasonThreePercent">—</strong>
-              <small id="seasonThreeTotals">0/0</small>
+              <strong id="seasonThreePercent">
+                —
+              </strong>
+
+              <small id="seasonThreeTotals">
+                0/0
+              </small>
             </div>
+
           </div>
 
+
           <div>
-            <span>Free Throws</span>
+
+            <span>
+              Free Throws
+            </span>
 
             <div>
-              <strong id="seasonFtPercent">—</strong>
-              <small id="seasonFtTotals">0/0</small>
+              <strong id="seasonFtPercent">
+                —
+              </strong>
+
+              <small id="seasonFtTotals">
+                0/0
+              </small>
             </div>
+
           </div>
 
         </div>
@@ -413,41 +494,83 @@
           SEASON TOTALS
         </span>
 
+
         <div class="season-totals-grid">
 
           <div>
-            <strong id="seasonTotalPoints">0</strong>
-            <span>PTS</span>
+            <strong id="seasonTotalPoints">
+              0
+            </strong>
+
+            <span>
+              PTS
+            </span>
           </div>
 
-          <div>
-            <strong id="seasonTotalRebounds">0</strong>
-            <span>REB</span>
-          </div>
 
           <div>
-            <strong id="seasonTotalAssists">0</strong>
-            <span>AST</span>
+            <strong id="seasonTotalRebounds">
+              0
+            </strong>
+
+            <span>
+              REB
+            </span>
           </div>
 
-          <div>
-            <strong id="seasonTotalSteals">0</strong>
-            <span>STL</span>
-          </div>
 
           <div>
-            <strong id="seasonTotalBlocks">0</strong>
-            <span>BLK</span>
+            <strong id="seasonTotalAssists">
+              0
+            </strong>
+
+            <span>
+              AST
+            </span>
           </div>
 
-          <div>
-            <strong id="seasonTotalOreb">0</strong>
-            <span>OREB</span>
-          </div>
 
           <div>
-            <strong id="seasonTotalDreb">0</strong>
-            <span>DREB</span>
+            <strong id="seasonTotalSteals">
+              0
+            </strong>
+
+            <span>
+              STL
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="seasonTotalBlocks">
+              0
+            </strong>
+
+            <span>
+              BLK
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="seasonTotalOreb">
+              0
+            </strong>
+
+            <span>
+              OREB
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="seasonTotalDreb">
+              0
+            </strong>
+
+            <span>
+              DREB
+            </span>
           </div>
 
         </div>
@@ -456,10 +579,6 @@
 
     </section>
 
-
-    <!-- ==================================================
-         GAME HISTORY
-    =================================================== -->
 
     <section
       class="screen"
@@ -478,37 +597,57 @@
         </button>
 
         <div>
-          <span class="eyebrow">2026–27 SEASON</span>
-          <h1>Game History</h1>
+
+          <span class="eyebrow">
+            2026–27 SEASON
+          </span>
+
+          <h1>
+            Game History
+          </h1>
+
         </div>
 
       </div>
 
+
       <section class="history-summary-card">
-        <span>COMPLETED GAMES</span>
-        <strong id="historyGameCount">0</strong>
+
+        <span>
+          COMPLETED GAMES
+        </span>
+
+        <strong id="historyGameCount">
+          0
+        </strong>
+
       </section>
+
 
       <section
         class="history-list"
         id="historyList"
       ></section>
 
+
       <section
         class="history-empty"
         id="historyEmpty"
         hidden
       >
-        <strong>No completed games yet</strong>
-        <span>Your saved games will appear here.</span>
+
+        <strong>
+          No completed games yet
+        </strong>
+
+        <span>
+          Your saved games will appear here.
+        </span>
+
       </section>
 
     </section>
 
-
-    <!-- ==================================================
-         GAME DETAIL
-    =================================================== -->
 
     <section
       class="screen"
@@ -526,73 +665,243 @@
           ‹
         </button>
 
+
         <div>
-          <span class="eyebrow" id="detailSeasonLabel">2026–27 SEASON</span>
-          <h1 id="detailTitle">Game Details</h1>
+
+          <span
+            class="eyebrow"
+            id="detailSeasonLabel"
+          >
+            2026–27 SEASON
+          </span>
+
+          <h1 id="detailTitle">
+            Game Details
+          </h1>
+
         </div>
 
       </div>
 
+
       <section class="detail-hero">
+
         <div class="detail-hero-copy">
-          <span class="detail-game-number" id="detailGameNumber">GAME 1</span>
-          <h2 id="detailOpponent">vs. Opponent</h2>
-          <p id="detailMeta">Home · Regular Season · Date</p>
+
+          <span
+            class="detail-game-number"
+            id="detailGameNumber"
+          >
+            GAME 1
+          </span>
+
+          <h2 id="detailOpponent">
+            vs. Opponent
+          </h2>
+
+          <p id="detailMeta">
+            Home · Regular Season · Date
+          </p>
+
         </div>
+
 
         <div class="detail-points">
-          <span>PTS</span>
-          <strong id="detailPoints">0</strong>
+
+          <span>
+            PTS
+          </span>
+
+          <strong id="detailPoints">
+            0
+          </strong>
+
         </div>
+
       </section>
 
+
       <section class="detail-card">
-        <span class="eyebrow">BOX SCORE</span>
+
+        <span class="eyebrow">
+          BOX SCORE
+        </span>
+
 
         <div class="detail-stat-grid">
-          <div><strong id="detailRebounds">0</strong><span>REB</span></div>
-          <div><strong id="detailAssists">0</strong><span>AST</span></div>
-          <div><strong id="detailSteals">0</strong><span>STL</span></div>
-          <div><strong id="detailBlocks">0</strong><span>BLK</span></div>
-          <div><strong id="detailTurnovers">0</strong><span>TOV</span></div>
-          <div><strong id="detailFouls">0</strong><span>PF</span></div>
+
+          <div>
+            <strong id="detailRebounds">
+              0
+            </strong>
+
+            <span>
+              REB
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="detailAssists">
+              0
+            </strong>
+
+            <span>
+              AST
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="detailSteals">
+              0
+            </strong>
+
+            <span>
+              STL
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="detailBlocks">
+              0
+            </strong>
+
+            <span>
+              BLK
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="detailTurnovers">
+              0
+            </strong>
+
+            <span>
+              TOV
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="detailFouls">
+              0
+            </strong>
+
+            <span>
+              PF
+            </span>
+          </div>
+
         </div>
+
       </section>
 
+
       <section class="detail-card">
-        <span class="eyebrow">SHOOTING</span>
+
+        <span class="eyebrow">
+          SHOOTING
+        </span>
+
 
         <div class="shooting-detail-list">
-          <div><span>Field Goals</span><strong id="detailFieldGoals">0/0 · —</strong></div>
-          <div><span>2PT</span><strong id="detailTwoPoint">0/0 · —</strong></div>
-          <div><span>3PT</span><strong id="detailThreePoint">0/0 · —</strong></div>
-          <div><span>Free Throws</span><strong id="detailFreeThrows">0/0 · —</strong></div>
+
+          <div>
+            <span>
+              Field Goals
+            </span>
+
+            <strong id="detailFieldGoals">
+              0/0 · —
+            </strong>
+          </div>
+
+
+          <div>
+            <span>
+              2PT
+            </span>
+
+            <strong id="detailTwoPoint">
+              0/0 · —
+            </strong>
+          </div>
+
+
+          <div>
+            <span>
+              3PT
+            </span>
+
+            <strong id="detailThreePoint">
+              0/0 · —
+            </strong>
+          </div>
+
+
+          <div>
+            <span>
+              Free Throws
+            </span>
+
+            <strong id="detailFreeThrows">
+              0/0 · —
+            </strong>
+          </div>
+
         </div>
+
       </section>
 
+
       <section class="detail-card">
-  <span class="eyebrow">REBOUNDING</span>
 
-  <div class="rebound-detail-grid">
-    <div><strong id="detailOffensiveRebounds">0</strong><span>OFF REB</span></div>
-    <div><strong id="detailDefensiveRebounds">0</strong><span>DEF REB</span></div>
-  </div>
-</section>
-
-<button
-  type="button"
-  class="start-game-button"
-  id="shareStatsButton"
->
-  SHARE STATS
-</button>
-
-</section>
+        <span class="eyebrow">
+          REBOUNDING
+        </span>
 
 
-    <!-- ==================================================
-         NEW GAME
-    =================================================== -->
+        <div class="rebound-detail-grid">
+
+          <div>
+            <strong id="detailOffensiveRebounds">
+              0
+            </strong>
+
+            <span>
+              OFF REB
+            </span>
+          </div>
+
+
+          <div>
+            <strong id="detailDefensiveRebounds">
+              0
+            </strong>
+
+            <span>
+              DEF REB
+            </span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <button
+        type="button"
+        class="start-game-button"
+        id="shareStatsButton"
+      >
+        SHARE STATS
+      </button>
+
+    </section>
+
 
     <section
       class="screen"
@@ -631,8 +940,6 @@
         id="gameSetupForm"
       >
 
-        <!-- PLAYER NUMBER -->
-
         <div class="form-group">
 
           <label for="playerNumber">
@@ -650,8 +957,6 @@
 
         </div>
 
-
-        <!-- OPPONENT -->
 
         <div class="form-group">
 
@@ -671,8 +976,6 @@
         </div>
 
 
-        <!-- DATE -->
-
         <div class="form-group">
 
           <label for="gameDate">
@@ -687,8 +990,6 @@
 
         </div>
 
-
-        <!-- LOCATION -->
 
         <fieldset class="form-group">
 
@@ -727,13 +1028,12 @@
         </fieldset>
 
 
-        <!-- GAME TYPE -->
-
         <fieldset class="form-group">
 
           <legend>
             Game Type
           </legend>
+
 
           <div class="game-type-options">
 
@@ -797,16 +1097,10 @@
     </section>
 
 
-    <!-- ==================================================
-         LIVE GAME
-    =================================================== -->
-
     <section
       class="screen"
       id="gameScreen"
     >
-
-      <!-- HEADER -->
 
       <section class="game-card">
 
@@ -824,7 +1118,9 @@
 
             <div class="player-name-row">
 
-              <h1>ADDYSON</h1>
+              <h1>
+                ADDYSON
+              </h1>
 
               <span
                 class="player-number"
@@ -869,8 +1165,6 @@
         </div>
 
 
-        <!-- LIVE STAT BAR -->
-
         <div class="stat-bar">
 
           <div class="stat">
@@ -912,10 +1206,6 @@
 
       </section>
 
-
-      <!-- ==================================================
-           SHOOTING
-      =================================================== -->
 
       <section class="card shooting-card">
 
@@ -963,7 +1253,10 @@
             class="btn-miss"
             data-action="2pt-miss"
           >
-            <span class="miss-x">×</span>
+            <span class="miss-x">
+              ×
+            </span>
+
             MISS
           </button>
 
@@ -989,7 +1282,10 @@
             class="btn-miss"
             data-action="3pt-miss"
           >
-            <span class="miss-x">×</span>
+            <span class="miss-x">
+              ×
+            </span>
+
             MISS
           </button>
 
@@ -1015,7 +1311,10 @@
             class="btn-miss"
             data-action="ft-miss"
           >
-            <span class="miss-x">×</span>
+            <span class="miss-x">
+              ×
+            </span>
+
             MISS
           </button>
 
@@ -1023,10 +1322,6 @@
 
       </section>
 
-
-      <!-- ==================================================
-           OTHER STATS
-      =================================================== -->
 
       <section class="card other-stats-card">
 
@@ -1036,9 +1331,6 @@
 
 
         <div class="stat-buttons">
-
-
-          <!-- OFFENSIVE REBOUND -->
 
           <button
             type="button"
@@ -1091,8 +1383,6 @@
           </button>
 
 
-          <!-- ASSIST -->
-
           <button
             type="button"
             data-action="assist"
@@ -1132,8 +1422,6 @@
 
           </button>
 
-
-          <!-- BLOCK -->
 
           <button
             type="button"
@@ -1177,8 +1465,6 @@
 
           </button>
 
-
-          <!-- DEFENSIVE REBOUND -->
 
           <button
             type="button"
@@ -1231,8 +1517,6 @@
           </button>
 
 
-          <!-- STEAL -->
-
           <button
             type="button"
             data-action="steal"
@@ -1264,8 +1548,6 @@
 
           </button>
 
-
-          <!-- TURNOVER -->
 
           <button
             type="button"
@@ -1328,10 +1610,6 @@
       </section>
 
 
-      <!-- ==================================================
-           GAME CONTROLS
-      =================================================== -->
-
       <section class="game-controls">
 
         <button
@@ -1367,10 +1645,6 @@
   </main>
 
 
-  <!-- ==================================================
-       END GAME MODAL
-  =================================================== -->
-
   <div
     class="modal-backdrop"
     id="endGameModal"
@@ -1389,13 +1663,16 @@
         aria-hidden="true"
       ></div>
 
+
       <span class="eyebrow">
         GAME COMPLETE
       </span>
 
+
       <h2 id="endGameTitle">
         End this game?
       </h2>
+
 
       <p class="modal-description">
         Review the final stat line before saving the game.
@@ -1405,23 +1682,46 @@
       <div class="final-stat-line">
 
         <div>
-          <strong id="finalPoints">0</strong>
-          <span>PTS</span>
+          <strong id="finalPoints">
+            0
+          </strong>
+
+          <span>
+            PTS
+          </span>
         </div>
 
-        <div>
-          <strong id="finalRebounds">0</strong>
-          <span>REB</span>
-        </div>
 
         <div>
-          <strong id="finalAssists">0</strong>
-          <span>AST</span>
+          <strong id="finalRebounds">
+            0
+          </strong>
+
+          <span>
+            REB
+          </span>
         </div>
 
+
         <div>
-          <strong id="finalSteals">0</strong>
-          <span>STL</span>
+          <strong id="finalAssists">
+            0
+          </strong>
+
+          <span>
+            AST
+          </span>
+        </div>
+
+
+        <div>
+          <strong id="finalSteals">
+            0
+          </strong>
+
+          <span>
+            STL
+          </span>
         </div>
 
       </div>
@@ -1445,6 +1745,7 @@
           KEEP TRACKING
         </button>
 
+
         <button
           type="button"
           id="confirmEndGame"
@@ -1459,10 +1760,6 @@
 
   </div>
 
-
-  <!-- ==================================================
-       CANCEL GAME MODAL
-  =================================================== -->
 
   <div
     class="modal-backdrop"
@@ -1482,13 +1779,16 @@
         aria-hidden="true"
       ></div>
 
+
       <span class="eyebrow">
         CANCEL GAME
       </span>
 
+
       <h2 id="cancelGameTitle">
         Discard this game?
       </h2>
+
 
       <p class="modal-description">
         All stats entered for this game will be cleared.
@@ -1505,6 +1805,7 @@
           KEEP TRACKING
         </button>
 
+
         <button
           type="button"
           id="discardGameButton"
@@ -1519,10 +1820,6 @@
 
   </div>
 
-
-  <!-- ==================================================
-       ACTIVE GAME EXISTS MODAL
-  =================================================== -->
 
   <div
     class="modal-backdrop"
@@ -1542,13 +1839,16 @@
         aria-hidden="true"
       ></div>
 
+
       <span class="eyebrow">
         GAME IN PROGRESS
       </span>
 
+
       <h2 id="replaceGameTitle">
         Start a new game?
       </h2>
+
 
       <p class="modal-description">
         You already have an unfinished game saved on this device.
@@ -1565,6 +1865,7 @@
           RESUME GAME
         </button>
 
+
         <button
           type="button"
           id="replaceGameButton"
@@ -1579,83 +1880,8 @@
 
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="js/app.js?v=20260920-9"></script>
 
-<div class="share-card-wrapper" aria-hidden="true">
-  <section class="share-card" id="shareCard">
-    <p class="share-card-name" id="shareCardName">Addyson</p>
-    <p class="share-card-opponent" id="shareCardOpponent">vs. Opponent</p>
-    <p class="share-card-date" id="shareCardDate">Sep 19, 2026</p>
+  <script src="js/app.js?v=8"></script>
 
-    <div class="share-card-points-box">
-      <span class="share-card-points-label">POINTS</span>
-      <strong class="share-card-points" id="shareCardPoints">0</strong>
-    </div>
-
-    <section class="share-card-section">
-      <span class="share-card-section-label">BOX SCORE</span>
-
-      <div class="share-card-box-score-row">
-        <div class="share-card-stat-pill">
-          <strong id="shareCardRebounds">0</strong>
-          <span>REB</span>
-        </div>
-
-        <div class="share-card-stat-pill">
-          <strong id="shareCardAssists">0</strong>
-          <span>AST</span>
-        </div>
-
-        <div class="share-card-stat-pill">
-          <strong id="shareCardSteals">0</strong>
-          <span>STL</span>
-        </div>
-      </div>
-
-      <div class="share-card-box-score-row">
-        <div class="share-card-stat-pill">
-          <strong id="shareCardBlocks">0</strong>
-          <span>BLK</span>
-        </div>
-
-        <div class="share-card-stat-pill">
-          <strong id="shareCardTurnovers">0</strong>
-          <span>TOV</span>
-        </div>
-
-        <div class="share-card-stat-pill">
-          <strong id="shareCardFouls">0</strong>
-          <span>PF</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="share-card-section">
-      <span class="share-card-section-label">SHOOTING</span>
-
-      <div class="share-card-shooting-row">
-        <span>FG</span>
-        <strong id="shareCardFg">0/0 · —</strong>
-      </div>
-
-      <div class="share-card-shooting-row">
-        <span>2PT</span>
-        <strong id="shareCard2pt">0/0 · —</strong>
-      </div>
-
-      <div class="share-card-shooting-row">
-        <span>3PT</span>
-        <strong id="shareCard3pt">0/0 · —</strong>
-      </div>
-
-      <div class="share-card-shooting-row">
-        <span>FT</span>
-        <strong id="shareCardFt">0/0 · —</strong>
-      </div>
-    </section>
-  </section>
-</div>
-  
 </body>
 </html>
