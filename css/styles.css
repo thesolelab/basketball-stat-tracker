@@ -2266,3 +2266,146 @@ button:focus-visible {
 .sync-status.is-offline .sync-status-dot {
   background: var(--red);
 }
+
+/* ======================================================
+   SHARE CARD
+====================================================== */
+
+.share-card-wrapper {
+  position: fixed;
+  left: -99999px;
+  top: 0;
+
+  pointer-events: none;
+  opacity: 0;
+}
+
+.share-card {
+  width: 1080px;
+  padding: 56px 56px 48px;
+
+  background: #f3f5f7;
+  color: #0f1720;
+
+  font-family: inherit;
+}
+
+.share-card-name,
+.share-card-opponent,
+.share-card-date {
+  margin: 0;
+  text-align: center;
+}
+
+.share-card-name {
+  font-size: 54px;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.share-card-opponent {
+  margin-top: 10px;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.share-card-date {
+  margin-top: 10px;
+  color: #667281;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.share-card-points-box {
+  margin-top: 32px;
+  padding: 28px 24px;
+
+  border-radius: 28px;
+  background: #d90429;
+
+  color: #ffffff;
+  text-align: center;
+}
+
+.share-card-points-label {
+  display: block;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.share-card-points {
+  display: block;
+  margin-top: 8px;
+
+  font-size: 88px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.share-card-section {
+  margin-top: 28px;
+  padding: 28px;
+
+  border: 2px solid #d7dde3;
+  border-radius: 28px;
+  background: #ffffff;
+}
+
+.share-card-section-label {
+  display: block;
+  margin-bottom: 18px;
+
+  color: #8a96a3;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.share-card-box-score-row {
+  display: flex;
+  gap: 18px;
+}
+
+.share-card-box-score-row + .share-card-box-score-row {
+  margin-top: 18px;
+}
+
+.share-card-stat-pill {
+  flex: 1;
+  padding: 24px 12px;
+
+  border-radius: 20px;
+  background: #f3f5f7;
+  text-align: center;
+}
+
+.share-card-stat-pill strong {
+  display: block;
+  font-size: 42px;
+  font-weight: 900;
+}
+
+.share-card-stat-pill span {
+  display: block;
+  margin-top: 6px;
+
+  color: #8a96a3;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.share-card-shooting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 0;
+
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.share-card-shooting-row + .share-card-shooting-row {
+  border-top: 1px solid #d7dde3;
+}
