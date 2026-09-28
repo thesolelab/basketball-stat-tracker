@@ -1579,8 +1579,83 @@
 
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="js/app.js?v=20260920-9"></script>
 
-  <script src="js/app.js?v=20260920-8"></script>
+<div class="share-card-wrapper" aria-hidden="true">
+  <section class="share-card" id="shareCard">
+    <p class="share-card-name" id="shareCardName">Addyson</p>
+    <p class="share-card-opponent" id="shareCardOpponent">vs. Opponent</p>
+    <p class="share-card-date" id="shareCardDate">Sep 19, 2026</p>
 
+    <div class="share-card-points-box">
+      <span class="share-card-points-label">POINTS</span>
+      <strong class="share-card-points" id="shareCardPoints">0</strong>
+    </div>
+
+    <section class="share-card-section">
+      <span class="share-card-section-label">BOX SCORE</span>
+
+      <div class="share-card-box-score-row">
+        <div class="share-card-stat-pill">
+          <strong id="shareCardRebounds">0</strong>
+          <span>REB</span>
+        </div>
+
+        <div class="share-card-stat-pill">
+          <strong id="shareCardAssists">0</strong>
+          <span>AST</span>
+        </div>
+
+        <div class="share-card-stat-pill">
+          <strong id="shareCardSteals">0</strong>
+          <span>STL</span>
+        </div>
+      </div>
+
+      <div class="share-card-box-score-row">
+        <div class="share-card-stat-pill">
+          <strong id="shareCardBlocks">0</strong>
+          <span>BLK</span>
+        </div>
+
+        <div class="share-card-stat-pill">
+          <strong id="shareCardTurnovers">0</strong>
+          <span>TOV</span>
+        </div>
+
+        <div class="share-card-stat-pill">
+          <strong id="shareCardFouls">0</strong>
+          <span>PF</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="share-card-section">
+      <span class="share-card-section-label">SHOOTING</span>
+
+      <div class="share-card-shooting-row">
+        <span>FG</span>
+        <strong id="shareCardFg">0/0 · —</strong>
+      </div>
+
+      <div class="share-card-shooting-row">
+        <span>2PT</span>
+        <strong id="shareCard2pt">0/0 · —</strong>
+      </div>
+
+      <div class="share-card-shooting-row">
+        <span>3PT</span>
+        <strong id="shareCard3pt">0/0 · —</strong>
+      </div>
+
+      <div class="share-card-shooting-row">
+        <span>FT</span>
+        <strong id="shareCardFt">0/0 · —</strong>
+      </div>
+    </section>
+  </section>
+</div>
+  
 </body>
 </html>
