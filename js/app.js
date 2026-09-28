@@ -186,6 +186,21 @@ const detailFreeThrows = document.getElementById("detailFreeThrows");
 const detailOffensiveRebounds = document.getElementById("detailOffensiveRebounds");
 const detailDefensiveRebounds = document.getElementById("detailDefensiveRebounds");
 const shareStatsButton = document.getElementById("shareStatsButton");
+const shareCard = document.getElementById("shareCard");
+const shareCardName = document.getElementById("shareCardName");
+const shareCardOpponent = document.getElementById("shareCardOpponent");
+const shareCardDate = document.getElementById("shareCardDate");
+const shareCardPoints = document.getElementById("shareCardPoints");
+const shareCardRebounds = document.getElementById("shareCardRebounds");
+const shareCardAssists = document.getElementById("shareCardAssists");
+const shareCardSteals = document.getElementById("shareCardSteals");
+const shareCardBlocks = document.getElementById("shareCardBlocks");
+const shareCardTurnovers = document.getElementById("shareCardTurnovers");
+const shareCardFouls = document.getElementById("shareCardFouls");
+const shareCardFg = document.getElementById("shareCardFg");
+const shareCard2pt = document.getElementById("shareCard2pt");
+const shareCard3pt = document.getElementById("shareCard3pt");
+const shareCardFt = document.getElementById("shareCardFt");
 
 const statButtons = document.querySelectorAll("[data-action]");
 
@@ -1690,6 +1705,54 @@ function renderGameDetail(game) {
     );
 }
 
+function populateShareCard(game) {
+  const fieldGoalsMade =
+    safeNumber(game.fieldGoalsMade);
+
+  const fieldGoalAttempts =
+    safeNumber(game.fieldGoalAttempts);
+
+  shareCardName.textContent = "Addyson";
+  shareCardOpponent.textContent =
+    `vs. ${game.opponent || "Opponent"}`;
+
+  shareCardDate.textContent =
+    formatGameDate(game.date);
+
+  shareCardPoints.textContent =
+    safeNumber(game.points);
+
+  shareCardRebounds.textContent =
+    safeNumber(game.rebounds);
+
+  shareCardAssists.textContent =
+    safeNumber(game.assists);
+
+  shareCardSteals.textContent =
+    safeNumber(game.steals);
+
+  shareCardBlocks.textContent =
+    safeNumber(game.blocks);
+
+  shareCardTurnovers.textContent =
+    safeNumber(game.turnovers);
+
+  shareCardFouls.textContent =
+    safeNumber(game.fouls);
+
+  shareCardFg.textContent =
+    `${fieldGoalsMade}/${fieldGoalAttempts} · ${formatPercentage(fieldGoalsMade, fieldGoalAttempts)}`;
+
+  shareCard2pt.textContent =
+    `${safeNumber(game.twoMade)}/${safeNumber(game.twoAttempted)} · ${formatPercentage(game.twoMade, game.twoAttempted)}`;
+
+  shareCard3pt.textContent =
+    `${safeNumber(game.threeMade)}/${safeNumber(game.threeAttempted)} · ${formatPercentage(game.threeMade, game.threeAttempted)}`;
+
+  shareCardFt.textContent =
+    `${safeNumber(game.freeThrowMade)}/${safeNumber(game.freeThrowAttempted)} · ${formatPercentage(game.freeThrowMade, game.freeThrowAttempted)}`;
+}
+
 /* ======================================================
    SHARE GAME STATS
 ====================================================== */
@@ -1742,90 +1805,94 @@ function buildGameShareText(game) {
 
 
 async function shareSelectedGame() {
-  if (!selectedDetailGame) {
+  if (
+    !selectedDetailGame ||
+    !shareCard ||
+    !window.html2canvas
+  ) {
     return;
   }
 
-  const text =
-    buildGameShareText(
+  try {
+    populateShareCard(
       selectedDetailGame
     );
 
-  try {
+    const canvas =
+      await html2canvas(
+        shareCard,
+        {
+          backgroundColor: "#f3f5f7",
+          scale: 2,
+          useCORS: true
+        }
+      );
 
-    if (navigator.share) {
+    const blob =
+      await new Promise(
+        (resolve) => {
+          canvas.toBlob(
+            resolve,
+            "image/png"
+          );
+        }
+      );
+
+    if (!blob) {
+      throw new Error(
+        "Could not create image."
+      );
+    }
+
+    const file =
+      new File(
+        [blob],
+        "addyson-stat-card.png",
+        {
+          type: "image/png"
+        }
+      );
+
+    if (
+      navigator.share &&
+      navigator.canShare &&
+      navigator.canShare({
+        files: [file]
+      })
+    ) {
       await navigator.share({
         title:
           `Addyson vs. ${
             selectedDetailGame.opponent ||
             "Opponent"
           }`,
-        text
+        files: [file]
       });
 
       return;
     }
 
-
-    if (
-      navigator.clipboard &&
-      window.isSecureContext
-    ) {
-      await navigator.clipboard.writeText(
-        text
+    const url =
+      URL.createObjectURL(
+        blob
       );
 
-    } else {
-
-      const textarea =
-        document.createElement(
-          "textarea"
-        );
-
-      textarea.value =
-        text;
-
-      textarea.setAttribute(
-        "readonly",
-        ""
+    const link =
+      document.createElement(
+        "a"
       );
 
-      textarea.style.position =
-        "fixed";
+    link.href = url;
+    link.download =
+      "addyson-stat-card.png";
 
-      textarea.style.opacity =
-        "0";
+    link.click();
 
-      document.body.appendChild(
-        textarea
-      );
-
-      textarea.select();
-
-      document.execCommand(
-        "copy"
-      );
-
-      textarea.remove();
-    }
-
-
-    const originalText =
-      shareStatsButton.textContent;
-
-    shareStatsButton.textContent =
-      "COPIED";
-
-    window.setTimeout(
-      () => {
-        shareStatsButton.textContent =
-          originalText;
-      },
-      1500
+    URL.revokeObjectURL(
+      url
     );
 
   } catch (error) {
-
     if (
       error &&
       error.name === "AbortError"
@@ -1834,12 +1901,11 @@ async function shareSelectedGame() {
     }
 
     console.error(
-      "Could not share game stats:",
+      "Could not share stat card image:",
       error
     );
   }
 }
-
 /* ======================================================
    PLAYER NUMBER STORAGE
 ====================================================== */
