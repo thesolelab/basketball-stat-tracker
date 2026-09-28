@@ -1,33 +1,18 @@
-/* ======================================================
-   BASKETBALL STAT TRACKER
-====================================================== */
-
 :root {
   --red: #c8102e;
   --red-dark: #a90d27;
-
   --white: #ffffff;
-
   --background: #f4f7f8;
   --surface: #ffffff;
   --surface-secondary: #f1f4f5;
-
   --text: #111820;
   --text-secondary: #66717d;
   --text-muted: #9ba5ae;
-
   --border: #dfe4e7;
-
   --radius-large: 22px;
   --radius-medium: 16px;
-
   --content-width: 680px;
 }
-
-
-/* ======================================================
-   RESET
-====================================================== */
 
 * {
   box-sizing: border-box;
@@ -71,11 +56,6 @@ button {
   cursor: pointer;
 }
 
-
-/* ======================================================
-   APP
-====================================================== */
-
 .app {
   width: 100%;
   max-width: var(--content-width);
@@ -88,11 +68,6 @@ button {
     max(22px, env(safe-area-inset-bottom));
 }
 
-
-/* ======================================================
-   SCREENS
-====================================================== */
-
 .screen {
   display: none;
 }
@@ -100,14 +75,8 @@ button {
 .screen.active-screen {
   display: flex;
   flex-direction: column;
-
   gap: 12px;
 }
-
-
-/* ======================================================
-   HOME HERO
-====================================================== */
 
 .home-hero {
   position: relative;
@@ -165,11 +134,6 @@ button {
   font-size: 15px;
   font-weight: 700;
 }
-
-
-/* ======================================================
-   RESUME GAME
-====================================================== */
 
 .resume-game-card {
   padding: 16px;
@@ -273,11 +237,6 @@ button {
   font-weight: 900;
 }
 
-
-/* ======================================================
-   HOME ACTIONS
-====================================================== */
-
 .home-actions {
   display: flex;
   flex-direction: column;
@@ -347,8 +306,8 @@ button {
 
   fill: none;
   stroke: currentColor;
-
   stroke-width: 2;
+
   stroke-linecap: round;
 }
 
@@ -384,11 +343,6 @@ button {
 
   line-height: 1;
 }
-
-
-/* ======================================================
-   SCREEN TOP BAR
-====================================================== */
 
 .screen-topbar {
   display: flex;
@@ -428,11 +382,6 @@ button {
 
   line-height: 1;
 }
-
-
-/* ======================================================
-   SETUP FORM
-====================================================== */
 
 .setup-card {
   width: 100%;
@@ -500,15 +449,6 @@ button {
     0 0 0 3px rgba(200, 16, 46, 0.09);
 }
 
-
-/* ======================================================
-   DATE INPUT
-
-   iOS / Home Screen fix:
-   Keep the native date field inside the form
-   and vertically center the displayed date.
-====================================================== */
-
 .form-group input[type="date"] {
   display: flex;
   align-items: center;
@@ -574,10 +514,6 @@ button {
   margin: 0;
 }
 
-/* ======================================================
-   SEGMENTED CONTROLS
-====================================================== */
-
 .segmented-control,
 .game-type-options {
   display: grid;
@@ -602,6 +538,7 @@ button {
   position: absolute;
 
   opacity: 0;
+
   pointer-events: none;
 }
 
@@ -638,11 +575,6 @@ button {
   border-color: rgba(200, 16, 46, 0.3);
 }
 
-
-/* ======================================================
-   START GAME
-====================================================== */
-
 .form-message {
   min-height: 18px;
 
@@ -671,11 +603,6 @@ button {
   font-weight: 900;
 }
 
-
-/* ======================================================
-   GAME HEADER
-====================================================== */
-
 .game-card {
   overflow: hidden;
 
@@ -701,7 +628,6 @@ button {
   content: "";
 
   position: absolute;
-
   top: 0;
   left: 0;
 
@@ -777,11 +703,6 @@ button {
   letter-spacing: 0.1em;
 }
 
-
-/* ======================================================
-   POINTS
-====================================================== */
-
 .points-card {
   flex: 0 0 auto;
 
@@ -816,11 +737,6 @@ button {
 
   line-height: 1.05;
 }
-
-
-/* ======================================================
-   LIVE STAT BAR
-====================================================== */
 
 .stat-bar {
   display: grid;
@@ -858,11 +774,6 @@ button {
 
   line-height: 1;
 }
-
-
-/* ======================================================
-   CARDS
-====================================================== */
 
 .card {
   padding: 17px;
@@ -902,11 +813,6 @@ button {
 
   line-height: 1;
 }
-
-
-/* ======================================================
-   SHOOTING
-====================================================== */
 
 .shooting-summary {
   flex: 0 0 auto;
@@ -980,11 +886,6 @@ button {
 
   line-height: 0;
 }
-
-
-/* ======================================================
-   OTHER STATS
-====================================================== */
 
 .other-stats-card {
   padding-bottom: 16px;
@@ -1060,11 +961,6 @@ button {
   white-space: nowrap;
 }
 
-
-/* ======================================================
-   FOUL
-====================================================== */
-
 .foul-button {
   display: flex;
   align-items: center;
@@ -1099,11 +995,6 @@ button {
 
   border-radius: 50%;
 }
-
-
-/* ======================================================
-   GAME CONTROLS
-====================================================== */
 
 .game-controls {
   display: grid;
@@ -1165,11 +1056,6 @@ button {
   font-weight: 800;
 }
 
-
-/* ======================================================
-   BUTTON FEEDBACK
-====================================================== */
-
 button {
   transition:
     transform 0.08s ease,
@@ -1179,6 +1065,7 @@ button {
 
 button:active:not(:disabled) {
   transform: scale(0.97);
+
   opacity: 0.88;
 }
 
@@ -1192,7 +1079,6 @@ button:focus-visible {
 }
 
 @keyframes stat-recorded {
-
   0% {
     transform: scale(1);
   }
@@ -1204,17 +1090,10 @@ button:focus-visible {
   100% {
     transform: scale(1);
   }
-
 }
-
-
-/* ======================================================
-   MODALS
-====================================================== */
 
 .modal-backdrop {
   position: fixed;
-
   inset: 0;
 
   z-index: 1000;
@@ -1228,7 +1107,9 @@ button:focus-visible {
   background: rgba(17, 24, 32, 0.45);
 
   opacity: 0;
+
   visibility: hidden;
+
   pointer-events: none;
 
   transition:
@@ -1238,7 +1119,9 @@ button:focus-visible {
 
 .modal-backdrop.is-open {
   opacity: 1;
+
   visibility: visible;
+
   pointer-events: auto;
 }
 
@@ -1262,7 +1145,8 @@ button:focus-visible {
 
   transform: translateY(100%);
 
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.2s ease;
 }
 
 .modal-backdrop.is-open .bottom-sheet {
@@ -1300,11 +1184,6 @@ button:focus-visible {
   line-height: 1.4;
 }
 
-
-/* ======================================================
-   FINAL STATS
-====================================================== */
-
 .final-stat-line {
   display: grid;
 
@@ -1330,7 +1209,6 @@ button:focus-visible {
   content: "";
 
   position: absolute;
-
   top: 3px;
   right: 0;
 
@@ -1371,11 +1249,6 @@ button:focus-visible {
   text-align: center;
 }
 
-
-/* ======================================================
-   MODAL ACTIONS
-====================================================== */
-
 .modal-actions {
   display: grid;
 
@@ -1410,16 +1283,12 @@ button:focus-visible {
   color: var(--white);
 }
 
-
-/* ======================================================
-   SEASON STATS
-====================================================== */
-
 .season-filter-card,
 .season-overview-card,
 .season-card,
 .season-empty {
   background: var(--white);
+
   border: 1px solid var(--border);
   border-radius: var(--radius-large);
 }
@@ -1431,32 +1300,43 @@ button:focus-visible {
 
 .season-filter-control {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
   gap: 7px;
+
   margin-top: 12px;
 }
 
 .season-filter-button {
   min-width: 0;
   min-height: 44px;
+
   padding: 7px 5px;
+
   background: var(--surface-secondary);
   color: var(--text-secondary);
+
   border: 1px solid transparent;
   border-radius: 12px;
+
   font-size: 9px;
   font-weight: 900;
+
   line-height: 1.1;
 }
 
 .season-filter-button.is-active {
   background: #fff5f6;
   color: var(--red);
+
   border-color: rgba(200, 16, 46, 0.3);
 }
 
 .season-empty {
   padding: 18px;
+
   text-align: center;
 }
 
@@ -1476,13 +1356,16 @@ button:focus-visible {
 
 .season-empty span {
   margin-top: 5px;
+
   color: var(--text-secondary);
+
   font-size: 11px;
   font-weight: 600;
 }
 
 .season-overview-card {
   overflow: hidden;
+
   border-top: 6px solid var(--red);
 }
 
@@ -1490,59 +1373,81 @@ button:focus-visible {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
   gap: 14px;
+
   padding: 18px 18px 15px;
 }
 
 .season-card-heading h2 {
   margin: 3px 0 0;
+
   font-size: 24px;
   font-weight: 900;
+
   line-height: 1;
   letter-spacing: -0.03em;
 }
 
 .season-games-badge {
   flex: 0 0 auto;
+
   display: flex;
   align-items: baseline;
+
   gap: 5px;
+
   padding: 8px 10px;
+
   background: #fff3f5;
   color: var(--red);
+
   border-radius: 12px;
+
   font-size: 8px;
   font-weight: 900;
+
   letter-spacing: 0.08em;
 }
 
 .season-games-badge strong {
   font-size: 18px;
   font-weight: 900;
+
   line-height: 1;
 }
 
 .season-primary-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
   padding: 15px 8px 17px;
+
   background: #fafbfb;
+
   border-top: 1px solid var(--border);
 }
 
 .season-primary-grid div {
   position: relative;
+
   min-width: 0;
+
   text-align: center;
 }
 
 .season-primary-grid div:not(:last-child)::after {
   content: "";
+
   position: absolute;
   top: 3px;
   right: 0;
+
   width: 1px;
   height: calc(100% - 6px);
+
   background: var(--border);
 }
 
@@ -1558,6 +1463,7 @@ button:focus-visible {
 .season-primary-grid strong {
   font-size: 28px;
   font-weight: 900;
+
   line-height: 1;
 }
 
@@ -1565,29 +1471,40 @@ button:focus-visible {
 .season-stat-grid span,
 .season-totals-grid span {
   margin-top: 5px;
+
   color: var(--text-muted);
+
   font-size: 9px;
   font-weight: 900;
 }
 
 .season-stat-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
   gap: 8px;
+
   margin-top: 12px;
 }
 
 .season-stat-grid div {
   min-width: 0;
+
   padding: 14px 5px;
+
   background: var(--surface-secondary);
+
   border-radius: 13px;
+
   text-align: center;
 }
 
 .season-stat-grid strong {
   font-size: 20px;
   font-weight: 900;
+
   line-height: 1;
 }
 
@@ -1599,9 +1516,13 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 16px;
+
   min-height: 58px;
+
   padding: 9px 2px;
+
   border-top: 1px solid var(--border);
 }
 
@@ -1611,6 +1532,7 @@ button:focus-visible {
 
 .season-shooting-list > div > span {
   color: var(--text-secondary);
+
   font-size: 13px;
   font-weight: 800;
 }
@@ -1631,36 +1553,42 @@ button:focus-visible {
 
 .season-shooting-list small {
   margin-top: 3px;
+
   color: var(--text-muted);
+
   font-size: 10px;
   font-weight: 800;
 }
 
 .season-totals-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
   gap: 8px;
+
   margin-top: 12px;
 }
 
 .season-totals-grid div {
   min-width: 0;
+
   padding: 14px 5px;
+
   background: var(--surface-secondary);
+
   border-radius: 13px;
+
   text-align: center;
 }
 
 .season-totals-grid strong {
   font-size: 20px;
   font-weight: 900;
+
   line-height: 1;
 }
-
-
-/* ======================================================
-   GAME HISTORY
-====================================================== */
 
 .history-summary-card {
   display: flex;
@@ -1700,52 +1628,7 @@ button:focus-visible {
   gap: 9px;
 }
 
-.history-swipe-row {
-  position: relative;
-
-  overflow: hidden;
-
-  border-radius: var(--radius-large);
-
-  touch-action: pan-y;
-}
-
-.history-delete-button {
-  position: absolute;
-
-  top: 0;
-  right: 0;
-  bottom: 0;
-
-  width: 92px;
-
-  padding: 0 12px;
-
-  background: var(--red);
-  color: var(--white);
-
-  border: 0;
-  border-radius:
-    0
-    var(--radius-large)
-    var(--radius-large)
-    0;
-
-  font-size: 10px;
-  font-weight: 900;
-
-  letter-spacing: 0.08em;
-}
-
-.history-swipe-row.is-delete-open
-.history-delete-button {
-  background: var(--red-dark);
-}
-
 .history-game-card {
-  position: relative;
-  z-index: 1;
-
   width: 100%;
 
   padding: 0;
@@ -1759,18 +1642,6 @@ button:focus-visible {
   border-radius: var(--radius-large);
 
   text-align: left;
-
-  touch-action: pan-y;
-
-  transition:
-    transform 0.18s ease;
-
-  will-change: transform;
-}
-
-.history-swipe-row.is-delete-open
-.history-game-card {
-  transform: translateX(-92px);
 }
 
 .history-game-card-top {
@@ -1928,11 +1799,6 @@ button:focus-visible {
   font-size: 12px;
   font-weight: 600;
 }
-
-
-/* ======================================================
-   GAME DETAIL
-====================================================== */
 
 .detail-hero,
 .detail-card {
@@ -2121,18 +1987,12 @@ button:focus-visible {
   display: grid;
 
   grid-template-columns:
-    1fr
-    1fr;
+    1fr 1fr;
 
   gap: 8px;
 
   margin-top: 12px;
 }
-
-
-/* ======================================================
-   MOBILE
-====================================================== */
 
 @media (max-width: 430px) {
 
@@ -2170,13 +2030,7 @@ button:focus-visible {
   .game-type-options label {
     font-size: 10px;
   }
-
 }
-
-
-/* ======================================================
-   TABLET / DESKTOP
-====================================================== */
 
 @media (min-width: 600px) {
 
@@ -2207,29 +2061,54 @@ button:focus-visible {
   .stat-buttons button {
     min-height: 88px;
   }
-
 }
-/* ======================================================
-   BUILD VERSION
-====================================================== */
 
-.build-version {
-  margin: 5px 0 0;
+.history-swipe-row {
+  position: relative;
 
-  color: var(--text-muted);
+  overflow: hidden;
 
-  font-size: 9px;
-  font-weight: 700;
+  border-radius: var(--radius-large);
+
+  touch-action: pan-y;
+}
+
+.history-delete-button {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 92px;
+
+  border: 0;
+
+  background: var(--red);
+  color: var(--white);
+
+  font-size: 12px;
+  font-weight: 900;
 
   letter-spacing: 0.08em;
-
-  text-align: center;
-
-  opacity: 0.7;
 }
-/* ======================================================
-   SYNC STATUS
-====================================================== */
+
+.history-game-card {
+  position: relative;
+
+  z-index: 1;
+
+  width: 100%;
+
+  touch-action: pan-y;
+
+  transition:
+    transform 0.18s ease;
+}
+
+.history-swipe-row.is-delete-open .history-game-card {
+  transform: translateX(-92px);
+}
 
 .sync-status {
   display: flex;
@@ -2267,145 +2146,17 @@ button:focus-visible {
   background: var(--red);
 }
 
-/* ======================================================
-   SHARE CARD
-====================================================== */
+.build-version {
+  margin: 5px 0 0;
 
-.share-card-wrapper {
-  position: fixed;
-  left: -99999px;
-  top: 0;
+  color: var(--text-muted);
 
-  pointer-events: none;
-  opacity: 0;
-}
-
-.share-card {
-  width: 1080px;
-  padding: 56px 56px 48px;
-
-  background: #f3f5f7;
-  color: #0f1720;
-
-  font-family: inherit;
-}
-
-.share-card-name,
-.share-card-opponent,
-.share-card-date {
-  margin: 0;
-  text-align: center;
-}
-
-.share-card-name {
-  font-size: 54px;
-  font-weight: 900;
-  line-height: 1.05;
-}
-
-.share-card-opponent {
-  margin-top: 10px;
-  font-size: 34px;
-  font-weight: 800;
-}
-
-.share-card-date {
-  margin-top: 10px;
-  color: #667281;
-  font-size: 24px;
+  font-size: 9px;
   font-weight: 700;
-}
 
-.share-card-points-box {
-  margin-top: 32px;
-  padding: 28px 24px;
+  letter-spacing: 0.08em;
 
-  border-radius: 28px;
-  background: #d90429;
-
-  color: #ffffff;
   text-align: center;
-}
 
-.share-card-points-label {
-  display: block;
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
-
-.share-card-points {
-  display: block;
-  margin-top: 8px;
-
-  font-size: 88px;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.share-card-section {
-  margin-top: 28px;
-  padding: 28px;
-
-  border: 2px solid #d7dde3;
-  border-radius: 28px;
-  background: #ffffff;
-}
-
-.share-card-section-label {
-  display: block;
-  margin-bottom: 18px;
-
-  color: #8a96a3;
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-}
-
-.share-card-box-score-row {
-  display: flex;
-  gap: 18px;
-}
-
-.share-card-box-score-row + .share-card-box-score-row {
-  margin-top: 18px;
-}
-
-.share-card-stat-pill {
-  flex: 1;
-  padding: 24px 12px;
-
-  border-radius: 20px;
-  background: #f3f5f7;
-  text-align: center;
-}
-
-.share-card-stat-pill strong {
-  display: block;
-  font-size: 42px;
-  font-weight: 900;
-}
-
-.share-card-stat-pill span {
-  display: block;
-  margin-top: 6px;
-
-  color: #8a96a3;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.share-card-shooting-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 16px 0;
-
-  font-size: 28px;
-  font-weight: 700;
-}
-
-.share-card-shooting-row + .share-card-shooting-row {
-  border-top: 1px solid #d7dde3;
+  opacity: 0.7;
 }
