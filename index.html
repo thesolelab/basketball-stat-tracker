@@ -241,39 +241,47 @@
 
         <div class="season-filter-control">
 
-          <button
-            type="button"
-            class="season-filter-button is-active"
-            data-season-filter="All"
-          >
-            All Games
-          </button>
+  <button
+    type="button"
+    class="season-filter-button is-active"
+    data-season-filter="All"
+  >
+    All Games
+  </button>
 
-          <button
-            type="button"
-            class="season-filter-button"
-            data-season-filter="Regular Season"
-          >
-            Regular
-          </button>
+  <button
+    type="button"
+    class="season-filter-button"
+    data-season-filter="Preseason"
+  >
+    Preseason
+  </button>
 
-          <button
-            type="button"
-            class="season-filter-button"
-            data-season-filter="Tournament"
-          >
-            Tournament
-          </button>
+  <button
+    type="button"
+    class="season-filter-button"
+    data-season-filter="Regular Season"
+  >
+    Regular
+  </button>
 
-          <button
-            type="button"
-            class="season-filter-button"
-            data-season-filter="Club"
-          >
-            Club
-          </button>
+  <button
+    type="button"
+    class="season-filter-button"
+    data-season-filter="Tournament"
+  >
+    Tournament
+  </button>
 
-        </div>
+  <button
+    type="button"
+    class="season-filter-button"
+    data-season-filter="Club"
+  >
+    Club
+  </button>
+
+</div>
 
       </section>
 
@@ -1030,52 +1038,63 @@
 
         <fieldset class="form-group">
 
-          <legend>
-            Game Type
-          </legend>
+  <legend>
+    Game Type
+  </legend>
+
+  <div class="game-type-options">
+
+    <input
+      type="radio"
+      name="gameType"
+      id="typePreseason"
+      value="Preseason"
+    >
+
+    <label for="typePreseason">
+      Preseason
+    </label>
 
 
-          <div class="game-type-options">
+    <input
+      type="radio"
+      name="gameType"
+      id="typeRegular"
+      value="Regular Season"
+      checked
+    >
 
-            <input
-              type="radio"
-              name="gameType"
-              id="typeRegular"
-              value="Regular Season"
-              checked
-            >
-
-            <label for="typeRegular">
-              Regular Season
-            </label>
+    <label for="typeRegular">
+      Regular Season
+    </label>
 
 
-            <input
-              type="radio"
-              name="gameType"
-              id="typeTournament"
-              value="Tournament"
-            >
+    <input
+      type="radio"
+      name="gameType"
+      id="typeTournament"
+      value="Tournament"
+    >
 
-            <label for="typeTournament">
-              Tournament
-            </label>
+    <label for="typeTournament">
+      Tournament
+    </label>
 
 
-            <input
-              type="radio"
-              name="gameType"
-              id="typeClub"
-              value="Club"
-            >
+    <input
+      type="radio"
+      name="gameType"
+      id="typeClub"
+      value="Club"
+    >
 
-            <label for="typeClub">
-              Club
-            </label>
+    <label for="typeClub">
+      Club
+    </label>
 
-          </div>
+  </div>
 
-        </fieldset>
+</fieldset>
 
 
         <p
