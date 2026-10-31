@@ -2204,7 +2204,7 @@ function getSeasonFilterLabel(
 
 
 function refreshSeasonStatsSummary() {
-  const games = getSeasonGames("All");
+  const games = getSeasonGames("Regular Season");
   const record = calculateRecord(games);
 
   seasonStatsSummary.textContent =
@@ -3354,11 +3354,15 @@ function getRecordThroughGame(game) {
   const season =
     game.season || CURRENT_SEASON;
 
+  const gameType =
+    game.type || "Regular Season";
+
   const gamesThroughThisGame =
     readCompletedGames()
       .filter(
         (item) =>
           (item.season || CURRENT_SEASON) === season &&
+          (item.type || "Regular Season") === gameType &&
           (Number(item.gameNumber) || 0) <= gameNumber
       );
 
