@@ -120,6 +120,11 @@ const seasonGamesPlayed =
     "seasonGamesPlayed"
   );
 
+const seasonRecord =
+  document.getElementById(
+    "seasonRecord"
+  );
+
 const seasonPpg =
   document.getElementById(
     "seasonPpg"
@@ -462,6 +467,41 @@ const finalShootingElement =
     "finalShooting"
   );
 
+const teamScoreInput =
+  document.getElementById(
+    "teamScoreInput"
+  );
+
+const opponentScoreInput =
+  document.getElementById(
+    "opponentScoreInput"
+  );
+
+const finalOpponentName =
+  document.getElementById(
+    "finalOpponentName"
+  );
+
+const scoreMessage =
+  document.getElementById(
+    "scoreMessage"
+  );
+
+const correctionModal =
+  document.getElementById(
+    "correctionModal"
+  );
+
+const correctionOptions =
+  document.getElementById(
+    "correctionOptions"
+  );
+
+const cancelCorrectionButton =
+  document.getElementById(
+    "cancelCorrection"
+  );
+
 
 const cancelGameModal =
   document.getElementById(
@@ -518,6 +558,31 @@ const detailOpponent =
 const detailMeta =
   document.getElementById(
     "detailMeta"
+  );
+
+const detailFinalScoreCard =
+  document.getElementById(
+    "detailFinalScoreCard"
+  );
+
+const detailTeamScore =
+  document.getElementById(
+    "detailTeamScore"
+  );
+
+const detailOpponentScore =
+  document.getElementById(
+    "detailOpponentScore"
+  );
+
+const detailScoreOpponent =
+  document.getElementById(
+    "detailScoreOpponent"
+  );
+
+const detailResult =
+  document.getElementById(
+    "detailResult"
   );
 
 const detailPoints =
@@ -718,6 +783,88 @@ function safeNumber(value) {
   return (
     Number(value) || 0
   );
+}
+
+
+function calculateGameResult(
+  teamScore,
+  opponentScore
+) {
+  if (
+    teamScore === null ||
+    teamScore === undefined ||
+    teamScore === "" ||
+    opponentScore === null ||
+    opponentScore === undefined ||
+    opponentScore === ""
+  ) {
+    return "";
+  }
+
+  const team = Number(teamScore);
+  const opponent = Number(opponentScore);
+
+  if (
+    !Number.isFinite(team) ||
+    !Number.isFinite(opponent)
+  ) {
+    return "";
+  }
+
+  if (team > opponent) {
+    return "W";
+  }
+
+  if (team < opponent) {
+    return "L";
+  }
+
+  return "T";
+}
+
+
+function getResultClass(result) {
+  if (result === "W") {
+    return "is-win";
+  }
+
+  if (result === "L") {
+    return "is-loss";
+  }
+
+  return "is-tie";
+}
+
+
+function calculateRecord(games) {
+  return games.reduce(
+    (record, game) => {
+      const result =
+        game.result ||
+        calculateGameResult(
+          game.teamScore,
+          game.opponentScore
+        );
+
+      if (result === "W") {
+        record.wins++;
+      } else if (result === "L") {
+        record.losses++;
+      } else if (result === "T") {
+        record.ties++;
+      }
+
+      return record;
+    },
+    { wins: 0, losses: 0, ties: 0 }
+  );
+}
+
+
+function formatRecord(record) {
+  return record.ties > 0
+    ? `${record.wins}-${record.losses}-${record.ties}`
+    : `${record.wins}-${record.losses}`;
 }
 
 
@@ -2084,6 +2231,12 @@ function renderSeasonStats(
     seasonData.gamesPlayed;
 
 
+  const record =
+    calculateRecord(
+      games
+    );
+
+
   seasonFilterButtons.forEach(
     (button) => {
 
@@ -2114,6 +2267,12 @@ function renderSeasonStats(
 
   seasonGamesPlayed.textContent =
     gamesPlayed;
+
+
+  seasonRecord.textContent =
+    formatRecord(
+      record
+    );
 
 
   seasonPpg.textContent =
@@ -2696,6 +2855,42 @@ function renderGameHistory() {
                 )}
               </strong>
 
+              ${
+                game.result ||
+                (
+                  game.teamScore !== null &&
+                  game.teamScore !== undefined &&
+                  game.opponentScore !== null &&
+                  game.opponentScore !== undefined
+                )
+                  ? `<span class="history-game-score">
+                      <span class="history-result-badge ${getResultClass(
+                        game.result ||
+                        calculateGameResult(
+                          game.teamScore,
+                          game.opponentScore
+                        )
+                      )}">
+                        ${escapeHtml(
+                          game.result ||
+                          calculateGameResult(
+                            game.teamScore,
+                            game.opponentScore
+                          ) ||
+                          "—"
+                        )}
+                      </span>
+                      KHS ${safeNumber(
+                        game.teamScore
+                      )}–${safeNumber(
+                        game.opponentScore
+                      )} ${escapeHtml(
+                        game.opponent
+                      )}
+                    </span>`
+                  : ""
+              }
+
               <span class="history-game-meta">
                 ${escapeHtml(
                   formatGameDate(
@@ -2893,6 +3088,49 @@ function renderGameDetail(
     `${formatGameDate(
       game.date
     )}`;
+
+
+  const result =
+    game.result ||
+    calculateGameResult(
+      game.teamScore,
+      game.opponentScore
+    );
+
+
+  const hasFinalScore =
+    result !== "";
+
+
+  detailFinalScoreCard.hidden =
+    !hasFinalScore;
+
+
+  if (hasFinalScore) {
+    detailTeamScore.textContent =
+      safeNumber(
+        game.teamScore
+      );
+
+    detailOpponentScore.textContent =
+      safeNumber(
+        game.opponentScore
+      );
+
+    detailScoreOpponent.textContent =
+      String(
+        game.opponent ||
+        "Opponent"
+      ).toUpperCase();
+
+    detailResult.textContent =
+      result;
+
+    detailResult.className =
+      `detail-result-badge ${getResultClass(
+        result
+      )}`;
+  }
 
 
   detailPoints.textContent =
@@ -3179,10 +3417,37 @@ function createStatCardFile(
   );
 
 
+  const cardResult =
+    game.result ||
+    calculateGameResult(
+      game.teamScore,
+      game.opponentScore
+    );
+
+
+  if (cardResult) {
+    ctx.fillStyle =
+      "#111820";
+
+    ctx.font =
+      `900 28px ${cardFont}`;
+
+    ctx.fillText(
+      `${cardResult} · KHS ${safeNumber(
+        game.teamScore
+      )}–${safeNumber(
+        game.opponentScore
+      )} ${game.opponent || "Opponent"}`,
+      540,
+      225
+    );
+  }
+
+
   drawRoundedRect(
     ctx,
     60,
-    230,
+    250,
     960,
     245,
     30
@@ -3207,7 +3472,7 @@ function createStatCardFile(
   ctx.fillText(
     "POINTS",
     540,
-    295
+    315
   );
 
 
@@ -3222,7 +3487,7 @@ function createStatCardFile(
       )
     ),
     540,
-    421
+    441
   );
 
 
@@ -4459,7 +4724,7 @@ function showTapFeedback(
       );
 
     },
-    220
+    480
   );
 }
 
@@ -4577,101 +4842,195 @@ statButtons.forEach(
 );
 
 
-function undoLastAction() {
-  if (
-    actionHistory.length ===
-    0
-  ) {
-    return;
-  }
+const CORRECTION_LABELS = {
+  "2pt-made": "2PT Made",
+  "2pt-miss": "2PT Miss",
+  "3pt-made": "3PT Made",
+  "3pt-miss": "3PT Miss",
+  "ft-made": "FT Made",
+  "ft-miss": "FT Miss",
+  oreb: "Offensive Rebound",
+  dreb: "Defensive Rebound",
+  assist: "Assist",
+  steal: "Steal",
+  block: "Block",
+  turnover: "Turnover",
+  foul: "Personal Foul"
+};
 
 
-  const action =
-    actionHistory.pop();
-
-
-  switch (
-    action
-  ) {
-
+function reverseAction(action) {
+  switch (action) {
     case "2pt-made":
       stats.twoMade--;
       stats.twoAttempted--;
       break;
 
-
     case "2pt-miss":
       stats.twoAttempted--;
       break;
-
 
     case "3pt-made":
       stats.threeMade--;
       stats.threeAttempted--;
       break;
 
-
     case "3pt-miss":
       stats.threeAttempted--;
       break;
-
 
     case "ft-made":
       stats.freeThrowMade--;
       stats.freeThrowAttempted--;
       break;
 
-
     case "ft-miss":
       stats.freeThrowAttempted--;
       break;
-
 
     case "oreb":
       stats.offensiveRebounds--;
       break;
 
-
     case "dreb":
       stats.defensiveRebounds--;
       break;
-
 
     case "assist":
       stats.assists--;
       break;
 
-
     case "steal":
       stats.steals--;
       break;
-
 
     case "block":
       stats.blocks--;
       break;
 
-
     case "turnover":
       stats.turnovers--;
       break;
 
-
     case "foul":
       stats.fouls--;
       break;
+
+    default:
+      return false;
   }
 
+  return true;
+}
+
+
+function correctRecordedAction(action) {
+  const actionIndex =
+    actionHistory.lastIndexOf(
+      action
+    );
+
+  if (actionIndex === -1) {
+    return;
+  }
+
+  if (!reverseAction(action)) {
+    return;
+  }
+
+  actionHistory.splice(
+    actionIndex,
+    1
+  );
 
   updateDisplay();
-
   writeActiveGame();
+  closeModal(
+    correctionModal
+  );
+}
+
+
+function renderCorrectionOptions() {
+  const counts =
+    actionHistory.reduce(
+      (map, action) => {
+        map[action] =
+          (map[action] || 0) + 1;
+        return map;
+      },
+      {}
+    );
+
+  correctionOptions.innerHTML =
+    "";
+
+  Object.keys(
+    CORRECTION_LABELS
+  ).forEach(
+    (action) => {
+      const count =
+        counts[action] || 0;
+
+      if (count === 0) {
+        return;
+      }
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+      button.type =
+        "button";
+
+      button.className =
+        "correction-option";
+
+      button.innerHTML =
+        `<span>${CORRECTION_LABELS[action]}</span><strong>${count}</strong>`;
+
+      button.addEventListener(
+        "click",
+        () => {
+          correctRecordedAction(
+            action
+          );
+        }
+      );
+
+      correctionOptions.appendChild(
+        button
+      );
+    }
+  );
 }
 
 
 undoButton.addEventListener(
   "click",
-  undoLastAction
+  () => {
+    if (
+      actionHistory.length === 0
+    ) {
+      return;
+    }
+
+    renderCorrectionOptions();
+    openModal(
+      correctionModal
+    );
+  }
+);
+
+
+cancelCorrectionButton.addEventListener(
+  "click",
+  () => {
+    closeModal(
+      correctionModal
+    );
+  }
 );
 
 
@@ -4740,6 +5099,23 @@ endGameButton.addEventListener(
       getShootingSummary();
 
 
+    teamScoreInput.value =
+      "";
+
+
+    opponentScoreInput.value =
+      "";
+
+
+    finalOpponentName.textContent =
+      currentGame.opponent ||
+      "Opponent";
+
+
+    scoreMessage.textContent =
+      "";
+
+
     openModal(
       endGameModal
     );
@@ -4763,6 +5139,40 @@ confirmEndGameButton.addEventListener(
   "click",
 
   () => {
+
+    const teamScore =
+      Number(
+        teamScoreInput.value
+      );
+
+
+    const opponentScore =
+      Number(
+        opponentScoreInput.value
+      );
+
+
+    if (
+      teamScoreInput.value === "" ||
+      opponentScoreInput.value === "" ||
+      !Number.isInteger(teamScore) ||
+      !Number.isInteger(opponentScore) ||
+      teamScore < 0 ||
+      opponentScore < 0
+    ) {
+      scoreMessage.textContent =
+        "Enter both final scores before saving.";
+
+      return;
+    }
+
+
+    const result =
+      calculateGameResult(
+        teamScore,
+        opponentScore
+      );
+
 
     const completedGame = {
 
@@ -4805,6 +5215,15 @@ confirmEndGameButton.addEventListener(
 
       type:
         currentGame.type,
+
+
+      teamScore,
+
+
+      opponentScore,
+
+
+      result,
 
 
       points:
@@ -5047,6 +5466,7 @@ replaceGameButton.addEventListener(
 
 [
   endGameModal,
+  correctionModal,
   cancelGameModal,
   replaceGameModal
 ].forEach(
