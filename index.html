@@ -145,6 +145,11 @@
 
           </span>
 
+          <span class="home-record-summary" aria-label="Season record">
+            <strong id="homeSeasonRecord">0-0</strong>
+            <small>RECORD</small>
+          </span>
+
           <span
             class="home-action-arrow"
             aria-hidden="true"
@@ -198,7 +203,7 @@
 
 
       <p class="build-version">
-        Build 2026.10.31.1
+        Build 2026.10.31.3
       </p>
 
     </section>
@@ -936,13 +941,23 @@
       </section>
 
 
-      <button
-        type="button"
-        class="start-game-button"
-        id="shareStatsButton"
-      >
-        SHARE STATS
-      </button>
+      <div class="detail-actions">
+        <button
+          type="button"
+          class="detail-edit-button"
+          id="editGameButton"
+        >
+          EDIT GAME
+        </button>
+
+        <button
+          type="button"
+          class="start-game-button"
+          id="shareStatsButton"
+        >
+          SHARE STATS
+        </button>
+      </div>
 
     </section>
 
@@ -1893,6 +1908,108 @@
 
   <div
     class="modal-backdrop"
+    id="editGameModal"
+    aria-hidden="true"
+  >
+
+    <section
+      class="bottom-sheet edit-game-sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="editGameTitle"
+    >
+
+      <div class="modal-handle" aria-hidden="true"></div>
+
+      <span class="eyebrow">EDIT COMPLETED GAME</span>
+
+      <h2 id="editGameTitle">Edit Game</h2>
+
+      <p class="modal-description">
+        Update the game details, final score, or recorded stats.
+      </p>
+
+      <div class="edit-game-grid">
+        <label class="edit-field edit-field-wide">
+          <span>Opponent</span>
+          <input type="text" id="editOpponent" maxlength="50" autocomplete="off">
+        </label>
+
+        <label class="edit-field">
+          <span>Game Date</span>
+          <input type="date" id="editDate">
+        </label>
+
+        <label class="edit-field">
+          <span>Location</span>
+          <select id="editLocation">
+            <option value="Home">Home</option>
+            <option value="Away">Away</option>
+          </select>
+        </label>
+
+        <label class="edit-field edit-field-wide">
+          <span>Game Type</span>
+          <select id="editType">
+            <option value="Preseason">Preseason</option>
+            <option value="Regular Season">Regular Season</option>
+            <option value="Tournament">Tournament</option>
+            <option value="Club">Club</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="edit-section-label">FINAL SCORE</div>
+
+      <div class="edit-game-grid">
+        <label class="edit-field">
+          <span>KHS</span>
+          <input type="number" inputmode="numeric" min="0" max="300" id="editTeamScore">
+        </label>
+
+        <label class="edit-field">
+          <span>Opponent</span>
+          <input type="number" inputmode="numeric" min="0" max="300" id="editOpponentScore">
+        </label>
+      </div>
+
+      <div class="edit-section-label">SHOOTING</div>
+
+      <div class="edit-stat-grid">
+        <label><span>2PM</span><input type="number" inputmode="numeric" min="0" id="editTwoMade"></label>
+        <label><span>2PA</span><input type="number" inputmode="numeric" min="0" id="editTwoAttempted"></label>
+        <label><span>3PM</span><input type="number" inputmode="numeric" min="0" id="editThreeMade"></label>
+        <label><span>3PA</span><input type="number" inputmode="numeric" min="0" id="editThreeAttempted"></label>
+        <label><span>FTM</span><input type="number" inputmode="numeric" min="0" id="editFreeThrowMade"></label>
+        <label><span>FTA</span><input type="number" inputmode="numeric" min="0" id="editFreeThrowAttempted"></label>
+      </div>
+
+      <div class="edit-section-label">OTHER STATS</div>
+
+      <div class="edit-stat-grid">
+        <label><span>OREB</span><input type="number" inputmode="numeric" min="0" id="editOreb"></label>
+        <label><span>DREB</span><input type="number" inputmode="numeric" min="0" id="editDreb"></label>
+        <label><span>AST</span><input type="number" inputmode="numeric" min="0" id="editAssists"></label>
+        <label><span>STL</span><input type="number" inputmode="numeric" min="0" id="editSteals"></label>
+        <label><span>BLK</span><input type="number" inputmode="numeric" min="0" id="editBlocks"></label>
+        <label><span>TOV</span><input type="number" inputmode="numeric" min="0" id="editTurnovers"></label>
+        <label><span>PF</span><input type="number" inputmode="numeric" min="0" id="editFouls"></label>
+      </div>
+
+      <p class="form-message edit-game-message" id="editGameMessage" aria-live="polite"></p>
+
+      <div class="modal-actions">
+        <button type="button" id="cancelEditGame" class="modal-cancel">CANCEL</button>
+        <button type="button" id="saveEditGame" class="modal-confirm">SAVE CHANGES</button>
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <div
+    class="modal-backdrop"
     id="cancelGameModal"
     aria-hidden="true"
   >
@@ -2011,7 +2128,7 @@
   </div>
 
 
-  <script src="js/app.js?v=10"></script>
+  <script src="js/app.js?v=12"></script>
 
 </body>
 </html>
