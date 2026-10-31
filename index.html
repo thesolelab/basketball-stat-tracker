@@ -198,7 +198,7 @@
 
 
       <p class="build-version">
-        Build 2026.10.30.1
+        Build 2026.10.31.1
       </p>
 
     </section>
@@ -318,15 +318,24 @@
           </div>
 
 
-          <span class="season-games-badge">
+          <div class="season-summary-badges">
 
-            <strong id="seasonGamesPlayed">
-              0
-            </strong>
+            <span class="season-record-badge">
+              <strong id="seasonRecord">0-0</strong>
+              RECORD
+            </span>
 
-            GAMES
+            <span class="season-games-badge">
 
-          </span>
+              <strong id="seasonGamesPlayed">
+                0
+              </strong>
+
+              GAMES
+
+            </span>
+
+          </div>
 
         </div>
 
@@ -723,6 +732,33 @@
           <strong id="detailPoints">
             0
           </strong>
+
+        </div>
+
+      </section>
+
+
+      <section class="detail-card detail-final-score-card" id="detailFinalScoreCard">
+
+        <span class="eyebrow">
+          FINAL SCORE
+        </span>
+
+        <div class="detail-final-score">
+
+          <div>
+            <span>KHS</span>
+            <strong id="detailTeamScore">0</strong>
+          </div>
+
+          <span class="detail-score-dash">–</span>
+
+          <div>
+            <span id="detailScoreOpponent">OPPONENT</span>
+            <strong id="detailOpponentScore">0</strong>
+          </div>
+
+          <span class="detail-result-badge" id="detailResult">W</span>
 
         </div>
 
@@ -1637,7 +1673,7 @@
           class="undo-button"
           disabled
         >
-          ↶ Undo
+          ↶ Correct
         </button>
 
         <button
@@ -1754,6 +1790,43 @@
       </div>
 
 
+      <div class="final-score-entry">
+
+        <span class="eyebrow">FINAL SCORE</span>
+
+        <div class="final-score-grid">
+
+          <label>
+            <span>KHS</span>
+            <input
+              type="number"
+              inputmode="numeric"
+              min="0"
+              max="300"
+              id="teamScoreInput"
+              placeholder="0"
+            >
+          </label>
+
+          <label>
+            <span id="finalOpponentName">Opponent</span>
+            <input
+              type="number"
+              inputmode="numeric"
+              min="0"
+              max="300"
+              id="opponentScoreInput"
+              placeholder="0"
+            >
+          </label>
+
+        </div>
+
+        <p class="score-message" id="scoreMessage" aria-live="polite"></p>
+
+      </div>
+
+
       <div class="modal-actions">
 
         <button
@@ -1774,6 +1847,44 @@
         </button>
 
       </div>
+
+    </section>
+
+  </div>
+
+
+  <div
+    class="modal-backdrop"
+    id="correctionModal"
+    aria-hidden="true"
+  >
+
+    <section
+      class="bottom-sheet correction-sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="correctionTitle"
+    >
+
+      <div class="modal-handle" aria-hidden="true"></div>
+
+      <span class="eyebrow">CORRECT STAT</span>
+
+      <h2 id="correctionTitle">Which stat should be removed?</h2>
+
+      <p class="modal-description">
+        Choose one recorded stat to subtract from this game.
+      </p>
+
+      <div class="correction-options" id="correctionOptions"></div>
+
+      <button
+        type="button"
+        class="correction-cancel"
+        id="cancelCorrection"
+      >
+        CANCEL
+      </button>
 
     </section>
 
@@ -1900,7 +2011,7 @@
   </div>
 
 
-  <script src="js/app.js?v=9"></script>
+  <script src="js/app.js?v=10"></script>
 
 </body>
 </html>
