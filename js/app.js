@@ -2205,7 +2205,7 @@ function getSeasonFilterLabel(
 
 function refreshSeasonStatsSummary() {
   const games = getSeasonGames("All");
-  const record = calculateSeasonRecord(games);
+  const record = calculateRecord(games);
 
   seasonStatsSummary.textContent =
     "View season averages and totals";
