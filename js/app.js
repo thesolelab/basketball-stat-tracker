@@ -95,6 +95,11 @@ const seasonStatsSummary =
     "seasonStatsSummary"
   );
 
+const homeSeasonRecord =
+  document.getElementById(
+    "homeSeasonRecord"
+  );
+
 const seasonStatsBackButton =
   document.getElementById(
     "seasonStatsBackButton"
@@ -655,6 +660,31 @@ const shareStatsButton =
     "shareStatsButton"
   );
 
+const editGameButton = document.getElementById("editGameButton");
+const editGameModal = document.getElementById("editGameModal");
+const cancelEditGameButton = document.getElementById("cancelEditGame");
+const saveEditGameButton = document.getElementById("saveEditGame");
+const editGameMessage = document.getElementById("editGameMessage");
+const editOpponent = document.getElementById("editOpponent");
+const editDate = document.getElementById("editDate");
+const editLocation = document.getElementById("editLocation");
+const editType = document.getElementById("editType");
+const editTeamScore = document.getElementById("editTeamScore");
+const editOpponentScore = document.getElementById("editOpponentScore");
+const editTwoMade = document.getElementById("editTwoMade");
+const editTwoAttempted = document.getElementById("editTwoAttempted");
+const editThreeMade = document.getElementById("editThreeMade");
+const editThreeAttempted = document.getElementById("editThreeAttempted");
+const editFreeThrowMade = document.getElementById("editFreeThrowMade");
+const editFreeThrowAttempted = document.getElementById("editFreeThrowAttempted");
+const editOreb = document.getElementById("editOreb");
+const editDreb = document.getElementById("editDreb");
+const editAssists = document.getElementById("editAssists");
+const editSteals = document.getElementById("editSteals");
+const editBlocks = document.getElementById("editBlocks");
+const editTurnovers = document.getElementById("editTurnovers");
+const editFouls = document.getElementById("editFouls");
+
 
 const statButtons =
   document.querySelectorAll(
@@ -1166,6 +1196,20 @@ function saveCompletedGame(
       games
     )
   );
+}
+
+function updateCompletedGame(game) {
+  const games = readCompletedGames();
+  const index = games.findIndex(
+    (item) => item.id === game.id
+  );
+
+  if (index === -1) {
+    return false;
+  }
+
+  games[index] = game;
+  return writeCompletedGames(games);
 }
 
 
@@ -2160,46 +2204,16 @@ function getSeasonFilterLabel(
 
 
 function refreshSeasonStatsSummary() {
-  const games =
-    getSeasonGames(
-      "All"
-    );
-
-
-  const seasonData =
-    calculateSeasonStats(
-      games
-    );
-
-
-  const count =
-    seasonData.gamesPlayed;
-
-
-  if (
-    count ===
-    0
-  ) {
-    seasonStatsSummary.textContent =
-      "No completed games yet";
-
-    return;
-  }
-
+  const games = getSeasonGames("All");
+  const record = calculateSeasonRecord(games);
 
   seasonStatsSummary.textContent =
-    `${count} ${
-      count ===
-        1
-        ? "game"
-        : "games"
-    } · ` +
-    `${formatAverage(
-      seasonData
-        .totals
-        .points,
-      count
-    )} PPG`;
+    "View season averages and totals";
+
+  if (homeSeasonRecord) {
+    homeSeasonRecord.textContent =
+      formatRecord(record);
+  }
 }
 
 
@@ -4701,30 +4715,38 @@ gameSetupForm.addEventListener(
 
 
 function showTapFeedback(
-  button
+  button,
+  action
 ) {
-  button.classList.remove(
-    "stat-recorded"
-  );
+  const isMiss =
+    action === "2pt-miss" ||
+    action === "3pt-miss" ||
+    action === "ft-miss";
 
+  button.classList.remove(
+    "stat-recorded",
+    "stat-recorded-make",
+    "stat-recorded-miss"
+  );
 
   void button.offsetWidth;
 
-
   button.classList.add(
-    "stat-recorded"
+    "stat-recorded",
+    isMiss
+      ? "stat-recorded-miss"
+      : "stat-recorded-make"
   );
-
 
   window.setTimeout(
     () => {
-
       button.classList.remove(
-        "stat-recorded"
+        "stat-recorded",
+        "stat-recorded-make",
+        "stat-recorded-miss"
       );
-
     },
-    480
+    560
   );
 }
 
@@ -4834,7 +4856,8 @@ statButtons.forEach(
 
 
         showTapFeedback(
-          button
+          button,
+          button.dataset.action
         );
       }
     );
@@ -4993,8 +5016,23 @@ function renderCorrectionOptions() {
       button.addEventListener(
         "click",
         () => {
-          correctRecordedAction(
-            action
+          button.classList.remove(
+            "correction-recorded"
+          );
+
+          void button.offsetWidth;
+
+          button.classList.add(
+            "correction-recorded"
+          );
+
+          window.setTimeout(
+            () => {
+              correctRecordedAction(
+                action
+              );
+            },
+            700
           );
         }
       );
@@ -5031,6 +5069,163 @@ cancelCorrectionButton.addEventListener(
       correctionModal
     );
   }
+);
+
+
+function getNonNegativeInteger(input) {
+  const value = Number(input.value);
+
+  if (
+    input.value === "" ||
+    !Number.isInteger(value) ||
+    value < 0
+  ) {
+    return null;
+  }
+
+  return value;
+}
+
+
+function openEditGame() {
+  if (!selectedDetailGame) {
+    return;
+  }
+
+  const game = selectedDetailGame;
+
+  editOpponent.value = game.opponent || "";
+  editDate.value = String(game.date || "").slice(0, 10);
+  editLocation.value = game.location || "Home";
+  editType.value = game.type || "Regular Season";
+  editTeamScore.value =
+    game.teamScore ?? "";
+  editOpponentScore.value =
+    game.opponentScore ?? "";
+  editTwoMade.value = safeNumber(game.twoMade);
+  editTwoAttempted.value = safeNumber(game.twoAttempted);
+  editThreeMade.value = safeNumber(game.threeMade);
+  editThreeAttempted.value = safeNumber(game.threeAttempted);
+  editFreeThrowMade.value = safeNumber(game.freeThrowMade);
+  editFreeThrowAttempted.value = safeNumber(game.freeThrowAttempted);
+  editOreb.value = safeNumber(game.offensiveRebounds);
+  editDreb.value = safeNumber(game.defensiveRebounds);
+  editAssists.value = safeNumber(game.assists);
+  editSteals.value = safeNumber(game.steals);
+  editBlocks.value = safeNumber(game.blocks);
+  editTurnovers.value = safeNumber(game.turnovers);
+  editFouls.value = safeNumber(game.fouls);
+  editGameMessage.textContent = "";
+
+  openModal(editGameModal);
+}
+
+
+function saveEditedGame() {
+  if (!selectedDetailGame) {
+    return;
+  }
+
+  const opponent = editOpponent.value.trim();
+  const date = editDate.value;
+
+  const values = {
+    teamScore: getNonNegativeInteger(editTeamScore),
+    opponentScore: getNonNegativeInteger(editOpponentScore),
+    twoMade: getNonNegativeInteger(editTwoMade),
+    twoAttempted: getNonNegativeInteger(editTwoAttempted),
+    threeMade: getNonNegativeInteger(editThreeMade),
+    threeAttempted: getNonNegativeInteger(editThreeAttempted),
+    freeThrowMade: getNonNegativeInteger(editFreeThrowMade),
+    freeThrowAttempted: getNonNegativeInteger(editFreeThrowAttempted),
+    offensiveRebounds: getNonNegativeInteger(editOreb),
+    defensiveRebounds: getNonNegativeInteger(editDreb),
+    assists: getNonNegativeInteger(editAssists),
+    steals: getNonNegativeInteger(editSteals),
+    blocks: getNonNegativeInteger(editBlocks),
+    turnovers: getNonNegativeInteger(editTurnovers),
+    fouls: getNonNegativeInteger(editFouls)
+  };
+
+  if (!opponent || !date) {
+    editGameMessage.textContent =
+      "Opponent and game date are required.";
+    return;
+  }
+
+  if (Object.values(values).some((value) => value === null)) {
+    editGameMessage.textContent =
+      "Enter valid whole numbers for the score and stats.";
+    return;
+  }
+
+  if (
+    values.twoMade > values.twoAttempted ||
+    values.threeMade > values.threeAttempted ||
+    values.freeThrowMade > values.freeThrowAttempted
+  ) {
+    editGameMessage.textContent =
+      "Made shots cannot be greater than attempts.";
+    return;
+  }
+
+  const fieldGoalsMade =
+    values.twoMade + values.threeMade;
+  const fieldGoalAttempts =
+    values.twoAttempted + values.threeAttempted;
+  const rebounds =
+    values.offensiveRebounds + values.defensiveRebounds;
+  const points =
+    values.twoMade * 2 +
+    values.threeMade * 3 +
+    values.freeThrowMade;
+  const result =
+    calculateGameResult(
+      values.teamScore,
+      values.opponentScore
+    );
+
+  const updatedGame = {
+    ...selectedDetailGame,
+    opponent,
+    date,
+    location: editLocation.value,
+    type: editType.value,
+    ...values,
+    rebounds,
+    fieldGoalsMade,
+    fieldGoalAttempts,
+    points,
+    result,
+    syncStatus: "pending"
+  };
+
+  if (!updateCompletedGame(updatedGame)) {
+    editGameMessage.textContent =
+      "The game could not be updated.";
+    return;
+  }
+
+  selectedDetailGame = updatedGame;
+  renderGameDetail(updatedGame);
+  refreshGameHistorySummary();
+  refreshSeasonStatsSummary();
+  closeModal(editGameModal);
+
+  void synchronizeCompletedGames();
+}
+
+
+editGameButton.addEventListener("click", openEditGame);
+
+cancelEditGameButton.addEventListener(
+  "click",
+  () => closeModal(editGameModal)
+);
+
+saveEditGameButton.addEventListener(
+  "click",
+  saveEditedGame
 );
 
 
@@ -5467,6 +5662,7 @@ replaceGameButton.addEventListener(
 [
   endGameModal,
   correctionModal,
+  editGameModal,
   cancelGameModal,
   replaceGameModal
 ].forEach(
