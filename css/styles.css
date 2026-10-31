@@ -1075,7 +1075,7 @@ button:focus-visible {
 }
 
 .stat-recorded {
-  animation: stat-recorded 0.22s ease;
+  animation: stat-recorded 0.48s ease;
 }
 
 @keyframes stat-recorded {
@@ -1083,13 +1083,31 @@ button:focus-visible {
     transform: scale(1);
   }
 
-  45% {
-    transform: scale(0.94);
+  18% {
+    transform: scale(0.96);
+    background: #2e9d59;
+    color: #ffffff;
+    border-color: #2e9d59;
+    box-shadow: 0 0 0 4px rgba(46, 157, 89, 0.22);
+  }
+
+  70% {
+    background: #2e9d59;
+    color: #ffffff;
+    border-color: #2e9d59;
+    box-shadow: 0 0 0 4px rgba(46, 157, 89, 0.14);
   }
 
   100% {
     transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(46, 157, 89, 0);
   }
+}
+
+.stat-recorded .stat-icon,
+.stat-recorded .stat-button-label,
+.stat-recorded .miss-x {
+  color: #ffffff;
 }
 
 .modal-backdrop {
@@ -1283,6 +1301,112 @@ button:focus-visible {
   color: var(--white);
 }
 
+
+.final-score-entry {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.final-score-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.final-score-grid label {
+  min-width: 0;
+}
+
+.final-score-grid label > span {
+  display: block;
+  margin-bottom: 6px;
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.final-score-grid input {
+  width: 100%;
+  min-width: 0;
+  height: 54px;
+  padding: 0 12px;
+  background: #fafbfb;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  outline: none;
+  font-size: 22px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.final-score-grid input:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.09);
+}
+
+.score-message {
+  min-height: 17px;
+  margin: 7px 0 0;
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.correction-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.correction-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 50px;
+  padding: 10px 12px;
+  background: var(--surface-secondary);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.correction-option strong {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 7px;
+  background: var(--white);
+  color: var(--red);
+  border-radius: 9px;
+  font-size: 12px;
+}
+
+.correction-cancel {
+  width: 100%;
+  min-height: 50px;
+  margin-top: 10px;
+  background: var(--white);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-medium);
+  font-size: 11px;
+  font-weight: 900;
+}
+
 .season-filter-card,
 .season-overview-card,
 .season-card,
@@ -1389,6 +1513,14 @@ button:focus-visible {
   letter-spacing: -0.03em;
 }
 
+.season-summary-badges {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  gap: 7px;
+}
+
+.season-record-badge,
 .season-games-badge {
   flex: 0 0 auto;
 
@@ -1408,6 +1540,31 @@ button:focus-visible {
   font-weight: 900;
 
   letter-spacing: 0.08em;
+}
+
+.season-record-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  padding: 7px 10px;
+  background: var(--surface-secondary);
+  color: var(--text-secondary);
+  border-radius: 12px;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.season-record-badge strong {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .season-games-badge strong {
@@ -1798,6 +1955,100 @@ button:focus-visible {
 
   font-size: 12px;
   font-weight: 600;
+}
+
+.history-game-score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.history-result-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: var(--surface-secondary);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.history-result-badge.is-win,
+.detail-result-badge.is-win {
+  background: #eaf6ee;
+  color: #237a45;
+}
+
+.history-result-badge.is-loss,
+.detail-result-badge.is-loss {
+  background: #fff0f2;
+  color: var(--red);
+}
+
+.history-result-badge.is-tie,
+.detail-result-badge.is-tie {
+  background: #f0f2f4;
+  color: var(--text-secondary);
+}
+
+.detail-final-score {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.detail-final-score > div {
+  min-width: 0;
+  text-align: center;
+}
+
+.detail-final-score > div > span,
+.detail-final-score > div > strong {
+  display: block;
+}
+
+.detail-final-score > div > span {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 9px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detail-final-score > div > strong {
+  margin-top: 4px;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.detail-score-dash {
+  color: var(--text-muted);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.detail-result-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 9px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 900;
 }
 
 .detail-hero,
