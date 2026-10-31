@@ -3321,6 +3321,53 @@ function drawRoundedRect(
 }
 
 
+function getOpponentAbbreviation(name) {
+  const words =
+    String(name || "OPP")
+      .trim()
+      .replace(/[^A-Za-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if (words.length === 0) {
+    return "OPP";
+  }
+
+  if (words.length === 1) {
+    return words[0]
+      .slice(0, 4)
+      .toUpperCase();
+  }
+
+  return words
+    .map((word) => word.charAt(0))
+    .join("")
+    .slice(0, 5)
+    .toUpperCase();
+}
+
+
+function getRecordThroughGame(game) {
+  const gameNumber =
+    Number(game.gameNumber) || 0;
+
+  const season =
+    game.season || CURRENT_SEASON;
+
+  const gamesThroughThisGame =
+    readCompletedGames()
+      .filter(
+        (item) =>
+          (item.season || CURRENT_SEASON) === season &&
+          (Number(item.gameNumber) || 0) <= gameNumber
+      );
+
+  return calculateRecord(
+    gamesThroughThisGame
+  );
+}
+
+
 function createStatCardFile(
   game
 ) {
@@ -3329,48 +3376,60 @@ function createStatCardFile(
       "canvas"
     );
 
-
   canvas.width =
     1080;
 
   canvas.height =
     1350;
 
-
   const ctx =
     canvas.getContext(
       "2d"
     );
 
-
-  if (
-    !ctx
-  ) {
+  if (!ctx) {
     throw new Error(
       "Canvas is not available."
     );
   }
-
 
   const fieldGoalsMade =
     safeNumber(
       game.fieldGoalsMade
     );
 
-
   const fieldGoalAttempts =
     safeNumber(
       game.fieldGoalAttempts
     );
 
+  const cardResult =
+    game.result ||
+    calculateGameResult(
+      game.teamScore,
+      game.opponentScore
+    );
+
+  const opponentAbbreviation =
+    getOpponentAbbreviation(
+      game.opponent
+    );
+
+  const recordThroughGame =
+    getRecordThroughGame(
+      game
+    );
+
+  const recordText =
+    formatRecord(
+      recordThroughGame
+    );
 
   const cardFont =
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
 
-
   ctx.fillStyle =
     "#f4f7f8";
-
 
   ctx.fillRect(
     0,
@@ -3379,22 +3438,17 @@ function createStatCardFile(
     canvas.height
   );
 
-
   ctx.textAlign =
     "center";
-
 
   ctx.textBaseline =
     "alphabetic";
 
-
   ctx.fillStyle =
     "#111820";
 
-
   ctx.font =
     `900 58px ${cardFont}`;
-
 
   ctx.fillText(
     "ADDYSON",
@@ -3402,10 +3456,8 @@ function createStatCardFile(
     88
   );
 
-
   ctx.font =
     `800 40px ${cardFont}`;
-
 
   ctx.fillText(
     `vs. ${game.opponent || "Opponent"}`,
@@ -3413,14 +3465,11 @@ function createStatCardFile(
     142
   );
 
-
   ctx.fillStyle =
     "#66717d";
 
-
   ctx.font =
     `700 27px ${cardFont}`;
-
 
   ctx.fillText(
     formatGameDate(
@@ -3430,69 +3479,138 @@ function createStatCardFile(
     187
   );
 
+  if (cardResult) {
+    const badgeWidth = 62;
+    const badgeHeight = 42;
+    const scoreGap = 18;
+    const scoreText =
+      `KHS ${safeNumber(
+        game.teamScore
+      )}–${safeNumber(
+        game.opponentScore
+      )} ${opponentAbbreviation}`;
 
-  const cardResult =
-    game.result ||
-    calculateGameResult(
-      game.teamScore,
-      game.opponentScore
+    ctx.font =
+      `900 29px ${cardFont}`;
+
+    const scoreWidth =
+      ctx.measureText(
+        scoreText
+      ).width;
+
+    const groupWidth =
+      badgeWidth +
+      scoreGap +
+      scoreWidth;
+
+    const groupX =
+      (canvas.width - groupWidth) /
+      2;
+
+    drawRoundedRect(
+      ctx,
+      groupX,
+      211,
+      badgeWidth,
+      badgeHeight,
+      14
     );
 
+    if (cardResult === "W") {
+      ctx.fillStyle =
+        "#e7f6ec";
+    } else if (cardResult === "L") {
+      ctx.fillStyle =
+        "#fde8ec";
+    } else {
+      ctx.fillStyle =
+        "#eef1f3";
+    }
 
-  if (cardResult) {
+    ctx.fill();
+
+    ctx.textAlign =
+      "center";
+
+    if (cardResult === "W") {
+      ctx.fillStyle =
+        "#23824a";
+    } else if (cardResult === "L") {
+      ctx.fillStyle =
+        "#c8102e";
+    } else {
+      ctx.fillStyle =
+        "#66717d";
+    }
+
+    ctx.font =
+      `900 27px ${cardFont}`;
+
+    ctx.fillText(
+      cardResult,
+      groupX + badgeWidth / 2,
+      240
+    );
+
+    ctx.textAlign =
+      "left";
+
     ctx.fillStyle =
       "#111820";
 
     ctx.font =
-      `900 28px ${cardFont}`;
+      `900 29px ${cardFont}`;
 
     ctx.fillText(
-      `${cardResult} · KHS ${safeNumber(
-        game.teamScore
-      )}–${safeNumber(
-        game.opponentScore
-      )} ${game.opponent || "Opponent"}`,
+      scoreText,
+      groupX + badgeWidth + scoreGap,
+      241
+    );
+
+    ctx.textAlign =
+      "center";
+
+    ctx.fillStyle =
+      "#66717d";
+
+    ctx.font =
+      `800 22px ${cardFont}`;
+
+    ctx.fillText(
+      `SEASON RECORD  ${recordText}`,
       540,
-      225
+      276
     );
   }
-
 
   drawRoundedRect(
     ctx,
     60,
-    250,
+    300,
     960,
-    245,
+    220,
     30
   );
-
 
   ctx.fillStyle =
     "#c8102e";
 
-
   ctx.fill();
-
 
   ctx.fillStyle =
     "#ffffff";
 
-
   ctx.font =
     `800 25px ${cardFont}`;
-
 
   ctx.fillText(
     "POINTS",
     540,
-    315
+    360
   );
 
-
   ctx.font =
-    `900 126px ${cardFont}`;
-
+    `900 116px ${cardFont}`;
 
   ctx.fillText(
     String(
@@ -3501,28 +3619,23 @@ function createStatCardFile(
       )
     ),
     540,
-    441
+    477
   );
-
 
   ctx.textAlign =
     "left";
 
-
   ctx.fillStyle =
     "#8a96a3";
-
 
   ctx.font =
     `900 24px ${cardFont}`;
 
-
   ctx.fillText(
     "BOX SCORE",
     65,
-    545
+    570
   );
-
 
   const boxStats = [
     [
@@ -3531,35 +3644,30 @@ function createStatCardFile(
       ),
       "REB"
     ],
-
     [
       safeNumber(
         game.assists
       ),
       "AST"
     ],
-
     [
       safeNumber(
         game.steals
       ),
       "STL"
     ],
-
     [
       safeNumber(
         game.blocks
       ),
       "BLK"
     ],
-
     [
       safeNumber(
         game.turnovers
       ),
       "TOV"
     ],
-
     [
       safeNumber(
         game.fouls
@@ -3568,18 +3676,14 @@ function createStatCardFile(
     ]
   ];
 
-
   const boxWidth =
     300;
-
 
   const boxHeight =
     145;
 
-
   const boxGap =
     30;
-
 
   boxStats.forEach(
     (
@@ -3589,18 +3693,13 @@ function createStatCardFile(
       ],
       index
     ) => {
-
       const column =
-        index %
-        3;
-
+        index % 3;
 
       const row =
         Math.floor(
-          index /
-            3
+          index / 3
         );
-
 
       const x =
         60 +
@@ -3610,15 +3709,13 @@ function createStatCardFile(
             boxGap
           );
 
-
       const y =
-        580 +
+        605 +
         row *
           (
             boxHeight +
             25
           );
-
 
       drawRoundedRect(
         ctx,
@@ -3629,61 +3726,46 @@ function createStatCardFile(
         22
       );
 
-
       ctx.fillStyle =
         "#ffffff";
 
-
       ctx.fill();
-
 
       ctx.textAlign =
         "center";
 
-
       ctx.fillStyle =
         "#111820";
 
-
       ctx.font =
         `900 52px ${cardFont}`;
-
 
       ctx.fillText(
         String(
           value
         ),
         x +
-          boxWidth /
-            2,
-        y +
-          66
+          boxWidth / 2,
+        y + 66
       );
-
 
       ctx.fillStyle =
         "#8a96a3";
 
-
       ctx.font =
         `800 21px ${cardFont}`;
-
 
       ctx.fillText(
         label,
         x +
-          boxWidth /
-            2,
-        y +
-          108
+          boxWidth / 2,
+        y + 108
       );
     }
   );
 
-
   const shootingY =
-    935;
-
+    945;
 
   drawRoundedRect(
     ctx,
@@ -3694,49 +3776,36 @@ function createStatCardFile(
     28
   );
 
-
   ctx.fillStyle =
     "#ffffff";
 
-
   ctx.fill();
-
 
   ctx.textAlign =
     "left";
 
-
   ctx.fillStyle =
     "#8a96a3";
-
 
   ctx.font =
     `900 24px ${cardFont}`;
 
-
   ctx.fillText(
     "SHOOTING",
     90,
-    shootingY +
-      50
+    shootingY + 50
   );
 
-
   const shootingRows = [
-
     [
       "Field Goals",
-
       `${fieldGoalsMade}/${fieldGoalAttempts} · ${formatPercentage(
         fieldGoalsMade,
         fieldGoalAttempts
       )}`
     ],
-
-
     [
       "2PT",
-
       `${safeNumber(
         game.twoMade
       )}/${safeNumber(
@@ -3746,11 +3815,8 @@ function createStatCardFile(
         game.twoAttempted
       )}`
     ],
-
-
     [
       "3PT",
-
       `${safeNumber(
         game.threeMade
       )}/${safeNumber(
@@ -3760,11 +3826,8 @@ function createStatCardFile(
         game.threeAttempted
       )}`
     ],
-
-
     [
       "Free Throws",
-
       `${safeNumber(
         game.freeThrowMade
       )}/${safeNumber(
@@ -3776,7 +3839,6 @@ function createStatCardFile(
     ]
   ];
 
-
   shootingRows.forEach(
     (
       [
@@ -3785,25 +3847,20 @@ function createStatCardFile(
       ],
       index
     ) => {
-
       const y =
         shootingY +
         111 +
         index *
           63;
 
-
       ctx.textAlign =
         "left";
-
 
       ctx.fillStyle =
         "#66717d";
 
-
       ctx.font =
         `700 28px ${cardFont}`;
-
 
       ctx.fillText(
         label,
@@ -3811,18 +3868,14 @@ function createStatCardFile(
         y
       );
 
-
       ctx.textAlign =
         "right";
-
 
       ctx.fillStyle =
         "#111820";
 
-
       ctx.font =
         `800 28px ${cardFont}`;
-
 
       ctx.fillText(
         value,
@@ -3832,12 +3885,10 @@ function createStatCardFile(
     }
   );
 
-
   const dataUrl =
     canvas.toDataURL(
       "image/png"
     );
-
 
   const base64 =
     dataUrl
@@ -3845,23 +3896,19 @@ function createStatCardFile(
         ","
       )[1];
 
-
   const binary =
     atob(
       base64
     );
-
 
   const bytes =
     new Uint8Array(
       binary.length
     );
 
-
   for (
     let i = 0;
-    i <
-      binary.length;
+    i < binary.length;
     i++
   ) {
     bytes[i] =
@@ -3870,17 +3917,14 @@ function createStatCardFile(
       );
   }
 
-
   return (
     new File(
       [
         bytes
       ],
-
       getStatCardFilename(
         game
       ),
-
       {
         type:
           "image/png"
@@ -3888,7 +3932,6 @@ function createStatCardFile(
     )
   );
 }
-
 
 function getStatCardFilename(
   game
