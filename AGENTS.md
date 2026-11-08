@@ -34,6 +34,7 @@ scoreboard digits, jersey styling, and net/ball texture details.
 Think NBA 2K player card meets arena scoreboard.
 
 ### Scope (read first)
+
 Restyle visually only. Do NOT change functionality or data logic:
 - Game setup, live tracking, undo ("Correct"), end/cancel game,
   resume/discard flow, edit completed game, season stats, game
@@ -46,8 +47,11 @@ glare or a dim gym. Speed and legibility beat decoration. If a visual
 effect slows a tap, delays input, or hurts readability, remove it.
 
 ### Palette rule
-Black, charcoal, white, and ONE brand accent (the site's existing red
-`#c8102e`). The only extra colors allowed are functional:
+
+Graphite/charcoal surfaces (not pure black), white text, and ONE brand
+accent (the site's existing red `#c8102e`). Near-black is reserved for
+the live scoreboard header and inset fields. The only extra colors
+allowed are functional:
 - Made shot: green (--made)
 - Destructive actions: the red accent family (--danger)
 - Warm "hardwood" tone: a very dark amber tint used ONLY in
@@ -56,17 +60,19 @@ Black, charcoal, white, and ONE brand accent (the site's existing red
 No rainbow category colors. No gradients on interactive surfaces.
 
 ### Step 1: Tokens
+
 Define in :root and use ONLY these variables (no hard-coded colors
 in components).
 
 ```css
 :root {
-  --bg: #08090a;
-  --bg-elevated: #0f1113;
-  --surface: rgba(255, 255, 255, 0.04);
-  --surface-inset: #000000;
-  --border: rgba(255, 255, 255, 0.10);
-  --border-strong: rgba(255, 255, 255, 0.22);
+  --bg: #1a1c20;                 /* lifted graphite page background */
+  --bg-elevated: #23262b;        /* panels, header bar, modals */
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-inset: #121417;      /* inputs, tiles: darker than page = depth */
+  --scoreboard-bg: #0d0e10;      /* live score header ONLY, darkest element */
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.26);
 
   --accent: #c8102e;          /* existing brand red */
   --accent-hover: #e0183a;
@@ -79,11 +85,11 @@ in components).
   --miss: rgba(242, 242, 242, 0.45);   /* muted, never loud */
   --danger: var(--accent);
 
-  --hardwood: rgba(176, 120, 60, 0.05);  /* texture only */
-  --court-line: rgba(255, 255, 255, 0.04);
+  --hardwood: rgba(176, 120, 60, 0.09);  /* texture only */
+  --court-line: rgba(255, 255, 255, 0.07);
 
   --text: #f4f4f4;
-  --text-muted: rgba(244, 244, 244, 0.58);
+  --text-muted: rgba(244, 244, 244, 0.66);
 
   --radius: 2px;
   --font-display: "Barlow Condensed", "Oswald", system-ui, sans-serif;
@@ -95,6 +101,7 @@ in components).
 ```
 
 ### Step 2: Typography
+
 - Load Barlow Condensed (600, 700, 800) and Barlow (400, 500, 600)
   from Google Fonts. Fallback: Oswald, then system-ui.
 - Display and numbers: var(--font-display), uppercase, bold/extra
@@ -106,6 +113,7 @@ in components).
 - The live score and PTS number are the largest text in the app.
 
 ### Step 3: Global look
+
 - Background: var(--bg) with two stacked subtle textures:
   1. A faint basketball court line drawing in SVG
      (half-court: key/paint rectangle, free-throw circle, three-point
@@ -115,6 +123,14 @@ in components).
      wash at the edges, optional.
 - Optional: a corner radial glow using var(--accent-glow) at ~6%
   opacity behind the header.
+- **Depth rule (important):** the page is lifted graphite
+  (var(--bg)), panels sit slightly lighter (var(--bg-elevated)),
+  and anything that should feel "inset" (inputs, stat tiles, shot
+  buttons' wells, score chips) is darker than the page
+  (var(--surface-inset)). The darkest element on any screen is the
+  live scoreboard header (var(--scoreboard-bg)). Do not use pure
+  #000 anywhere. This contrast keeps the app from feeling flat or
+  heavy.
 - Border radius is var(--radius) everywhere. No pills, no big
   rounded cards.
 - Respect safe-area insets (notch, home indicator) with
@@ -122,6 +138,7 @@ in components).
   bars.
 
 ### Step 4: Signature basketball + gaming details
+
 Use these consistently; they are what make the app feel designed:
 - **Jersey trim stripe:** panels/cards that represent the player get a
   3px accent stripe on the left edge, like the side panel of a jersey.
@@ -142,6 +159,7 @@ Use these consistently; they are what make the app feel designed:
 ### Step 5: Screens and components
 
 #### Home (player card)
+
 - Player name (ADDYSON) in display type, huge, with the number badge
   (#2) beside it. Season label small and muted ("2026-27 SEASON").
 - Season record shown as a compact scoreboard chip (e.g. "0-0").
@@ -154,6 +172,7 @@ Use these consistently; they are what make the app feel designed:
   var(--accent) on error. Build number stays tiny and muted.
 
 #### New Game form
+
 - Fields: dark inset inputs, 1px var(--border-strong), square, bold
   values, accent border on focus.
 - Home/Away and Game Type: segmented controls, rectangular, selected
@@ -162,10 +181,15 @@ Use these consistently; they are what make the app feel designed:
   at least var(--tap-min) tall.
 
 #### Live Game screen (most important)
+
 Layout, top to bottom:
-1. **Scoreboard header:** huge POINTS number (display font, animated
-   count when it changes), player name and #, opponent and
-   Home/Away, game type tag. Jersey number watermark behind.
+1. **Scoreboard header:** background var(--scoreboard-bg) (the
+   darkest element on screen, with a 1px var(--border) bottom edge
+   and a 2px accent line) so it reads like an arena scoreboard
+   sitting on the lighter graphite page. Huge POINTS number (display
+   font, animated count when it changes), player name and #,
+   opponent and Home/Away, game type tag. Jersey number watermark
+   behind.
 2. **Stat strip:** REB, AST, STL, BLK, TOV, PF, FG% as a compact row
    of mini-tiles (dark inset, tiny label, bold value). A tile
    pulses briefly (150ms) when its value changes.
@@ -198,6 +222,7 @@ Interaction feedback (all under 200ms, never blocking input):
   animations, keep instant color feedback only.
 
 #### Milestone toasts
+
 When existing stats cross a threshold, show a brief non-blocking toast
 that auto-dismisses in ~2.5s, styled as a small HUD banner (clipped
 corner, accent left stripe):
@@ -206,14 +231,18 @@ corner, accent left stripe):
   persisted data. Toasts must never cover the shot buttons.
 
 #### Modals ("End this game?", "Correct stat", "Edit Game", etc.)
-- Dark panel with corner brackets and a 2px accent top line, square
-  corners, dim overlay with slight blur only if performance allows.
+
+- Panel background var(--bg-elevated) with corner brackets and a 2px
+  accent top line, square corners. Dim overlay (rgba black ~60%)
+  with slight blur only if performance allows. The final-score row
+  inside the modal uses var(--scoreboard-bg) as its backdrop.
 - Title in display type. Final score row styled as a scoreboard:
   team name left, big numerals, team name right.
 - Destructive confirm ("DISCARD GAME") uses var(--danger); the safe
   option is always visually dominant when the action is destructive.
 
 #### Season Stats ("player card")
+
 - Top block styled like a ratings card: PPG, RPG, APG as three huge
   numbers with tiny labels, record and games played as chips.
 - Secondary per-game stats (SPG, BPG, TOV/G, PF/G) as a 2x2 or 4-up
@@ -230,6 +259,7 @@ corner, accent left stripe):
   "Tip-off pending. Start Game 1 to light this up."
 
 #### Game History and Game Details
+
 - History list: each game is a row with a W/L badge (W in
   var(--made), L in var(--accent)), opponent, date, and final score
   in display type. Jersey stripe on the left, hover/press highlight.
@@ -239,12 +269,14 @@ corner, accent left stripe):
   primary.
 
 #### Share Stats
+
 If the share action produces an image or text, restyle the output as
 a recap card: dark background, jersey number watermark, big score,
 stat line, shooting splits, date and opponent. Keep the existing
 sharing mechanism; only change the visual template.
 
 ### Step 6: Rules
+
 - One accent (red). Green only for "made". Everything else is
   black/charcoal/white.
 - Avoid: neon text glow, glassmorphism, emoji icons, drop shadows
@@ -252,7 +284,14 @@ sharing mechanism; only change the visual template.
 - Primary tap targets are at least var(--tap-min) tall with 8px+
   spacing. No tiny tap targets in the live game screen.
 - Maintain WCAG AA contrast (white on red, dark text on light
-  elements, muted text on dark). Check outdoor/glare readability.
+  elements, muted text on graphite). Re-check muted labels against
+  the lighter var(--bg) and var(--bg-elevated); raise
+  var(--text-muted) opacity if any label falls below AA. Check
+  outdoor/glare readability.
+- No pure black (#000) backgrounds. Use var(--surface-inset) for
+  inset elements and var(--scoreboard-bg) for the live score header.
+- Inputs, selects, and stat tiles must always be darker than the
+  surface they sit on, never the same shade or lighter.
 - Every interactive element needs :hover (desktop), :active (press),
   and :focus-visible states.
 - Decorative layers (court lines, net texture, watermark number) use
@@ -261,6 +300,7 @@ sharing mechanism; only change the visual template.
   shifts at zero when numbers update.
 
 ### Workflow
+
 1. Add tokens, fonts, and the global background (court lines, net,
    hardwood tint).
 2. Restyle shared components (buttons, inputs, segmented controls,
