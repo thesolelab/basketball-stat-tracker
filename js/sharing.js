@@ -223,16 +223,21 @@ function getStatCardFilename(
 
 
 async function shareSelectedGame() {
+  return shareGame(selectedDetailGame, shareStatsButton);
+}
+
+
+async function shareGame(game, trigger) {
   if (
-    !selectedDetailGame
+    !game
   ) {
     return;
   }
 
 
   const originalButtonText =
-    shareStatsButton
-      ? shareStatsButton
+    trigger
+      ? trigger
           .textContent
       : "SHARE STATS";
 
@@ -240,19 +245,19 @@ async function shareSelectedGame() {
   try {
 
     if (
-      shareStatsButton
+      trigger
     ) {
-      shareStatsButton.disabled =
+      trigger.disabled =
         true;
 
-      shareStatsButton.textContent =
+      trigger.textContent =
         "CREATING IMAGE…";
     }
 
 
     const file =
       await createStatCardFile(
-        selectedDetailGame
+        game
       );
 
 
@@ -260,7 +265,7 @@ async function shareSelectedGame() {
 
       title:
         `Addyson vs. ${
-          selectedDetailGame.opponent ||
+          game.opponent ||
           "Opponent"
         }`,
 
@@ -354,12 +359,12 @@ async function shareSelectedGame() {
   } finally {
 
     if (
-      shareStatsButton
+      trigger
     ) {
-      shareStatsButton.disabled =
+      trigger.disabled =
         false;
 
-      shareStatsButton.textContent =
+      trigger.textContent =
         originalButtonText;
     }
   }

@@ -1528,268 +1528,96 @@ function deleteCompletedGame(
 }
 
 
-function attachSwipeToDelete(
-  row,
-  card,
-  deleteButton
-) {
-  const revealDistance =
-    92;
+function attachHistorySwipeActions(row, card, deleteButton, shareButton) {
+  const revealDistance = 92;
+  let startX = 0;
+  let startY = 0;
+  let startOffset = 0;
+  let offset = 0;
+  let pointerId = null;
+  let horizontalSwipe = false;
 
-
-  let startX =
-    0;
-
-  let startY =
-    0;
-
-  let currentX =
-    0;
-
-  let swiping =
-    false;
-
-  let horizontalSwipe =
-    false;
-
-
-  function setOffset(
-    offset
-  ) {
-    const clamped =
-      Math.max(
-        -revealDistance,
-
-        Math.min(
-          0,
-          offset
-        )
-      );
-
-
-    currentX =
-      clamped;
-
-
-    card.style.transform =
-      `translateX(${clamped}px)`;
-
-
-    row.classList.toggle(
-      "is-delete-open",
-
-      clamped <=
-        -(
-          revealDistance /
-          2
-        )
-    );
+  function setOffset(value) {
+    offset = Math.max(-revealDistance, Math.min(revealDistance, value));
+    card.style.transform = `translateX(${offset}px)`;
+    const deleting = offset === -revealDistance;
+    const sharing = offset === revealDistance;
+    row.classList.toggle("is-delete-open", deleting);
+    row.classList.toggle("is-share-open", sharing);
+    deleteButton.disabled = !deleting;
+    shareButton.disabled = !sharing;
+    deleteButton.setAttribute("aria-hidden", String(!deleting));
+    shareButton.setAttribute("aria-hidden", String(!sharing));
   }
-
-
-  function closeRow() {
-    setOffset(
-      0
-    );
+  function closeRow() { setOffset(0); }
+  function reveal(value) {
+    historyList.querySelectorAll(".is-delete-open, .is-share-open").forEach((other) => {
+      if (other !== row) other.dispatchEvent(new Event("close-history-actions"));
+    });
+    setOffset(value);
   }
-
-
-  card.addEventListener(
-    "pointerdown",
-
-    (event) => {
-
-      if (
-        event.pointerType ===
-          "mouse" &&
-        event.button !==
-          0
-      ) {
+  row.addEventListener("close-history-actions", closeRow);
+  card.addEventListener("pointerdown", (event) => {
+    if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+    startX = event.clientX;
+    startY = event.clientY;
+    startOffset = offset;
+    pointerId = event.pointerId;
+    horizontalSwipe = false;
+    card.setPointerCapture?.(pointerId);
+  });
+  card.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== pointerId) return;
+    const dx = event.clientX - startX;
+    const dy = event.clientY - startY;
+    if (!horizontalSwipe) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
+      if (Math.abs(dy) > Math.abs(dx)) {
+        pointerId = null;
         return;
       }
-
-
-      startX =
-        event.clientX;
-
-
-      startY =
-        event.clientY;
-
-
-      swiping =
-        true;
-
-
-      horizontalSwipe =
-        false;
-
-
-      card
-        .setPointerCapture?.(
-          event.pointerId
-        );
+      horizontalSwipe = true;
+      row.classList.add("is-dragging");
     }
-  );
-
-
-  card.addEventListener(
-    "pointermove",
-
-    (event) => {
-
-      if (
-        !swiping
-      ) {
-        return;
-      }
-
-
-      const deltaX =
-        event.clientX -
-        startX;
-
-
-      const deltaY =
-        event.clientY -
-        startY;
-
-
-      if (
-        !horizontalSwipe &&
-        Math.abs(
-          deltaX
-        ) <
-          8 &&
-        Math.abs(
-          deltaY
-        ) <
-          8
-      ) {
-        return;
-      }
-
-
-      if (
-        !horizontalSwipe &&
-        Math.abs(
-          deltaY
-        ) >
-          Math.abs(
-            deltaX
-          )
-      ) {
-        swiping =
-          false;
-
-        closeRow();
-
-        return;
-      }
-
-
-      horizontalSwipe =
-        true;
-
-
-      setOffset(
-        Math.min(
-          0,
-          deltaX
-        )
-      );
+    setOffset(startOffset + dx);
+  });
+  card.addEventListener("pointerup", (event) => {
+    if (event.pointerId !== pointerId) return;
+    pointerId = null;
+    row.classList.remove("is-dragging");
+    if (horizontalSwipe) {
+      reveal(Math.abs(offset) >= revealDistance / 2 ? Math.sign(offset) * revealDistance : 0);
     }
-  );
-
-
-  function finishSwipe() {
-    if (
-      !swiping
-    ) {
-      return;
+  });
+  card.addEventListener("pointercancel", () => {
+    pointerId = null;
+    row.classList.remove("is-dragging");
+    setOffset(startOffset);
+  });
+  card.addEventListener("click", (event) => {
+    if (horizontalSwipe || offset !== 0) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (!horizontalSwipe) closeRow();
+      horizontalSwipe = false;
     }
-
-
-    swiping =
-      false;
-
-
-    if (
-      horizontalSwipe &&
-      currentX <=
-        -(
-          revealDistance /
-          2
-        )
-    ) {
-      setOffset(
-        -revealDistance
-      );
-
-    } else {
-
+  }, true);
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      reveal(event.key === "ArrowLeft" ? -revealDistance : revealDistance);
+      (event.key === "ArrowLeft" ? deleteButton : shareButton).focus();
+    } else if (event.key === "Escape") {
       closeRow();
     }
-  }
-
-
-  card.addEventListener(
-    "pointerup",
-    finishSwipe
-  );
-
-
-  card.addEventListener(
-    "pointercancel",
-    finishSwipe
-  );
-
-
-  card.addEventListener(
-    "click",
-
-    (event) => {
-
-      if (
-        horizontalSwipe
-      ) {
-        event.preventDefault();
-
-        event.stopPropagation();
-
-        horizontalSwipe =
-          false;
-
-        return;
-      }
-
-
-      if (
-        row
-          .classList
-          .contains(
-            "is-delete-open"
-          )
-      ) {
-        event.preventDefault();
-
-        event.stopPropagation();
-
-        closeRow();
-      }
-    },
-
-    true
-  );
-
-
-  deleteButton.addEventListener(
-    "click",
-
-    (event) => {
-      event.stopPropagation();
-    }
-  );
+  });
+  [deleteButton, shareButton].forEach((button) => {
+    button.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") { closeRow(); card.focus(); }
+    });
+  });
+  card.setAttribute("aria-description", "Swipe left for Delete, right for Share. Use left or right arrow keys with a keyboard.");
+  setOffset(0);
 }
 
 
@@ -1880,6 +1708,13 @@ function renderGameHistory() {
         `Delete Game ${game.gameNumber} vs. ${game.opponent}`
       );
 
+
+      const shareButton = document.createElement("button");
+      shareButton.type = "button";
+      shareButton.className = "history-share-button";
+      shareButton.textContent = "SHARE";
+      shareButton.setAttribute("aria-label", `Share Game ${game.gameNumber} vs. ${game.opponent}`);
+      shareButton.addEventListener("click", () => { void shareGame(game, shareButton); });
 
       const button =
         document.createElement(
@@ -2078,6 +1913,7 @@ function renderGameHistory() {
       );
 
 
+      row.appendChild(shareButton);
       row.appendChild(
         deleteButton
       );
@@ -2088,11 +1924,7 @@ function renderGameHistory() {
       );
 
 
-      attachSwipeToDelete(
-        row,
-        button,
-        deleteButton
-      );
+      attachHistorySwipeActions(row, button, deleteButton, shareButton);
 
 
       historyList.appendChild(
