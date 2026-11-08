@@ -225,26 +225,26 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     });
     assert.equal(await page.locator('#historyList .history-game-card').count(), 4);
     for (const type of ['Regular Season', 'Preseason', 'Club', 'Tournament']) {
-      await page.locator(`[data-history-filter="${type}"]`).click();
+      await page.selectOption('#historyTypeFilter', type);
       assert.equal(await page.locator('#historyList .history-game-card').count(), 1);
       assert.equal(await page.locator('#historyGameCount').textContent(), '1');
-      assert.equal(await page.locator(`[data-history-filter="${type}"]`).getAttribute('aria-pressed'), 'true');
+      assert.equal(await page.locator('#historyTypeFilter').inputValue(), type);
     }
     await page.locator('#historyList .history-game-card').click();
     await page.click('#detailBackButton');
-    assert.equal(await page.locator('[data-history-filter="Tournament"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#historyTypeFilter').inputValue(), 'Tournament');
     assert.equal(await page.locator('#historyList .history-game-card').count(), 1);
     await page.evaluate(() => { window.confirm = () => true; deleteCompletedGame('filter-1'); });
     await page.waitForFunction(() => document.getElementById('historyGameCount').textContent === '0');
     assert.equal(await page.locator('#historyEmpty').isVisible(), true);
     assert.match(await page.locator('#historyEmpty strong').textContent(), /tournament/);
-    await page.locator('[data-history-filter="All"]').click();
+    await page.selectOption('#historyTypeFilter', 'All');
     assert.equal(await page.locator('#historyList .history-game-card').count(), 3);
     assert.equal(await page.locator('#historyEmpty').isVisible(), false);
     assert.equal(await page.evaluate(() => currentSeasonFilter), 'All');
     await page.evaluate(() => { currentHistoryFilter = 'Club'; renderGameHistory(); });
     await page.evaluate(async () => { await synchronizeCompletedGames(); });
-    assert.equal(await page.locator('[data-history-filter="Club"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#historyTypeFilter').inputValue(), 'Club');
     assert.equal(await page.locator('#historyList .history-game-card').count(), 1);
   });
   assert.deepEqual(errors, []);
