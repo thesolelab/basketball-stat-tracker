@@ -2830,12 +2830,13 @@ button[data-action] { position: relative; }
 
 .history-share-button {
   position: absolute; top: 0; bottom: 0; left: 0; width: 92px;
-  border: 1px solid var(--border-strong); background: var(--bg-elevated);
-  color: var(--text); font: 700 17px var(--font-display); letter-spacing: 0.08em;
+  border: 1px solid var(--on-accent); background: var(--on-accent);
+  color: var(--surface-inset); font: 700 17px var(--font-display); letter-spacing: 0.08em;
 }
 .history-delete-button, .history-share-button { visibility: hidden; pointer-events: none; }
 .history-swipe-row.is-delete-open .history-delete-button,
 .history-swipe-row.is-share-open .history-share-button { visibility: visible; pointer-events: auto; }
 .history-swipe-row.is-share-open .history-game-card { transform: translateX(92px); }
 .history-swipe-row.is-dragging .history-game-card { transition: none; }
-.history-share-button:hover { background: var(--surface-inset); }
+.history-share-button:hover { background: var(--text); }
+.history-share-button:active { background: var(--text-muted); }

@@ -261,19 +261,8 @@ async function shareGame(game, trigger) {
       );
 
 
-    const shareData = {
-
-      title:
-        `Addyson vs. ${
-          game.opponent ||
-          "Opponent"
-        }`,
-
-      files:
-        [
-          file
-        ]
-    };
+    // Share only the attachment so messaging apps do not prefill a caption.
+    const shareData = { files: [file] };
 
 
     if (
