@@ -253,7 +253,7 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
       renderGameHistory();
       showScreen(historyScreen);
       Object.defineProperty(navigator, 'share', { configurable: true, value: async data => {
-        window.sharedHistoryGame = { title: data.title, type: data.files[0].type };
+        window.sharedHistoryGame = { keys: Object.keys(data), name: data.files[0].name, type: data.files[0].type };
       }});
       Object.defineProperty(navigator, 'canShare', { configurable: true, value: () => true });
     });
@@ -274,10 +274,10 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     assert.equal(await row.locator('.history-share-button').isVisible(), true);
     assert.equal(await row.locator('.history-delete-button').isVisible(), false);
     assert.equal(await page.locator('#historyScreen').isVisible(), true);
-    const expected = await page.evaluate(() => readCompletedGames().filter(game => game.season === CURRENT_SEASON).sort((a,b) => b.gameNumber-a.gameNumber)[0].opponent);
+    const expected = await page.evaluate(() => getStatCardFilename(readCompletedGames().filter(game => game.season === CURRENT_SEASON).sort((a,b) => b.gameNumber-a.gameNumber)[0]));
     await row.locator('.history-share-button').click();
     await page.waitForFunction(() => window.sharedHistoryGame);
-    assert.deepEqual(await page.evaluate(() => window.sharedHistoryGame), { title: `Addyson vs. ${expected}`, type: 'image/png' });
+    assert.deepEqual(await page.evaluate(() => window.sharedHistoryGame), { keys: ['files'], name: expected, type: 'image/png' });
     await card.click();
     assert.equal(await row.locator('.history-share-button').isVisible(), false);
     await swipe(-120);
