@@ -169,7 +169,7 @@ Use these consistently; they are what make the app feel designed:
   the primary row: accent background, clipped corner.
 - Sync status ("Checking sync...") becomes a small status pill-less
   chip with a tiny dot: muted when checking, var(--made) when synced,
-  var(--accent) on error. Build number stays tiny and muted.
+  var(--accent) on error.
 
 #### New Game form
 
