@@ -247,5 +247,77 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     assert.equal(await page.locator('#historyTypeFilter').inputValue(), 'Club');
     assert.equal(await page.locator('#historyList .history-game-card').count(), 1);
   });
+  await t.test('history swipes reveal only the matching action and share the correct game', async () => {
+    await page.evaluate(() => {
+      currentHistoryFilter = 'All';
+      renderGameHistory();
+      showScreen(historyScreen);
+      Object.defineProperty(navigator, 'share', { configurable: true, value: async data => {
+        window.sharedHistoryGame = { title: data.title, type: data.files[0].type };
+      }});
+      Object.defineProperty(navigator, 'canShare', { configurable: true, value: () => true });
+    });
+    const row = page.locator('.history-swipe-row').first();
+    const card = row.locator('.history-game-card');
+    const swipe = async delta => {
+      const box = await card.boundingBox();
+      await page.mouse.move(box.x + box.width / 2, box.y + 40);
+      await page.mouse.down();
+      await page.mouse.move(box.x + box.width / 2 + delta, box.y + 40, { steps: 8 });
+      await page.mouse.up();
+    };
+    assert.equal(await row.locator('.history-delete-button').isVisible(), false);
+    assert.equal(await row.locator('.history-share-button').isVisible(), false);
+    await swipe(25);
+    assert.equal(await row.locator('.history-share-button').isVisible(), false);
+    await swipe(120);
+    assert.equal(await row.locator('.history-share-button').isVisible(), true);
+    assert.equal(await row.locator('.history-delete-button').isVisible(), false);
+    assert.equal(await page.locator('#historyScreen').isVisible(), true);
+    const expected = await page.evaluate(() => readCompletedGames().filter(game => game.season === CURRENT_SEASON).sort((a,b) => b.gameNumber-a.gameNumber)[0].opponent);
+    await row.locator('.history-share-button').click();
+    await page.waitForFunction(() => window.sharedHistoryGame);
+    assert.deepEqual(await page.evaluate(() => window.sharedHistoryGame), { title: `Addyson vs. ${expected}`, type: 'image/png' });
+    await card.click();
+    assert.equal(await row.locator('.history-share-button').isVisible(), false);
+    await swipe(-120);
+    assert.equal(await row.locator('.history-delete-button').isVisible(), true);
+    assert.equal(await row.locator('.history-share-button').isVisible(), false);
+    await page.evaluate(() => { window.confirm = () => false; });
+    const count = await page.locator('.history-swipe-row').count();
+    await row.locator('.history-delete-button').click();
+    assert.equal(await page.locator('.history-swipe-row').count(), count);
+    await card.click();
+    await card.focus();
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await row.locator('.history-share-button').isVisible(), true);
+    await page.keyboard.press('Escape');
+    assert.equal(await row.locator('.history-share-button').isVisible(), false);
+    await card.click();
+    assert.equal(await page.locator('#gameDetailScreen').isVisible(), true);
+    await page.click('#detailBackButton');
+    const touch = await page.context().newCDPSession(page);
+    const touchSwipe = async (dx, dy = 0, cancel = false) => {
+      const box = await card.boundingBox();
+      const x = box.x + box.width / 2;
+      const y = box.y + 40;
+      await touch.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+      for (let step = 1; step <= 8; step++) {
+        await touch.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x + dx * step / 8, y: y + dy * step / 8 }] });
+      }
+      await touch.send('Input.dispatchTouchEvent', { type: cancel ? 'touchCancel' : 'touchEnd', touchPoints: [] });
+    };
+    await touchSwipe(-120);
+    assert.equal(await row.locator('.history-delete-button').isVisible(), true);
+    await card.click();
+    await touchSwipe(120);
+    assert.equal(await row.locator('.history-share-button').isVisible(), true);
+    assert.equal(await row.locator('.history-delete-button').isVisible(), false);
+    await card.click();
+    await touchSwipe(-25, 0, true);
+    assert.equal(await row.locator('.history-delete-button').isVisible(), false);
+    assert.equal(await row.locator('.history-share-button').isVisible(), false);
+    await touch.detach();
+  });
   assert.deepEqual(errors, []);
 });
