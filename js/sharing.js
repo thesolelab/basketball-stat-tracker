@@ -126,528 +126,70 @@ function getRecordThroughGame(game) {
 }
 
 
-async function createStatCardFile(
-  game
-) {
-  const canvas =
-    document.createElement(
-      "canvas"
-    );
-
-  canvas.width =
-    1080;
-
-  canvas.height =
-    1350;
-
-  const ctx =
-    canvas.getContext(
-      "2d"
-    );
-
-  if (!ctx) {
-    throw new Error(
-      "Canvas is not available."
-    );
-  }
-
-  const fieldGoalsMade =
-    safeNumber(
-      game.fieldGoalsMade
-    );
-
-  const fieldGoalAttempts =
-    safeNumber(
-      game.fieldGoalAttempts
-    );
-
-  const cardResult =
-    game.result ||
-    calculateGameResult(
-      game.teamScore,
-      game.opponentScore
-    );
-
-  const opponentAbbreviation =
-    getOpponentAbbreviation(
-      game.opponent
-    );
-
-  const recordThroughGame =
-    getRecordThroughGame(
-      game
-    );
-
-  const recordText =
-    formatRecord(
-      recordThroughGame
-    );
-
-  const cardFont =
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
-
-  ctx.fillStyle =
-    "#f4f7f8";
-
-  ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-  ctx.textAlign =
-    "center";
-
-  ctx.textBaseline =
-    "alphabetic";
-
-  ctx.fillStyle =
-    "#111820";
-
-  ctx.font =
-    `900 58px ${cardFont}`;
-
-  ctx.fillText(
-    "ADDYSON",
-    540,
-    88
-  );
-
-  ctx.font =
-    `800 40px ${cardFont}`;
-
-  ctx.fillText(
-    `vs. ${game.opponent || "Opponent"}`,
-    540,
-    142
-  );
-
-  ctx.fillStyle =
-    "#66717d";
-
-  ctx.font =
-    `700 27px ${cardFont}`;
-
-  ctx.fillText(
-    formatGameDate(
-      game.date
-    ),
-    540,
-    187
-  );
-
-  if (cardResult) {
-    const badgeWidth = 62;
-    const badgeHeight = 42;
-    const scoreGap = 18;
-    const scoreText =
-      `KHS ${safeNumber(
-        game.teamScore
-      )}–${safeNumber(
-        game.opponentScore
-      )} ${opponentAbbreviation}`;
-
-    ctx.font =
-      `900 29px ${cardFont}`;
-
-    const scoreWidth =
-      ctx.measureText(
-        scoreText
-      ).width;
-
-    const groupWidth =
-      badgeWidth +
-      scoreGap +
-      scoreWidth;
-
-    const groupX =
-      (canvas.width - groupWidth) /
-      2;
-
-    drawRoundedRect(
-      ctx,
-      groupX,
-      211,
-      badgeWidth,
-      badgeHeight,
-      14
-    );
-
-    if (cardResult === "W") {
-      ctx.fillStyle =
-        "#e7f6ec";
-    } else if (cardResult === "L") {
-      ctx.fillStyle =
-        "#fde8ec";
-    } else {
-      ctx.fillStyle =
-        "#eef1f3";
-    }
-
-    ctx.fill();
-
-    ctx.textAlign =
-      "center";
-
-    if (cardResult === "W") {
-      ctx.fillStyle =
-        "#23824a";
-    } else if (cardResult === "L") {
-      ctx.fillStyle =
-        "#c8102e";
-    } else {
-      ctx.fillStyle =
-        "#66717d";
-    }
-
-    ctx.font =
-      `900 27px ${cardFont}`;
-
-    ctx.fillText(
-      cardResult,
-      groupX + badgeWidth / 2,
-      240
-    );
-
-    ctx.textAlign =
-      "left";
-
-    ctx.fillStyle =
-      "#111820";
-
-    ctx.font =
-      `900 29px ${cardFont}`;
-
-    ctx.fillText(
-      scoreText,
-      groupX + badgeWidth + scoreGap,
-      241
-    );
-
-    ctx.textAlign =
-      "center";
-
-    ctx.fillStyle =
-      "#66717d";
-
-    ctx.font =
-      `800 22px ${cardFont}`;
-
-    ctx.fillText(
-      `SEASON RECORD  ${recordText}`,
-      540,
-      276
-    );
-  }
-
-  drawRoundedRect(
-    ctx,
-    60,
-    300,
-    960,
-    220,
-    30
-  );
-
-  ctx.fillStyle =
-    "#c8102e";
-
-  ctx.fill();
-
-  ctx.fillStyle =
-    "#ffffff";
-
-  ctx.font =
-    `800 25px ${cardFont}`;
-
-  ctx.fillText(
-    "POINTS",
-    540,
-    360
-  );
-
-  ctx.font =
-    `900 116px ${cardFont}`;
-
-  ctx.fillText(
-    String(
-      safeNumber(
-        game.points
-      )
-    ),
-    540,
-    477
-  );
-
-  ctx.textAlign =
-    "left";
-
-  ctx.fillStyle =
-    "#8a96a3";
-
-  ctx.font =
-    `900 24px ${cardFont}`;
-
-  ctx.fillText(
-    "BOX SCORE",
-    65,
-    570
-  );
-
-  const boxStats = [
-    [
-      safeNumber(
-        game.rebounds
-      ),
-      "REB"
-    ],
-    [
-      safeNumber(
-        game.assists
-      ),
-      "AST"
-    ],
-    [
-      safeNumber(
-        game.steals
-      ),
-      "STL"
-    ],
-    [
-      safeNumber(
-        game.blocks
-      ),
-      "BLK"
-    ],
-    [
-      safeNumber(
-        game.turnovers
-      ),
-      "TOV"
-    ],
-    [
-      safeNumber(
-        game.fouls
-      ),
-      "PF"
-    ]
-  ];
-
-  const boxWidth =
-    300;
-
-  const boxHeight =
-    145;
-
-  const boxGap =
-    30;
-
-  boxStats.forEach(
-    (
-      [
-        value,
-        label
-      ],
-      index
-    ) => {
-      const column =
-        index % 3;
-
-      const row =
-        Math.floor(
-          index / 3
-        );
-
-      const x =
-        60 +
-        column *
-          (
-            boxWidth +
-            boxGap
-          );
-
-      const y =
-        605 +
-        row *
-          (
-            boxHeight +
-            25
-          );
-
-      drawRoundedRect(
-        ctx,
-        x,
-        y,
-        boxWidth,
-        boxHeight,
-        22
-      );
-
-      ctx.fillStyle =
-        "#ffffff";
-
-      ctx.fill();
-
-      ctx.textAlign =
-        "center";
-
-      ctx.fillStyle =
-        "#111820";
-
-      ctx.font =
-        `900 52px ${cardFont}`;
-
-      ctx.fillText(
-        String(
-          value
-        ),
-        x +
-          boxWidth / 2,
-        y + 66
-      );
-
-      ctx.fillStyle =
-        "#8a96a3";
-
-      ctx.font =
-        `800 21px ${cardFont}`;
-
-      ctx.fillText(
-        label,
-        x +
-          boxWidth / 2,
-        y + 108
-      );
-    }
-  );
-
-  const shootingY =
-    945;
-
-  drawRoundedRect(
-    ctx,
-    60,
-    shootingY,
-    960,
-    345,
-    28
-  );
-
-  ctx.fillStyle =
-    "#ffffff";
-
-  ctx.fill();
-
-  ctx.textAlign =
-    "left";
-
-  ctx.fillStyle =
-    "#8a96a3";
-
-  ctx.font =
-    `900 24px ${cardFont}`;
-
-  ctx.fillText(
-    "SHOOTING",
-    90,
-    shootingY + 50
-  );
-
-  const shootingRows = [
-    [
-      "Field Goals",
-      `${fieldGoalsMade}/${fieldGoalAttempts} · ${formatPercentage(
-        fieldGoalsMade,
-        fieldGoalAttempts
-      )}`
-    ],
-    [
-      "2PT",
-      `${safeNumber(
-        game.twoMade
-      )}/${safeNumber(
-        game.twoAttempted
-      )} · ${formatPercentage(
-        game.twoMade,
-        game.twoAttempted
-      )}`
-    ],
-    [
-      "3PT",
-      `${safeNumber(
-        game.threeMade
-      )}/${safeNumber(
-        game.threeAttempted
-      )} · ${formatPercentage(
-        game.threeMade,
-        game.threeAttempted
-      )}`
-    ],
-    [
-      "Free Throws",
-      `${safeNumber(
-        game.freeThrowMade
-      )}/${safeNumber(
-        game.freeThrowAttempted
-      )} · ${formatPercentage(
-        game.freeThrowMade,
-        game.freeThrowAttempted
-      )}`
-    ]
-  ];
-
-  shootingRows.forEach(
-    (
-      [
-        label,
-        value
-      ],
-      index
-    ) => {
-      const y =
-        shootingY +
-        111 +
-        index *
-          63;
-
-      ctx.textAlign =
-        "left";
-
-      ctx.fillStyle =
-        "#66717d";
-
-      ctx.font =
-        `700 28px ${cardFont}`;
-
-      ctx.fillText(
-        label,
-        90,
-        y
-      );
-
-      ctx.textAlign =
-        "right";
-
-      ctx.fillStyle =
-        "#111820";
-
-      ctx.font =
-        `800 28px ${cardFont}`;
-
-      ctx.fillText(
-        value,
-        990,
-        y
-      );
-    }
-  );
-
+async function createStatCardFile(game) {
+  await document.fonts.ready;
+  const canvas = document.createElement("canvas");
+  canvas.width = 1080;
+  canvas.height = 1350;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas is not available.");
+  const tokens = getComputedStyle(document.documentElement);
+  const color = (token) => tokens.getPropertyValue(token).trim();
+  const display = color("--font-display");
+  const text = (value, x, y, size, tone = "--text", align = "left") => {
+    ctx.fillStyle = color(tone);
+    ctx.textAlign = align;
+    ctx.font = `700 ${size}px ${display}`;
+    ctx.fillText(String(value), x, y, 940);
+  };
+  ctx.fillStyle = color("--bg");
+  ctx.fillRect(0, 0, 1080, 1350);
+  ctx.strokeStyle = color("--court-line");
+  ctx.lineWidth = 2;
+  ctx.strokeRect(40, 40, 1000, 1270);
+  ctx.strokeRect(330, 40, 420, 400);
+  ctx.beginPath(); ctx.arc(540, 440, 160, 0, Math.PI * 2); ctx.stroke();
+  ctx.save();
+  ctx.globalAlpha = 0.06;
+  ctx.strokeStyle = color("--text");
+  ctx.font = `800 600px ${display}`;
+  ctx.strokeText(String(game.playerNumber || "2"), 580, 630);
+  ctx.restore();
+  ctx.fillStyle = color("--accent");
+  ctx.fillRect(40, 70, 5, 1120);
+  text(`${game.season || CURRENT_SEASON} SEASON  /  GAME ${game.gameNumber || 1}`, 80, 110, 27, "--text-muted");
+  text(`ADDYSON  #${game.playerNumber || "2"}`, 80, 225, 92);
+  text(`VS. ${game.opponent || "OPPONENT"}`.toUpperCase(), 80, 290, 46);
+  text(`${formatGameDate(game.date)}  ·  ${game.location || "Home"}`, 80, 340, 28, "--text-muted");
+  ctx.fillStyle = color("--bg-elevated");
+  ctx.fillRect(80, 395, 920, 160);
+  const result = game.result || calculateGameResult(game.teamScore, game.opponentScore);
+  text('KHS', 110, 435, 24, "--text-muted");
+  text(game.teamScore ?? "—", 110, 525, 90);
+  text(getOpponentAbbreviation(game.opponent), 970, 435, 24, "--text-muted", "right");
+  text(game.opponentScore ?? "—", 970, 525, 90, "--text", "right");
+  text(result, 540, 505, 56, result === 'W' ? '--made' : '--accent', "center");
+  text('POINTS', 80, 625, 26, "--text-muted");
+  text(safeNumber(game.points), 75, 815, 210);
+  const stats = [['REB', game.rebounds], ['AST', game.assists], ['STL', game.steals], ['BLK', game.blocks], ['TOV', game.turnovers], ['PF', game.fouls]];
+  stats.forEach(([label, value], index) => {
+    const x = 80 + index * 155;
+    text(label, x, 895, 25, "--text-muted");
+    text(safeNumber(value), x, 955, 54);
+  });
+  ctx.strokeStyle = color("--border-strong");
+  ctx.beginPath(); ctx.moveTo(80, 1000); ctx.lineTo(1000, 1000); ctx.stroke();
+  const splits = [['FIELD GOALS', game.fieldGoalsMade, game.fieldGoalAttempts], ['3PT', game.threeMade, game.threeAttempted], ['FREE THROWS', game.freeThrowMade, game.freeThrowAttempted]];
+  splits.forEach(([label, made, attempts], index) => {
+    const x = 80 + index * 310;
+    text(label, x, 1060, 25, "--text-muted");
+    text(`${safeNumber(made)}/${safeNumber(attempts)}`, x, 1120, 48);
+    text(formatPercentage(made, attempts), x, 1160, 26, "--text-muted");
+  });
+  text(`${formatRecord(getRecordThroughGame(game))} RECORD`, 80, 1255, 28, "--text-muted");
+  text('BASKETBALL STAT TRACKER', 1000, 1255, 25, "--text-muted", "right");
   const blob = await new Promise((resolve, reject) => {
-    canvas.toBlob((result) => {
-      if (result) resolve(result);
-      else reject(new Error("Could not create the stat card image."));
-    }, "image/png");
+    canvas.toBlob((result) => result ? resolve(result) : reject(new Error("Could not create the stat card image.")), "image/png");
   });
   return new File([blob], getStatCardFilename(game), { type: "image/png" });
 }

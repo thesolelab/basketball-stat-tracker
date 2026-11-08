@@ -125,7 +125,15 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     await page.reload();
     await page.click('#resumeGameButton');
     assert.equal(await page.locator('#points').textContent(), '5');
-    await page.evaluate(() => correctRecordedAction('3pt-made'));
+    await page.click('[data-action="3pt-made"]');
+    await page.click('[data-action="3pt-made"]');
+    await page.waitForFunction(() => document.querySelector('.hud-toast').textContent.includes('Three triples'));
+    assert.match(await page.locator('#recentActions').textContent(), /3PT MADE/);
+    await page.evaluate(() => {
+      correctRecordedAction('3pt-made');
+      correctRecordedAction('3pt-made');
+      correctRecordedAction('3pt-made');
+    });
     assert.equal(await page.locator('#points').textContent(), '2');
     await page.click('#endGameButton');
     await page.fill('#teamScoreInput', '50');
@@ -145,6 +153,43 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     assert.equal(game.points, 2);
     assert.equal(game.rebounds, 1);
     assert.equal(game.result, 'W');
+    assert.equal(await page.evaluate(() => readActiveGame()), null);
+  });
+  await t.test('Court HUD stays usable across phone and desktop screens', async () => {
+    for (const width of [320, 390, 720, 1280]) {
+      await page.setViewportSize({ width, height: 844 });
+      await page.evaluate(() => renderGameHistory());
+      for (const screen of ['homeScreen', 'setupScreen', 'gameScreen', 'seasonStatsScreen', 'historyScreen', 'gameDetailScreen']) {
+        await page.evaluate(screen => {
+          if (screen === 'seasonStatsScreen') renderSeasonStats();
+          if (screen === 'gameDetailScreen') renderGameDetail(readCompletedGames()[0]);
+          showScreen(document.getElementById(screen));
+        }, screen);
+        const dimensions = await page.evaluate(() => ({ viewport: innerWidth, content: document.documentElement.scrollWidth }));
+        assert.ok(dimensions.content <= dimensions.viewport, `${screen} overflows at ${width}px`);
+      }
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.click('#editGameButton');
+    await page.fill('#editOpponent', 'Updated Opponent');
+    await page.click('#saveEditGame');
+    assert.equal(await page.evaluate(() => readCompletedGames()[0].opponent), 'Updated Opponent');
+    assert.equal(await page.evaluate(() => document.querySelector('.modal-backdrop.is-open')), null);
+    const style = await page.evaluate(() => {
+      const made = document.querySelector('.btn-made');
+      return { radius: getComputedStyle(made).borderRadius, min: parseFloat(getComputedStyle(made).minHeight), bg: getComputedStyle(document.body).backgroundColor };
+    });
+    assert.equal(style.radius, '2px');
+    assert.ok(style.min >= 56);
+    assert.equal(style.bg, 'rgb(8, 9, 10)');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.btn-made')).animationName), 'none');
+    await page.evaluate(() => { gameIsActive = true; showScreen(gameScreen); });
+    await page.click('#exitGameButton');
+    await page.click('#keepGameButton');
+    assert.equal(await page.evaluate(() => gameIsActive), true);
+    await page.click('#exitGameButton');
+    await page.click('#discardGameButton');
     assert.equal(await page.evaluate(() => readActiveGame()), null);
   });
   assert.deepEqual(errors, []);
