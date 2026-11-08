@@ -1,0 +1,12 @@
+{
+  "name": "basketball-stat-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "check": "node --check js/app.js && node --check js/persistence.js && node --check js/sharing.js"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
