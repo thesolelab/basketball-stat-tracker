@@ -1,10 +1,11 @@
 :root {
-  --bg: #08090a;
-  --bg-elevated: #0f1113;
-  --surface: rgba(255, 255, 255, 0.04);
-  --surface-inset: #000000;
-  --border: rgba(255, 255, 255, 0.10);
-  --border-strong: rgba(255, 255, 255, 0.22);
+  --bg: #1a1c20;                 /* lifted graphite page background */
+  --bg-elevated: #23262b;        /* panels, header bar, modals */
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-inset: #121417;      /* inputs, tiles: darker than page = depth */
+  --scoreboard-bg: #0d0e10;      /* live score header ONLY, darkest element */
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.26);
 
   --accent: #c8102e;          /* existing brand red */
   --accent-hover: #e0183a;
@@ -17,11 +18,11 @@
   --miss: rgba(242, 242, 242, 0.45);   /* muted, never loud */
   --danger: var(--accent);
 
-  --hardwood: rgba(176, 120, 60, 0.05);  /* texture only */
-  --court-line: rgba(255, 255, 255, 0.04);
+  --hardwood: rgba(176, 120, 60, 0.09);  /* texture only */
+  --court-line: rgba(255, 255, 255, 0.07);
 
   --text: #f4f4f4;
-  --text-muted: rgba(244, 244, 244, 0.58);
+  --text-muted: rgba(244, 244, 244, 0.66);
 
   --radius: 2px;
   --font-display: "Barlow Condensed", "Oswald", system-ui, sans-serif;
@@ -2666,7 +2667,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.8; }
 .segmented-control label:hover, .game-type-options label:hover { border-color: var(--border-strong); }
 .start-game-button { font-size: 20px; letter-spacing: 0.05em; }
 .game-card { overflow: hidden; }
-.game-header { position: relative; padding: 24px 20px; align-items: center; overflow: hidden; }
+.game-header { position: relative; padding: 24px 20px; align-items: center; overflow: hidden; background-color: var(--scoreboard-bg); border-top: 2px solid var(--accent); border-bottom: 1px solid var(--border); }
 .game-header::after { content: attr(data-jersey); }
 .player-name-row { flex-wrap: wrap; gap: 8px; }
 .player-name-row h1 { font-size: clamp(26px, 7vw, 40px); }
@@ -2676,8 +2677,8 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.8; }
 .points-card { min-width: 100px; background: var(--surface-inset); border: 1px solid var(--border-strong); padding: 14px 12px; }
 .points-card strong { font-size: clamp(76px, 19vw, 108px); font-weight: 800; letter-spacing: 0.02em; line-height: 0.95; }
 .points-card span { font-size: 12px; letter-spacing: 0.1em; color: var(--text-muted); }
-.stat-bar { gap: 4px; padding: 8px; background: var(--surface-inset); grid-template-columns: repeat(7,minmax(0,1fr)); }
-.stat { background: var(--surface); padding: 10px 0; min-width: 0; }
+.stat-bar { gap: 4px; padding: 8px; background: var(--bg-elevated); grid-template-columns: repeat(7,minmax(0,1fr)); }
+.stat { background: var(--surface-inset); padding: 10px 0; min-width: 0; }
 .stat span { font-size: 11px; letter-spacing: 0.05em; }
 .stat strong { font-size: 25px; line-height: 1.1; }
 .stat:last-child strong { font-size: 20px; }
@@ -2689,8 +2690,8 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.8; }
 .shot-row { grid-template-columns: 38px minmax(0,1.5fr) minmax(0,1fr); gap: 8px; margin-top: 12px; }
 .shot-label { font-size: 20px; color: var(--text-muted); }
 .shot-row button { min-height: 68px; font-size: 23px; letter-spacing: 0.03em; border: 1px solid var(--border-strong); }
-.btn-made { background: var(--made-tint); color: var(--made); border-color: var(--made) !important; }
-.btn-made:hover { background: var(--made-tint); }
+.btn-made { background: color-mix(in srgb, var(--made) 4%, var(--surface-inset)); color: var(--made); border-color: var(--made) !important; }
+.btn-made:hover { background: color-mix(in srgb, var(--made) 5%, var(--surface-inset)); }
 .btn-miss { background: var(--surface-inset); color: var(--text-muted); }
 .miss-x { color: var(--miss); }
 .stat-buttons { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
@@ -2706,7 +2707,7 @@ button[data-action="turnover"], .foul-button { border-left: 3px solid var(--acce
 .game-controls button { min-height: 60px; font-size: 20px; }
 .undo-button, .modal-cancel, .detail-edit-button { background: var(--surface-inset); color: var(--text); border: 1px solid var(--border-strong); }
 .exit-game-button { min-height: 56px; margin: 8px 0 24px; color: var(--text-muted); font-size: 15px; }
-.modal-backdrop { background: var(--surface-inset); background: color-mix(in srgb,var(--surface-inset) 85%,transparent); }
+.modal-backdrop { background: color-mix(in srgb, var(--scoreboard-bg) 60%, transparent); }
 .bottom-sheet { background: var(--bg-elevated); border: 1px solid var(--border-strong); border-top: 2px solid var(--accent); box-shadow: none; }
 .bottom-sheet h2 { font-size: 34px; }
 .modal-description { font-size: 16px; }
@@ -2714,6 +2715,7 @@ button[data-action="turnover"], .foul-button { border-left: 3px solid var(--acce
 .final-stat-line { background: var(--surface-inset); }
 .final-stat-line strong { font-size: 34px; }
 .final-stat-line span { font-size: 11px; }
+.final-score-grid { background: var(--scoreboard-bg); border: 1px solid var(--border); padding: 12px; }
 .final-score-grid input { font: 700 36px var(--font-display); text-align: center; }
 .modal-actions { gap: 12px; }
 .modal-actions button, .correction-cancel { min-height: 56px; font-size: 18px; }
@@ -2791,7 +2793,7 @@ button[data-action] { position: relative; }
   button:active:not(:disabled) { transform: none; border-color: var(--accent); }
 }
 .home-hero, .game-header, .points-card {
-  background-image: repeating-linear-gradient(45deg,transparent 0 16px,var(--court-line) 16px 17px), repeating-linear-gradient(-45deg,transparent 0 16px,var(--court-line) 16px 17px);
+  background-image: repeating-linear-gradient(45deg,transparent 0 16px,color-mix(in srgb, var(--court-line) 45%, transparent) 16px 17px), repeating-linear-gradient(-45deg,transparent 0 16px,color-mix(in srgb, var(--court-line) 45%, transparent) 16px 17px);
 }
 .card::before, .setup-card::before, .season-card::before, .season-overview-card::before, .detail-card::before, .detail-hero::before, .bottom-sheet::before {
   content: ""; position: absolute; top: 4px; left: 4px; width: 8px; height: 8px; border-top: 1px solid var(--border-strong); border-left: 1px solid var(--border-strong); pointer-events: none;

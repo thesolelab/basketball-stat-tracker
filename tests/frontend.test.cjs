@@ -181,7 +181,28 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     });
     assert.equal(style.radius, '2px');
     assert.ok(style.min >= 56);
-    assert.equal(style.bg, 'rgb(8, 9, 10)');
+    assert.equal(style.bg, 'rgb(26, 28, 32)');
+    const depth = await page.evaluate(() => {
+      const bg = selector => getComputedStyle(document.querySelector(selector)).backgroundColor;
+      return { panel: bg('.card'), header: bg('.game-header'), tile: bg('.stat'),
+        input: bg('#opponentInput'), scoreRow: bg('.final-score-grid'),
+        muted: getComputedStyle(document.querySelector('.eyebrow')).color };
+    });
+    assert.equal(depth.panel, 'rgb(35, 38, 43)');
+    assert.equal(depth.header, 'rgb(13, 14, 16)');
+    assert.equal(depth.tile, 'rgb(18, 20, 23)');
+    assert.equal(depth.input, 'rgb(18, 20, 23)');
+    assert.equal(depth.scoreRow, 'rgb(13, 14, 16)');
+    const luminance = rgb => rgb.map(channel => {
+      channel /= 255;
+      return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    }).reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+    const muted = depth.muted.match(/[\d.]+/g).map(Number);
+    for (const surface of [[26, 28, 32], [35, 38, 43]]) {
+      const visibleText = muted.slice(0, 3).map((channel, index) => channel * muted[3] + surface[index] * (1 - muted[3]));
+      const ratio = (luminance(visibleText) + 0.05) / (luminance(surface) + 0.05);
+      assert.ok(ratio >= 4.5, `Muted-label contrast ${ratio.toFixed(2)} must meet AA`);
+    }
     await page.emulateMedia({ reducedMotion: 'reduce' });
     assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.btn-made')).animationName), 'none');
     await page.evaluate(() => { gameIsActive = true; showScreen(gameScreen); });
