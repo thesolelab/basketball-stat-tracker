@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=21">
+  <link rel="stylesheet" href="css/styles.css?v=22">
 </head>
 
 <body>
@@ -636,28 +636,21 @@
       </div>
 
 
-      <section class="season-filter-card" aria-labelledby="historyFilterLabel">
-        <span class="eyebrow" id="historyFilterLabel">Game type</span>
-        <div class="season-filter-control" role="group" aria-labelledby="historyFilterLabel">
-          <button type="button" class="season-filter-button is-active" data-history-filter="All" aria-pressed="true">All Games</button>
-          <button type="button" class="season-filter-button" data-history-filter="Preseason" aria-pressed="false">Preseason</button>
-          <button type="button" class="season-filter-button" data-history-filter="Regular Season" aria-pressed="false">Regular</button>
-          <button type="button" class="season-filter-button" data-history-filter="Tournament" aria-pressed="false">Tournament</button>
-          <button type="button" class="season-filter-button" data-history-filter="Club" aria-pressed="false">Club</button>
+      <section class="history-summary-card history-toolbar">
+        <label class="history-filter" for="historyTypeFilter">
+          <span class="eyebrow">Game type</span>
+          <select id="historyTypeFilter">
+            <option value="All">All Games</option>
+            <option value="Preseason">Preseason</option>
+            <option value="Regular Season">Regular Season</option>
+            <option value="Tournament">Tournament</option>
+            <option value="Club">Club</option>
+          </select>
+        </label>
+        <div class="history-count" aria-live="polite" aria-atomic="true">
+          <strong id="historyGameCount">0</strong>
+          <span>GAMES</span>
         </div>
-      </section>
-
-
-      <section class="history-summary-card" aria-live="polite" aria-atomic="true">
-
-        <span>
-          COMPLETED GAMES
-        </span>
-
-        <strong id="historyGameCount">
-          0
-        </strong>
-
       </section>
 
 
@@ -2150,7 +2143,7 @@
 
   <script src="js/persistence.js?v=16"></script>
   <script src="js/sharing.js?v=19"></script>
-  <script src="js/app.js?v=20"></script>
+  <script src="js/app.js?v=22"></script>
   <script src="js/presentation.js?v=21"></script>
 
 </body>

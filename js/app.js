@@ -1835,11 +1835,7 @@ function renderGameHistory() {
     0;
 
 
-  document.querySelectorAll("[data-history-filter]").forEach((button) => {
-    const active = button.dataset.historyFilter === currentHistoryFilter;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-pressed", String(active));
-  });
+  document.getElementById("historyTypeFilter").value = currentHistoryFilter;
   historyEmpty.querySelector("strong").textContent = currentHistoryFilter === "All"
     ? "No completed games yet"
     : `No ${currentHistoryFilter.toLowerCase()} games yet`;
@@ -2745,11 +2741,9 @@ seasonFilterButtons.forEach(
 );
 
 
-document.querySelectorAll("[data-history-filter]").forEach((button) => {
-  button.addEventListener("click", () => {
-    currentHistoryFilter = button.dataset.historyFilter;
-    renderGameHistory();
-  });
+document.getElementById("historyTypeFilter").addEventListener("change", (event) => {
+  currentHistoryFilter = event.target.value;
+  renderGameHistory();
 });
 
 
