@@ -1,18 +1,37 @@
 :root {
-  --red: #c8102e;
-  --red-dark: #a90d27;
-  --white: #ffffff;
-  --background: #f4f7f8;
-  --surface: #ffffff;
-  --surface-secondary: #f1f4f5;
-  --text: #111820;
-  --text-secondary: #66717d;
-  --text-muted: #9ba5ae;
-  --border: #dfe4e7;
-  --radius-large: 22px;
-  --radius-medium: 16px;
-  --content-width: 680px;
+  --bg: #08090a;
+  --bg-elevated: #0f1113;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-inset: #000000;
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.22);
+
+  --accent: #c8102e;          /* existing brand red */
+  --accent-hover: #e0183a;
+  --accent-tint: rgba(200, 16, 46, 0.12);
+  --accent-glow: rgba(200, 16, 46, 0.35);
+  --on-accent: #ffffff;
+
+  --made: #2ecc71;
+  --made-tint: rgba(46, 204, 113, 0.14);
+  --miss: rgba(242, 242, 242, 0.45);   /* muted, never loud */
+  --danger: var(--accent);
+
+  --hardwood: rgba(176, 120, 60, 0.05);  /* texture only */
+  --court-line: rgba(255, 255, 255, 0.04);
+
+  --text: #f4f4f4;
+  --text-muted: rgba(244, 244, 244, 0.58);
+
+  --radius: 2px;
+  --font-display: "Barlow Condensed", "Oswald", system-ui, sans-serif;
+  --font-body: "Barlow", system-ui, sans-serif;
+
+  --content-width: 720px;
+  --tap-min: 56px;             /* minimum height of primary tap targets */
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.3, 1);
 }
+
 
 * {
   box-sizing: border-box;
@@ -26,18 +45,10 @@ body {
   margin: 0;
   min-height: 100%;
 
-  background: var(--background);
+  background: var(--bg);
   color: var(--text);
 
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
+  font-family: var(--font-body);
 
   -webkit-font-smoothing: antialiased;
 }
@@ -84,10 +95,10 @@ button {
 
   padding: 28px 22px 26px;
 
-  background: var(--white);
+  background: var(--bg-elevated);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 }
 
 .home-hero::before {
@@ -100,7 +111,7 @@ button {
   width: 100%;
   height: 6px;
 
-  background: var(--red);
+  background: var(--accent);
 }
 
 .home-eyebrow {
@@ -108,7 +119,7 @@ button {
 
   margin-bottom: 8px;
 
-  color: var(--red);
+  color: var(--accent);
 
   font-size: 10px;
   font-weight: 900;
@@ -129,7 +140,7 @@ button {
 .home-season {
   margin: 7px 0 0;
 
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 15px;
   font-weight: 700;
@@ -138,13 +149,12 @@ button {
 .resume-game-card {
   padding: 16px;
 
-  background: var(--white);
+  background: var(--bg-elevated);
 
-  border: 1px solid rgba(200, 16, 46, 0.28);
-  border-radius: var(--radius-large);
+  border: 1px solid var(--accent-tint);
+  border-radius: var(--radius);
 
-  box-shadow:
-    0 4px 18px rgba(17, 24, 32, 0.04);
+  box-shadow: none;
 }
 
 .resume-game-card[hidden] {
@@ -162,7 +172,7 @@ button {
 }
 
 .resume-label {
-  color: var(--red);
+  color: var(--accent);
 
   font-size: 9px;
   font-weight: 900;
@@ -173,10 +183,10 @@ button {
 .resume-game-type {
   padding: 5px 8px;
 
-  background: #fff3f5;
-  color: var(--red);
+  background: var(--accent-tint);
+  color: var(--accent);
 
-  border-radius: 999px;
+  border-radius: var(--radius);
 
   font-size: 8px;
   font-weight: 900;
@@ -214,7 +224,7 @@ button {
 .resume-details {
   margin-top: 4px;
 
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 12px;
   font-weight: 700;
@@ -227,11 +237,11 @@ button {
 
   padding: 0 16px;
 
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 
   border: 0;
-  border-radius: 13px;
+  border-radius: var(--radius);
 
   font-size: 10px;
   font-weight: 900;
@@ -253,7 +263,7 @@ button {
 
   text-align: left;
 
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 }
 
 .primary-home-action {
@@ -261,8 +271,8 @@ button {
 
   padding: 16px;
 
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 
   border: 0;
 }
@@ -272,7 +282,7 @@ button {
 
   padding: 16px 18px;
 
-  background: var(--white);
+  background: var(--bg-elevated);
   color: var(--text);
 
   border: 1px solid var(--border);
@@ -295,9 +305,9 @@ button {
 
   margin-right: 14px;
 
-  background: rgba(255, 255, 255, 0.16);
+  background: var(--border);
 
-  border-radius: 14px;
+  border-radius: var(--radius);
 }
 
 .home-action-icon svg {
@@ -371,11 +381,11 @@ button {
 
   padding: 0 0 4px;
 
-  background: var(--white);
+  background: var(--bg-elevated);
   color: var(--text);
 
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius);
 
   font-size: 31px;
   font-weight: 400;
@@ -389,10 +399,10 @@ button {
 
   padding: 19px;
 
-  background: var(--white);
+  background: var(--bg-elevated);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 }
 
 .form-group {
@@ -430,11 +440,11 @@ button {
   margin: 0;
   padding: 0 14px;
 
-  background: #fafbfb;
+  background: var(--surface-inset);
   color: var(--text);
 
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius);
 
   outline: none;
 
@@ -443,10 +453,9 @@ button {
 }
 
 .form-group input:focus {
-  border-color: var(--red);
+  border-color: var(--accent);
 
-  box-shadow:
-    0 0 0 3px rgba(200, 16, 46, 0.09);
+  box-shadow: none;
 }
 
 .form-group input[type="date"] {
@@ -553,11 +562,11 @@ button {
 
   padding: 7px;
 
-  background: var(--surface-secondary);
-  color: var(--text-secondary);
+  background: var(--surface-inset);
+  color: var(--text-muted);
 
   border: 1px solid transparent;
-  border-radius: 13px;
+  border-radius: var(--radius);
 
   text-align: center;
 
@@ -569,10 +578,10 @@ button {
 
 .segmented-control input:checked + label,
 .game-type-options input:checked + label {
-  background: #fff5f6;
-  color: var(--red);
+  background: var(--accent-tint);
+  color: var(--accent);
 
-  border-color: rgba(200, 16, 46, 0.3);
+  border-color: var(--accent-tint);
 }
 
 .form-message {
@@ -580,7 +589,7 @@ button {
 
   margin: -4px 0 7px;
 
-  color: var(--red);
+  color: var(--accent);
 
   font-size: 12px;
   font-weight: 700;
@@ -593,11 +602,11 @@ button {
   width: 100%;
   min-height: 55px;
 
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 
   border: 0;
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius);
 
   font-size: 13px;
   font-weight: 900;
@@ -606,10 +615,10 @@ button {
 .game-card {
   overflow: hidden;
 
-  background: var(--white);
+  background: var(--bg-elevated);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 }
 
 .game-header {
@@ -634,7 +643,7 @@ button {
   width: 100%;
   height: 6px;
 
-  background: var(--red);
+  background: var(--accent);
 }
 
 .game-info {
@@ -670,7 +679,7 @@ button {
 }
 
 .player-number {
-  color: var(--red);
+  color: var(--accent);
 
   font-size: 14px;
   font-weight: 900;
@@ -679,7 +688,7 @@ button {
 .opponent {
   margin: 8px 0 0;
 
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 14px;
   font-weight: 700;
@@ -692,10 +701,10 @@ button {
 
   padding: 5px 8px;
 
-  background: #fff3f5;
-  color: var(--red);
+  background: var(--accent-tint);
+  color: var(--accent);
 
-  border-radius: 999px;
+  border-radius: var(--radius);
 
   font-size: 8px;
   font-weight: 900;
@@ -710,10 +719,10 @@ button {
 
   padding: 9px 14px 10px;
 
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 
-  border-radius: 16px;
+  border-radius: var(--radius);
 
   text-align: center;
 }
@@ -781,7 +790,7 @@ button {
   background: var(--surface);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 }
 
 .eyebrow {
@@ -819,10 +828,10 @@ button {
 
   padding: 7px 10px;
 
-  background: var(--surface-secondary);
-  color: var(--text-secondary);
+  background: var(--surface-inset);
+  color: var(--text-muted);
 
-  border-radius: 999px;
+  border-radius: var(--radius);
 
   font-size: 10px;
   font-weight: 800;
@@ -860,26 +869,26 @@ button {
   padding: 8px;
 
   border: 0;
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius);
 
   font-size: 13px;
   font-weight: 900;
 }
 
 .btn-made {
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .btn-miss {
-  background: var(--surface-secondary);
-  color: #596570;
+  background: var(--surface-inset);
+  color: var(--text-muted);
 }
 
 .miss-x {
   margin-right: 3px;
 
-  color: var(--red);
+  color: var(--accent);
 
   font-size: 18px;
   font-weight: 900;
@@ -913,11 +922,11 @@ button {
 
   padding: 10px 5px;
 
-  background: var(--white);
+  background: var(--bg-elevated);
   color: var(--text);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius);
 }
 
 .stat-icon {
@@ -930,7 +939,7 @@ button {
 
   margin-bottom: 7px;
 
-  color: var(--red);
+  color: var(--accent);
 }
 
 .stat-icon svg {
@@ -975,11 +984,11 @@ button {
 
   padding: 8px;
 
-  background: #fafafa;
+  background: var(--surface-inset);
   color: var(--text);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius);
 
   font-size: 11px;
   font-weight: 900;
@@ -991,9 +1000,9 @@ button {
   width: 10px;
   height: 10px;
 
-  background: var(--red);
+  background: var(--accent);
 
-  border-radius: 50%;
+  border-radius: var(--radius);
 }
 
 .game-controls {
@@ -1011,33 +1020,33 @@ button {
 
   padding: 8px;
 
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius);
 
   font-size: 13px;
   font-weight: 900;
 }
 
 .undo-button {
-  background: var(--white);
-  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
 
   border: 1px solid var(--border);
 }
 
 .undo-button:disabled {
-  background: #f2f4f5;
-  color: #aab1b8;
+  background: var(--surface-inset);
+  color: var(--surface-inset);
 
-  border-color: #e2e6e8;
+  border-color: var(--surface-inset);
 
   cursor: default;
 }
 
 .end-game-button {
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 
-  border: 1px solid var(--red);
+  border: 1px solid var(--accent);
 }
 
 .exit-game-button {
@@ -1070,56 +1079,8 @@ button:active:not(:disabled) {
 }
 
 button:focus-visible {
-  outline: 3px solid rgba(200, 16, 46, 0.2);
+  outline: 3px solid var(--accent-tint);
   outline-offset: 2px;
-}
-
-.stat-recorded {
-  animation: stat-recorded 0.56s ease;
-}
-
-.stat-recorded-make {
-  --recorded-color: #2e9d59;
-  --recorded-ring: rgba(46, 157, 89, 0.22);
-  --recorded-ring-soft: rgba(46, 157, 89, 0.14);
-}
-
-.stat-recorded-miss {
-  --recorded-color: var(--red);
-  --recorded-ring: rgba(200, 16, 46, 0.22);
-  --recorded-ring-soft: rgba(200, 16, 46, 0.14);
-}
-
-@keyframes stat-recorded {
-  0% {
-    transform: scale(1);
-  }
-
-  18% {
-    transform: scale(0.96);
-    background: var(--recorded-color);
-    color: #ffffff;
-    border-color: var(--recorded-color);
-    box-shadow: 0 0 0 4px var(--recorded-ring);
-  }
-
-  72% {
-    background: var(--recorded-color);
-    color: #ffffff;
-    border-color: var(--recorded-color);
-    box-shadow: 0 0 0 4px var(--recorded-ring-soft);
-  }
-
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 transparent;
-  }
-}
-
-.stat-recorded .stat-icon,
-.stat-recorded .stat-button-label,
-.stat-recorded .miss-x {
-  color: #ffffff;
 }
 
 .modal-backdrop {
@@ -1134,7 +1095,7 @@ button:focus-visible {
 
   padding: 0;
 
-  background: rgba(17, 24, 32, 0.45);
+  background: var(--border);
 
   opacity: 0;
 
@@ -1165,12 +1126,11 @@ button:focus-visible {
     20px
     max(22px, env(safe-area-inset-bottom));
 
-  background: var(--white);
+  background: var(--bg-elevated);
 
-  border-radius: 26px 26px 0 0;
+  border-radius: var(--radius);
 
-  box-shadow:
-    0 -8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
 
   transform: translateY(100%);
 
@@ -1188,9 +1148,9 @@ button:focus-visible {
 
   margin: 0 auto 18px;
 
-  background: #d7dcdf;
+  background: var(--surface-inset);
 
-  border-radius: 999px;
+  border-radius: var(--radius);
 }
 
 .bottom-sheet h2 {
@@ -1206,7 +1166,7 @@ button:focus-visible {
 .modal-description {
   margin: 0;
 
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 14px;
 
@@ -1223,9 +1183,9 @@ button:focus-visible {
 
   padding: 15px 6px;
 
-  background: #f6f8f9;
+  background: var(--surface-inset);
 
-  border-radius: 17px;
+  border-radius: var(--radius);
 }
 
 .final-stat-line div {
@@ -1244,7 +1204,7 @@ button:focus-visible {
   width: 1px;
   height: calc(100% - 6px);
 
-  background: #dce1e4;
+  background: var(--surface-inset);
 }
 
 .final-stat-line strong {
@@ -1270,7 +1230,7 @@ button:focus-visible {
 .final-shooting {
   margin-top: 10px;
 
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 11px;
   font-weight: 800;
@@ -1296,20 +1256,20 @@ button:focus-visible {
   padding: 8px;
 
   border: 0;
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius);
 
   font-size: 11px;
   font-weight: 900;
 }
 
 .modal-cancel {
-  background: var(--surface-secondary);
+  background: var(--surface-inset);
   color: var(--text);
 }
 
 .modal-confirm {
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 
@@ -1334,7 +1294,7 @@ button:focus-visible {
   display: block;
   margin-bottom: 6px;
   overflow: hidden;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: 11px;
   font-weight: 900;
   text-overflow: ellipsis;
@@ -1346,10 +1306,10 @@ button:focus-visible {
   min-width: 0;
   height: 54px;
   padding: 0 12px;
-  background: #fafbfb;
+  background: var(--surface-inset);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius);
   outline: none;
   font-size: 22px;
   font-weight: 900;
@@ -1357,14 +1317,14 @@ button:focus-visible {
 }
 
 .final-score-grid input:focus {
-  border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.09);
+  border-color: var(--accent);
+  box-shadow: none;
 }
 
 .score-message {
   min-height: 17px;
   margin: 7px 0 0;
-  color: var(--red);
+  color: var(--accent);
   font-size: 11px;
   font-weight: 800;
 }
@@ -1383,10 +1343,10 @@ button:focus-visible {
   gap: 8px;
   min-height: 50px;
   padding: 10px 12px;
-  background: var(--surface-secondary);
+  background: var(--surface-inset);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius);
   text-align: left;
   font-size: 11px;
   font-weight: 900;
@@ -1403,28 +1363,28 @@ button:focus-visible {
 
   16% {
     transform: scale(0.97);
-    background: var(--red);
-    color: var(--white);
-    border-color: var(--red);
-    box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.22);
+    background: var(--accent);
+    color: var(--on-accent);
+    border-color: var(--accent);
+    box-shadow: none;
   }
 
   78% {
-    background: var(--red);
-    color: var(--white);
-    border-color: var(--red);
-    box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.12);
+    background: var(--accent);
+    color: var(--on-accent);
+    border-color: var(--accent);
+    box-shadow: none;
   }
 
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(200, 16, 46, 0);
+    box-shadow: none;
   }
 }
 
 .correction-option.correction-recorded strong {
-  background: var(--white);
-  color: var(--red);
+  background: var(--bg-elevated);
+  color: var(--accent);
 }
 
 .correction-option strong {
@@ -1435,9 +1395,9 @@ button:focus-visible {
   min-width: 28px;
   height: 28px;
   padding: 0 7px;
-  background: var(--white);
-  color: var(--red);
-  border-radius: 9px;
+  background: var(--bg-elevated);
+  color: var(--accent);
+  border-radius: var(--radius);
   font-size: 12px;
 }
 
@@ -1445,10 +1405,10 @@ button:focus-visible {
   width: 100%;
   min-height: 50px;
   margin-top: 10px;
-  background: var(--white);
-  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
   border: 1px solid var(--border);
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius);
   font-size: 11px;
   font-weight: 900;
 }
@@ -1457,10 +1417,10 @@ button:focus-visible {
 .season-overview-card,
 .season-card,
 .season-empty {
-  background: var(--white);
+  background: var(--bg-elevated);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 }
 
 .season-filter-card,
@@ -1485,11 +1445,11 @@ button:focus-visible {
 
   padding: 7px 5px;
 
-  background: var(--surface-secondary);
-  color: var(--text-secondary);
+  background: var(--surface-inset);
+  color: var(--text-muted);
 
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: var(--radius);
 
   font-size: 9px;
   font-weight: 900;
@@ -1498,10 +1458,10 @@ button:focus-visible {
 }
 
 .season-filter-button.is-active {
-  background: #fff5f6;
-  color: var(--red);
+  background: var(--accent-tint);
+  color: var(--accent);
 
-  border-color: rgba(200, 16, 46, 0.3);
+  border-color: var(--accent-tint);
 }
 
 .season-empty {
@@ -1527,7 +1487,7 @@ button:focus-visible {
 .season-empty span {
   margin-top: 5px;
 
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 11px;
   font-weight: 600;
@@ -1536,7 +1496,7 @@ button:focus-visible {
 .season-overview-card {
   overflow: hidden;
 
-  border-top: 6px solid var(--red);
+  border-top: 6px solid var(--accent);
 }
 
 .season-card-heading {
@@ -1577,10 +1537,10 @@ button:focus-visible {
 
   padding: 8px 10px;
 
-  background: #fff3f5;
-  color: var(--red);
+  background: var(--accent-tint);
+  color: var(--accent);
 
-  border-radius: 12px;
+  border-radius: var(--radius);
 
   font-size: 8px;
   font-weight: 900;
@@ -1595,9 +1555,9 @@ button:focus-visible {
   justify-content: center;
   min-width: 62px;
   padding: 7px 10px;
-  background: var(--surface-secondary);
-  color: var(--text-secondary);
-  border-radius: 12px;
+  background: var(--surface-inset);
+  color: var(--text-muted);
+  border-radius: var(--radius);
   font-size: 8px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -1628,7 +1588,7 @@ button:focus-visible {
 
   padding: 15px 8px 17px;
 
-  background: #fafbfb;
+  background: var(--surface-inset);
 
   border-top: 1px solid var(--border);
 }
@@ -1697,9 +1657,9 @@ button:focus-visible {
 
   padding: 14px 5px;
 
-  background: var(--surface-secondary);
+  background: var(--surface-inset);
 
-  border-radius: 13px;
+  border-radius: var(--radius);
 
   text-align: center;
 }
@@ -1734,7 +1694,7 @@ button:focus-visible {
 }
 
 .season-shooting-list > div > span {
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 13px;
   font-weight: 800;
@@ -1779,9 +1739,9 @@ button:focus-visible {
 
   padding: 14px 5px;
 
-  background: var(--surface-secondary);
+  background: var(--surface-inset);
 
-  border-radius: 13px;
+  border-radius: var(--radius);
 
   text-align: center;
 }
@@ -1800,10 +1760,10 @@ button:focus-visible {
 
   padding: 16px 18px;
 
-  background: var(--white);
+  background: var(--bg-elevated);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 }
 
 .history-summary-card span {
@@ -1816,7 +1776,7 @@ button:focus-visible {
 }
 
 .history-summary-card strong {
-  color: var(--red);
+  color: var(--accent);
 
   font-size: 26px;
   font-weight: 900;
@@ -1838,11 +1798,11 @@ button:focus-visible {
 
   overflow: hidden;
 
-  background: var(--white);
+  background: var(--bg-elevated);
   color: var(--text);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 
   text-align: left;
 }
@@ -1866,7 +1826,7 @@ button:focus-visible {
 
   margin-bottom: 5px;
 
-  color: var(--red);
+  color: var(--accent);
 
   font-size: 9px;
   font-weight: 900;
@@ -1891,7 +1851,7 @@ button:focus-visible {
 
   margin-top: 5px;
 
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 11px;
   font-weight: 700;
@@ -1904,10 +1864,10 @@ button:focus-visible {
 
   padding: 8px 10px;
 
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 
-  border-radius: 14px;
+  border-radius: var(--radius);
 
   text-align: center;
 }
@@ -1941,7 +1901,7 @@ button:focus-visible {
 
   padding: 12px 8px;
 
-  background: #fafbfb;
+  background: var(--surface-inset);
 
   border-top: 1px solid var(--border);
 }
@@ -1972,10 +1932,10 @@ button:focus-visible {
 .history-empty {
   padding: 34px 20px;
 
-  background: var(--white);
+  background: var(--bg-elevated);
 
   border: 1px dashed var(--border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 
   text-align: center;
 }
@@ -1997,7 +1957,7 @@ button:focus-visible {
 .history-empty span {
   margin-top: 5px;
 
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 12px;
   font-weight: 600;
@@ -2020,8 +1980,8 @@ button:focus-visible {
   min-width: 24px;
   height: 24px;
   padding: 0 6px;
-  border-radius: 8px;
-  background: var(--surface-secondary);
+  border-radius: var(--radius);
+  background: var(--surface-inset);
   color: var(--text);
   font-size: 11px;
   font-weight: 900;
@@ -2029,20 +1989,20 @@ button:focus-visible {
 
 .history-result-badge.is-win,
 .detail-result-badge.is-win {
-  background: #eaf6ee;
-  color: #237a45;
+  background: var(--made-tint);
+  color: var(--made);
 }
 
 .history-result-badge.is-loss,
 .detail-result-badge.is-loss {
-  background: #fff0f2;
-  color: var(--red);
+  background: var(--accent-tint);
+  color: var(--accent);
 }
 
 .history-result-badge.is-tie,
 .detail-result-badge.is-tie {
-  background: #f0f2f4;
-  color: var(--text-secondary);
+  background: var(--surface-inset);
+  color: var(--text-muted);
 }
 
 .detail-final-score {
@@ -2092,17 +2052,17 @@ button:focus-visible {
   min-width: 38px;
   height: 38px;
   padding: 0 9px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   font-size: 14px;
   font-weight: 900;
 }
 
 .detail-hero,
 .detail-card {
-  background: var(--white);
+  background: var(--bg-elevated);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 }
 
 .detail-hero {
@@ -2114,7 +2074,7 @@ button:focus-visible {
 
   padding: 20px 18px;
 
-  border-top: 6px solid var(--red);
+  border-top: 6px solid var(--accent);
 }
 
 .detail-hero-copy {
@@ -2126,7 +2086,7 @@ button:focus-visible {
 
   margin-bottom: 5px;
 
-  color: var(--red);
+  color: var(--accent);
 
   font-size: 9px;
   font-weight: 900;
@@ -2151,7 +2111,7 @@ button:focus-visible {
 .detail-hero p {
   margin: 7px 0 0;
 
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 12px;
   font-weight: 700;
@@ -2166,10 +2126,10 @@ button:focus-visible {
 
   padding: 9px 12px;
 
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 
-  border-radius: 16px;
+  border-radius: var(--radius);
 
   text-align: center;
 }
@@ -2214,9 +2174,9 @@ button:focus-visible {
 .rebound-detail-grid div {
   padding: 14px 8px;
 
-  background: var(--surface-secondary);
+  background: var(--surface-inset);
 
-  border-radius: 14px;
+  border-radius: var(--radius);
 
   text-align: center;
 }
@@ -2267,7 +2227,7 @@ button:focus-visible {
 }
 
 .shooting-detail-list span {
-  color: var(--text-secondary);
+  color: var(--text-muted);
 
   font-size: 12px;
   font-weight: 700;
@@ -2365,7 +2325,7 @@ button:focus-visible {
 
   overflow: hidden;
 
-  border-radius: var(--radius-large);
+  border-radius: var(--radius);
 
   touch-action: pan-y;
 }
@@ -2381,8 +2341,8 @@ button:focus-visible {
 
   border: 0;
 
-  background: var(--red);
-  color: var(--white);
+  background: var(--accent);
+  color: var(--on-accent);
 
   font-size: 12px;
   font-weight: 900;
@@ -2426,21 +2386,21 @@ button:focus-visible {
   width: 7px;
   height: 7px;
 
-  background: #9ba5ae;
+  background: var(--text-muted);
 
-  border-radius: 50%;
+  border-radius: var(--radius);
 }
 
 .sync-status.is-synced .sync-status-dot {
-  background: #2e9d59;
+  background: var(--made);
 }
 
 .sync-status.is-syncing .sync-status-dot {
-  background: #d99a23;
+  background: var(--text-muted);
 }
 
 .sync-status.is-offline .sync-status-dot {
-  background: var(--red);
+  background: var(--accent);
 }
 
 .build-version {
@@ -2501,8 +2461,8 @@ button:focus-visible {
   min-width: 56px;
   gap: 0;
   padding: 7px 10px;
-  background: #fff3f5;
-  color: var(--red);
+  background: var(--accent-tint);
+  color: var(--accent);
 }
 
 .season-games-badge strong {
@@ -2523,13 +2483,13 @@ button:focus-visible {
 .detail-actions .start-game-button,
 .detail-edit-button {
   min-height: 55px;
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius);
   font-size: 12px;
   font-weight: 900;
 }
 
 .detail-edit-button {
-  background: var(--white);
+  background: var(--bg-elevated);
   color: var(--text);
   border: 1px solid var(--border);
 }
@@ -2561,7 +2521,7 @@ button:focus-visible {
 .edit-stat-grid label > span {
   display: block;
   margin-bottom: 6px;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.04em;
@@ -2575,10 +2535,10 @@ button:focus-visible {
   height: 46px;
   margin: 0;
   padding: 0 11px;
-  background: #fafbfb;
+  background: var(--surface-inset);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
   outline: none;
   font-size: 16px;
   font-weight: 800;
@@ -2587,8 +2547,8 @@ button:focus-visible {
 .edit-field input:focus,
 .edit-field select:focus,
 .edit-stat-grid input:focus {
-  border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.09);
+  border-color: var(--accent);
+  box-shadow: none;
 }
 
 .edit-field input[type="date"] {
@@ -2626,10 +2586,227 @@ button:focus-visible {
   top: 8px;
   z-index: 100;
   padding: 12px;
-  background: #fff0f2;
-  color: var(--red);
+  background: var(--accent-tint);
+  color: var(--accent);
   border: 1px solid currentColor;
-  border-radius: 12px;
+  border-radius: var(--radius);
 }
 #storageWarning[hidden] { display: none; }
-.sync-status.is-pending .sync-status-dot { background: #d99a23; }
+.sync-status.is-pending .sync-status-dot { background: var(--text-muted); }
+
+/* Court HUD: shared components and courtside layouts. */
+:root { color-scheme: dark; }
+body { font-size: 16px; line-height: 1.4; isolation: isolate; }
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, var(--hardwood), transparent 30%, transparent 70%, var(--hardwood));
+}
+.court-backdrop { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; color: var(--court-line); }
+.app { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+.screen.active-screen { gap: 16px; }
+h1, h2, h3, strong, button, .shot-label, .eyebrow, .home-eyebrow, .player-number {
+  font-family: var(--font-display); font-variant-numeric: tabular-nums;
+}
+h1, h2, h3, button, .shot-label { text-transform: uppercase; }
+h1, h2 { letter-spacing: -0.025em; font-weight: 800; }
+button, input, select { border-radius: var(--radius); }
+button { min-height: var(--tap-min); transition: background-color 120ms, border-color 120ms, transform 120ms var(--ease-snap); }
+button:hover:not(:disabled) { border-color: var(--border-strong); }
+button:active:not(:disabled) { transform: scale(0.97); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--on-accent); outline-offset: 3px; }
+button:disabled { opacity: 0.45; cursor: default; }
+input, select { font-family: var(--font-body); font-size: 16px; color: var(--text); }
+input:focus, select:focus { border-color: var(--accent) !important; }
+input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.8; }
+.home-hero, .game-card, .card, .setup-card, .season-overview-card, .season-card, .season-filter-card, .detail-card, .detail-hero, .resume-game-card {
+  position: relative; background: var(--bg-elevated); border: 1px solid var(--border); border-left: 3px solid var(--accent); box-shadow: none;
+}
+.home-hero::before, .game-header::before { display: none; }
+.home-hero::after, .game-header::after {
+  content: attr(data-jersey); position: absolute; right: 16px; bottom: -35px; font: 800 220px/1 var(--font-display);
+  color: transparent; -webkit-text-stroke: 1px var(--text); opacity: 0.06; pointer-events: none; z-index: 0;
+}
+.home-hero > *, .game-header > * { position: relative; z-index: 1; }
+.home-hero { padding: 30px 24px; min-height: 200px; }
+.home-hero h1 { font-size: clamp(48px, 12vw, 76px); line-height: 1; }
+.home-number { display: inline-block; font-size: 28px; padding: 4px 10px; border: 1px solid var(--border-strong); vertical-align: middle; letter-spacing: 0; }
+.home-eyebrow, .eyebrow, .season-label, .home-season, .resume-label, .detail-game-number, .history-game-label {
+  font-size: 12px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.1em; color: var(--text-muted);
+}
+.home-season { margin-top: 14px; }
+.home-actions { gap: 12px; }
+.primary-home-action, .secondary-home-action { min-height: 104px; padding: 20px; border-left: 3px solid var(--accent); gap: 12px; }
+.home-action-icon { display: none; }
+.home-action-copy strong { font-size: 25px; letter-spacing: 0.02em; }
+.home-action-copy small { font: 400 15px/1.4 var(--font-body); margin-top: 5px; }
+.primary-home-action small { color: var(--on-accent); opacity: 0.85; }
+.home-action-arrow { font-size: 32px; }
+.home-record-summary { padding: 8px; border: 1px solid var(--border-strong); }
+.home-record-summary strong { font-size: 27px; white-space: nowrap; }
+.home-record-summary small { font-size: 11px; }
+.primary-home-action, .start-game-button, .end-game-button, .resume-button, .season-filter-button.is-active {
+  background: var(--accent); color: var(--on-accent); clip-path: polygon(0 0,100% 0,100% 70%,92% 100%,0 100%);
+}
+.primary-home-action:hover, .start-game-button:hover, .end-game-button:hover { background: var(--accent-hover); }
+.secondary-home-action:hover, .history-game-card:hover { background: var(--surface); }
+.sync-status { font-size: 12px; gap: 8px; }
+.sync-status-dot { width: 6px; height: 6px; }
+.sync-status.is-synced .sync-status-dot { background: var(--made); }
+.sync-status.is-pending .sync-status-dot, .sync-status.is-offline .sync-status-dot { background: var(--accent); }
+.build-version { font-size: 10px; }
+.screen-topbar h1 { font-size: 32px; }
+.back-button { width: 56px; height: 56px; font-size: 32px; }
+.form-group > label, .form-group legend, .edit-field > span, .edit-stat-grid label > span, .final-score-grid label > span { font-size: 12px; letter-spacing: 0.1em; }
+.form-group input[type="text"], .form-group input[type="date"], .edit-field input, .edit-field select, .edit-stat-grid input, .final-score-grid input {
+  background: var(--surface-inset); border: 1px solid var(--border-strong); min-height: 56px; font-weight: 600;
+}
+.segmented-control label, .game-type-options label { min-height: 56px; font-size: 14px; color: var(--text-muted); }
+.segmented-control input:checked + label, .game-type-options input:checked + label { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.segmented-control input:focus-visible + label, .game-type-options input:focus-visible + label { outline: 2px solid var(--on-accent); outline-offset: 2px; }
+.segmented-control label:hover, .game-type-options label:hover { border-color: var(--border-strong); }
+.start-game-button { font-size: 20px; letter-spacing: 0.05em; }
+.game-card { overflow: hidden; }
+.game-header { position: relative; padding: 24px 20px; align-items: center; overflow: hidden; }
+.game-header::after { content: attr(data-jersey); }
+.player-name-row { flex-wrap: wrap; gap: 8px; }
+.player-name-row h1 { font-size: clamp(26px, 7vw, 40px); }
+.player-number { font-size: 23px; color: var(--text-muted); }
+.opponent { font-size: 16px; }
+.game-type-badge, .resume-game-type { border: 1px solid var(--border-strong); background: transparent; color: var(--text-muted); font-size: 11px; }
+.points-card { min-width: 100px; background: var(--surface-inset); border: 1px solid var(--border-strong); padding: 14px 12px; }
+.points-card strong { font-size: clamp(76px, 19vw, 108px); font-weight: 800; letter-spacing: 0.02em; line-height: 0.95; }
+.points-card span { font-size: 12px; letter-spacing: 0.1em; color: var(--text-muted); }
+.stat-bar { gap: 4px; padding: 8px; background: var(--surface-inset); grid-template-columns: repeat(7,minmax(0,1fr)); }
+.stat { background: var(--surface); padding: 10px 0; min-width: 0; }
+.stat span { font-size: 11px; letter-spacing: 0.05em; }
+.stat strong { font-size: 25px; line-height: 1.1; }
+.stat:last-child strong { font-size: 20px; }
+.stat::after { display: none; }
+.card { padding: 18px 14px; }
+.section-header { gap: 12px; flex-wrap: wrap; }
+.section-header h2 { font-size: 28px; }
+.shooting-summary { background: var(--surface-inset); color: var(--text-muted); font: 600 13px var(--font-display); letter-spacing: 0.04em; border: 1px solid var(--border); padding: 8px; }
+.shot-row { grid-template-columns: 38px minmax(0,1.5fr) minmax(0,1fr); gap: 8px; margin-top: 12px; }
+.shot-label { font-size: 20px; color: var(--text-muted); }
+.shot-row button { min-height: 68px; font-size: 23px; letter-spacing: 0.03em; border: 1px solid var(--border-strong); }
+.btn-made { background: var(--made-tint); color: var(--made); border-color: var(--made) !important; }
+.btn-made:hover { background: var(--made-tint); }
+.btn-miss { background: var(--surface-inset); color: var(--text-muted); }
+.miss-x { color: var(--miss); }
+.stat-buttons { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.stat-buttons button { background: var(--surface-inset); min-height: 86px; border: 1px solid var(--border-strong); padding: 14px; }
+.stat-button-label { font-size: 16px; letter-spacing: 0.06em; }
+.stat-icon, .stat-icon svg { width: 23px; height: 23px; color: var(--text-muted); }
+button[data-action="turnover"], .foul-button { border-left: 3px solid var(--accent); }
+.foul-button { min-height: 60px; font-size: 17px; color: var(--text-muted); background: var(--surface-inset); margin-top: 10px; }
+.recent-actions { padding: 10px 12px; border-left: 3px solid var(--border-strong); background: var(--bg-elevated); min-height: 62px; }
+.recent-actions .eyebrow { display: block; font-size: 11px; }
+#recentActions { font: 600 14px var(--font-display); color: var(--text-muted); letter-spacing: 0.05em; }
+.game-controls { position: sticky; bottom: max(8px,env(safe-area-inset-bottom)); z-index: 5; padding: 10px; background: var(--bg-elevated); border: 1px solid var(--border-strong); gap: 12px; }
+.game-controls button { min-height: 60px; font-size: 20px; }
+.undo-button, .modal-cancel, .detail-edit-button { background: var(--surface-inset); color: var(--text); border: 1px solid var(--border-strong); }
+.exit-game-button { min-height: 56px; margin: 8px 0 24px; color: var(--text-muted); font-size: 15px; }
+.modal-backdrop { background: var(--surface-inset); background: color-mix(in srgb,var(--surface-inset) 85%,transparent); }
+.bottom-sheet { background: var(--bg-elevated); border: 1px solid var(--border-strong); border-top: 2px solid var(--accent); box-shadow: none; }
+.bottom-sheet h2 { font-size: 34px; }
+.modal-description { font-size: 16px; }
+.modal-handle { background: var(--border-strong); height: 2px; }
+.final-stat-line { background: var(--surface-inset); }
+.final-stat-line strong { font-size: 34px; }
+.final-stat-line span { font-size: 11px; }
+.final-score-grid input { font: 700 36px var(--font-display); text-align: center; }
+.modal-actions { gap: 12px; }
+.modal-actions button, .correction-cancel { min-height: 56px; font-size: 18px; }
+#discardGameButton, #replaceGameButton { background: var(--accent-tint); color: var(--on-accent); border: 1px solid var(--danger); }
+#keepGameButton, #resumeInsteadButton { background: var(--accent); color: var(--on-accent); }
+.correction-option { min-height: 60px; font-size: 16px; }
+.correction-option strong { font-size: 22px; background: var(--surface-inset); color: var(--text); }
+.season-filter-button { min-height: 56px; font-size: 15px; }
+.season-filter-button.is-active { border-color: var(--accent); }
+.season-card-heading h2 { font-size: 36px; }
+.season-record-badge, .season-games-badge { background: var(--surface-inset); color: var(--text-muted); border: 1px solid var(--border-strong); font-size: 11px; }
+.season-record-badge strong, .season-games-badge strong { font-size: 27px; color: var(--text); }
+.season-primary-grid { background: var(--surface-inset); padding: 22px 8px; }
+.season-primary-grid strong { font-size: 52px; }
+.season-primary-grid span, .season-stat-grid span, .season-totals-grid span, .detail-stat-grid span, .rebound-detail-grid span, .history-game-stats span { font-size: 11px; letter-spacing: 0.08em; }
+.season-stat-grid strong, .season-totals-grid strong, .detail-stat-grid strong, .rebound-detail-grid strong { font-size: 32px; }
+.season-shooting-list > div { position: relative; padding: 16px 0 18px; }
+.season-shooting-list > div > span, .shooting-detail-list span { font-size: 16px; }
+.season-shooting-list strong { font-size: 32px; }
+.season-shooting-list small { font-size: 14px; }
+.hud-progress { position: absolute; bottom: 3px; left: 0; width: 100%; height: 3px; border: 0; background: var(--surface); }
+.hud-progress::-webkit-progress-bar { background: var(--surface); }
+.hud-progress::-webkit-progress-value { background: var(--accent); }
+.hud-progress::-moz-progress-bar { background: var(--accent); }
+.season-empty, .history-empty { padding: 28px 18px; background: var(--bg-elevated); }
+.season-empty strong, .history-empty strong { font: 700 24px var(--font-display); text-transform: uppercase; }
+.season-empty span, .history-empty span { font-size: 16px; }
+.history-game-card { border-left: 3px solid var(--accent); background: var(--bg-elevated); }
+.history-game-opponent { font-size: 27px; }
+.history-game-meta { font-size: 15px; }
+.history-game-label { font-size: 11px; }
+.history-game-score { font-size: 23px; font-family: var(--font-display); }
+.history-game-points { background: var(--surface-inset); border: 1px solid var(--border-strong); }
+.history-game-points strong { font-size: 40px; }
+.history-game-points span { font-size: 11px; color: var(--text-muted); }
+.history-game-stats strong { font-size: 26px; }
+.detail-final-score > div > strong { font-size: 52px; }
+.detail-final-score > div > span { font-size: 12px; }
+.detail-hero h2 { font-size: 32px; }
+.detail-hero p { font-size: 15px; }
+.detail-points { background: var(--surface-inset); border: 1px solid var(--border-strong); }
+.detail-points strong { font-size: 64px; }
+.detail-points span { font-size: 12px; color: var(--text-muted); }
+.shooting-detail-list > div { position: relative; padding: 16px 0; }
+.shooting-detail-list strong { font-size: 19px; }
+.detail-actions button { font-size: 18px !important; min-height: 60px; }
+.edit-field > span, .edit-stat-grid label > span { font-size: 12px; }
+.form-message, .edit-game-message, .score-message { font-size: 15px; }
+#storageWarning { background: var(--bg-elevated); color: var(--text); border-left: 3px solid var(--danger); }
+.hud-toast { position: fixed; top: max(12px,env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); z-index: 1100; pointer-events: none; width: min(90vw,400px); padding: 12px 18px; background: var(--bg-elevated); border: 1px solid var(--border-strong); border-left: 3px solid var(--accent); font: 700 19px var(--font-display); text-transform: uppercase; }
+.hud-toast[hidden] { display: none; }
+.stat-recorded, .correction-option.correction-recorded { animation: hud-tap 150ms var(--ease-snap); }
+.stat-recorded .stat-icon, .stat-recorded .stat-button-label, .stat-recorded .miss-x { color: inherit; }
+.hud-pulse { animation: hud-pulse 150ms var(--ease-snap); }
+.shot-float { position: absolute; inset: 0; pointer-events: none; display: grid; place-items: center; font: 800 28px var(--font-display); color: var(--made); animation: shot-float 180ms ease-out forwards; }
+button[data-action] { position: relative; }
+@keyframes hud-tap { 40% { transform: scale(0.97); border-color: var(--accent); background: var(--accent-tint); } }
+@keyframes hud-pulse { 45% { color: var(--on-accent); background: var(--accent-tint); transform: translateY(-2px); } }
+@keyframes shot-float { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-22px); } }
+@media (max-width:380px) {
+  .home-hero { padding: 24px 16px; }
+  .home-hero h1 { font-size: 48px; }
+  .home-number { font-size: 22px; }
+  .home-action-copy strong { font-size: 22px; }
+  .home-action-copy small { font-size: 15px; }
+  .primary-home-action, .secondary-home-action { padding: 16px 12px; }
+  .game-header { padding: 18px 12px; }
+  .points-card { min-width: 85px; }
+  .season-card-heading { flex-wrap: wrap; }
+  .shooting-detail-list > div { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .shot-float { display: none; }
+  button:active:not(:disabled) { transform: none; border-color: var(--accent); }
+}
+.home-hero, .game-header, .points-card {
+  background-image: repeating-linear-gradient(45deg,transparent 0 16px,var(--court-line) 16px 17px), repeating-linear-gradient(-45deg,transparent 0 16px,var(--court-line) 16px 17px);
+}
+.card::before, .setup-card::before, .season-card::before, .season-overview-card::before, .detail-card::before, .detail-hero::before, .bottom-sheet::before {
+  content: ""; position: absolute; top: 4px; left: 4px; width: 8px; height: 8px; border-top: 1px solid var(--border-strong); border-left: 1px solid var(--border-strong); pointer-events: none;
+}
+.bottom-sheet { position: relative; }
+.undo-button:disabled { background: var(--surface-inset); color: var(--text-muted); border-color: var(--border); }
+.resume-details { font-size: 15px; }
+.resume-opponent { font-size: 24px; }
+.detail-meta, .final-shooting { font-size: 15px; }
+.history-result-badge { font-size: 16px; }
+.form-message, .edit-game-message, .score-message { color: var(--text); }
+.history-result-badge.is-loss, .detail-result-badge.is-loss { color: var(--text); border: 1px solid var(--danger); }
+.history-summary-card strong { color: var(--text); }
+.game-controls { margin-top: 0; }
+.stat-bar .stat:last-child strong { font-size: clamp(17px, 4.5vw, 22px); }
+
+.detail-hero h2 { white-space: normal; overflow-wrap: anywhere; }
+.segmented-control label:active, .game-type-options label:active { background: var(--accent-tint); }

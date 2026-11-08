@@ -17,7 +17,13 @@ directly so browser storage and sharing behave consistently.
 - `js/persistence.js`: browser storage, game numbering, and synchronization.
 - `js/sharing.js`: canvas stat cards and image sharing/downloads.
 - `js/app.js`: game state, statistics, navigation, and event handlers.
+- `js/presentation.js`: Court HUD decorations, recent plays, progress bars, and milestone feedback.
 - `tests/frontend.test.cjs`: Chromium regression tests with a mocked backend.
+
+The Court HUD design system is documented in `AGENTS.md`. Its visual feedback
+uses existing stats and does not add persisted data. Google Fonts supplies Barlow
+and Barlow Condensed; local system fonts remain available if fonts cannot load.
+Reduced-motion preferences disable animation.
 
 Scripts load in the order listed in `index.html`. They share the existing browser
 script scope; this keeps deployment compatible with GitHub Pages without a bundler.

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/*.test.cjs",
-    "check": "node --check js/app.js && node --check js/persistence.js && node --check js/sharing.js"
+    "check": "node --check js/app.js && node --check js/persistence.js && node --check js/sharing.js && node --check js/presentation.js"
   },
   "devDependencies": {
     "playwright": "1.62.1"
