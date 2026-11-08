@@ -149,12 +149,13 @@ async function createStatCardFile(game) {
   ctx.strokeRect(40, 40, 1000, 1270);
   ctx.strokeRect(330, 40, 420, 400);
   ctx.beginPath(); ctx.arc(540, 440, 160, 0, Math.PI * 2); ctx.stroke();
-  ctx.save();
-  ctx.globalAlpha = 0.06;
-  ctx.strokeStyle = color("--text");
-  ctx.font = `800 600px ${display}`;
-  ctx.strokeText(String(game.playerNumber || "2"), 580, 630);
-  ctx.restore();
+  // Three-point arc and corner lines, behind the recap content.
+  ctx.beginPath();
+  ctx.moveTo(80, 40);
+  ctx.lineTo(80, 155);
+  ctx.arc(540, 155, 460, Math.PI, 0, true);
+  ctx.lineTo(1000, 40);
+  ctx.stroke();
   ctx.fillStyle = color("--accent");
   ctx.fillRect(40, 70, 5, 1120);
   text(`${game.season || CURRENT_SEASON} SEASON  /  GAME ${game.gameNumber || 1}`, 80, 110, 27, "--text-muted");
