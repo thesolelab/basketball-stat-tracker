@@ -3,11 +3,23 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const namespace = 'http://www.w3.org/2000/svg';
   const court = document.createElementNS(namespace, 'svg');
-  court.setAttribute('viewBox', '0 0 720 1000');
-  court.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+  court.setAttribute('viewBox', '0 0 1000 1000');
+  court.setAttribute('preserveAspectRatio', 'xMidYMid meet');
   court.setAttribute('aria-hidden', 'true');
   court.classList.add('court-backdrop');
-  court.innerHTML = '<g fill="none" stroke="currentColor" stroke-width="2"><path d="M50 80H670V920H50ZM240 80V320H480V80M50 500H670M80 80V180C80 620 640 620 640 180V80"/><circle cx="360" cy="320" r="80"/><circle cx="360" cy="500" r="100"/><path d="M330 120H390M360 120V145"/><circle cx="360" cy="155" r="12"/></g>';
+  // Baseline at the top, half-court at the bottom. Keep corner threes
+  // connected to a circular arc centered on the basket, not a Bezier curve.
+  court.innerHTML = `
+    <g fill="none" stroke="currentColor" stroke-width="2">
+      <path data-court="boundary" d="M50 80H950V926H50Z"/>
+      <path data-court="paint" d="M356 80V422H644V80"/>
+      <circle data-court="free-throw" cx="500" cy="422" r="108"/>
+      <path data-court="three-point" d="M104 80V336 A427.5 427.5 0 0 0 896 336 V80"/>
+      <path data-court="half-circle" d="M392 926 A108 108 0 0 1 608 926"/>
+      <path data-court="basket" d="M464 155H536M500 155V163"/>
+      <circle cx="500" cy="175" r="12"/>
+      <path d="M428 175 A72 72 0 0 0 572 175"/>
+    </g>`;
   document.body.prepend(court);
 
   const toast = document.createElement('div');
