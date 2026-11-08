@@ -213,5 +213,39 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     await page.click('#discardGameButton');
     assert.equal(await page.evaluate(() => readActiveGame()), null);
   });
+  await t.test('history filters game types, retains selection, and handles deletion and empty results', async () => {
+    await page.evaluate(async () => {
+      await syncPromise;
+      const base = readCompletedGames()[0];
+      writeCompletedGames(['Regular Season', 'Tournament', 'Preseason', 'Club'].map((type, index) => ({
+        ...base, id: `filter-${index}`, type, gameNumber: index + 1, syncStatus: 'pending'
+      })).concat({ ...base, id: 'old-season', season: '2025–26', type: 'Tournament' }));
+      renderGameHistory();
+      showScreen(historyScreen);
+    });
+    assert.equal(await page.locator('#historyList .history-game-card').count(), 4);
+    for (const type of ['Regular Season', 'Preseason', 'Club', 'Tournament']) {
+      await page.locator(`[data-history-filter="${type}"]`).click();
+      assert.equal(await page.locator('#historyList .history-game-card').count(), 1);
+      assert.equal(await page.locator('#historyGameCount').textContent(), '1');
+      assert.equal(await page.locator(`[data-history-filter="${type}"]`).getAttribute('aria-pressed'), 'true');
+    }
+    await page.locator('#historyList .history-game-card').click();
+    await page.click('#detailBackButton');
+    assert.equal(await page.locator('[data-history-filter="Tournament"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#historyList .history-game-card').count(), 1);
+    await page.evaluate(() => { window.confirm = () => true; deleteCompletedGame('filter-1'); });
+    await page.waitForFunction(() => document.getElementById('historyGameCount').textContent === '0');
+    assert.equal(await page.locator('#historyEmpty').isVisible(), true);
+    assert.match(await page.locator('#historyEmpty strong').textContent(), /tournament/);
+    await page.locator('[data-history-filter="All"]').click();
+    assert.equal(await page.locator('#historyList .history-game-card').count(), 3);
+    assert.equal(await page.locator('#historyEmpty').isVisible(), false);
+    assert.equal(await page.evaluate(() => currentSeasonFilter), 'All');
+    await page.evaluate(() => { currentHistoryFilter = 'Club'; renderGameHistory(); });
+    await page.evaluate(async () => { await synchronizeCompletedGames(); });
+    assert.equal(await page.locator('[data-history-filter="Club"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#historyList .history-game-card').count(), 1);
+  });
   assert.deepEqual(errors, []);
 });

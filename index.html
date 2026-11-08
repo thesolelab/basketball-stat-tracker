@@ -636,7 +636,19 @@
       </div>
 
 
-      <section class="history-summary-card">
+      <section class="season-filter-card" aria-labelledby="historyFilterLabel">
+        <span class="eyebrow" id="historyFilterLabel">Game type</span>
+        <div class="season-filter-control" role="group" aria-labelledby="historyFilterLabel">
+          <button type="button" class="season-filter-button is-active" data-history-filter="All" aria-pressed="true">All Games</button>
+          <button type="button" class="season-filter-button" data-history-filter="Preseason" aria-pressed="false">Preseason</button>
+          <button type="button" class="season-filter-button" data-history-filter="Regular Season" aria-pressed="false">Regular</button>
+          <button type="button" class="season-filter-button" data-history-filter="Tournament" aria-pressed="false">Tournament</button>
+          <button type="button" class="season-filter-button" data-history-filter="Club" aria-pressed="false">Club</button>
+        </div>
+      </section>
+
+
+      <section class="history-summary-card" aria-live="polite" aria-atomic="true">
 
         <span>
           COMPLETED GAMES
@@ -2138,7 +2150,7 @@
 
   <script src="js/persistence.js?v=16"></script>
   <script src="js/sharing.js?v=19"></script>
-  <script src="js/app.js?v=17"></script>
+  <script src="js/app.js?v=20"></script>
   <script src="js/presentation.js?v=17"></script>
 
 </body>
