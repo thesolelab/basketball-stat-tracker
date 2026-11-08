@@ -21,6 +21,7 @@ const DELETED_GAME_IDS_KEY =
 let currentGameNumber = 1;
 let gameIsActive = false;
 let currentSeasonFilter = "All";
+let currentHistoryFilter = "All";
 let syncPromise = null;
 let syncRequested = false;
 let retryTimer = null;
@@ -1800,6 +1801,7 @@ function renderGameHistory() {
           game.season ===
           CURRENT_SEASON
       )
+      .filter((game) => currentHistoryFilter === "All" || game.type === currentHistoryFilter)
       .sort(
         (
           a,
@@ -1832,6 +1834,18 @@ function renderGameHistory() {
     games.length !==
     0;
 
+
+  document.querySelectorAll("[data-history-filter]").forEach((button) => {
+    const active = button.dataset.historyFilter === currentHistoryFilter;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  historyEmpty.querySelector("strong").textContent = currentHistoryFilter === "All"
+    ? "No completed games yet"
+    : `No ${currentHistoryFilter.toLowerCase()} games yet`;
+  historyEmpty.querySelector("span").textContent = currentHistoryFilter === "All"
+    ? "Your saved games will appear here."
+    : "Choose another game type or All Games to see more results.";
 
   games.forEach(
     (game) => {
@@ -2729,6 +2743,14 @@ seasonFilterButtons.forEach(
     );
   }
 );
+
+
+document.querySelectorAll("[data-history-filter]").forEach((button) => {
+  button.addEventListener("click", () => {
+    currentHistoryFilter = button.dataset.historyFilter;
+    renderGameHistory();
+  });
+});
 
 
 gameHistoryButton.addEventListener(
