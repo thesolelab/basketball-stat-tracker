@@ -114,6 +114,7 @@ in components).
 
 ### Step 3: Global look
 
+- Hide the decorative court background while the live Game screen is active so recording stats stays distraction-free. Keep it on other screens.
 - Background: var(--bg) with two stacked subtle textures:
   1. A faint basketball court line drawing in SVG
      (half-court: key/paint rectangle, free-throw circle, three-point
