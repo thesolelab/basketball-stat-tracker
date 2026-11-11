@@ -2589,6 +2589,7 @@ body::before {
   background: linear-gradient(90deg, var(--hardwood), transparent 30%, transparent 70%, var(--hardwood));
 }
 .court-backdrop { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; color: var(--court-line); }
+body:has(#gameScreen.active-screen) .court-backdrop { display: none; }
 .app { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
 .screen.active-screen { gap: 16px; }
 h1, h2, h3, strong, button, .shot-label, .eyebrow, .home-eyebrow, .player-number {
