@@ -2826,3 +2826,19 @@ button[data-action] { position: relative; }
 .history-swipe-row.is-dragging .history-game-card { transition: none; }
 .history-share-button:hover { background: var(--text); }
 .history-share-button:active { background: var(--text-muted); }
+
+/* Clear confirmation for courtside stat entry; never blocks the next tap. */
+.other-stats-card button.stat-recorded {
+  background: var(--accent); color: var(--on-accent); border-color: var(--on-accent);
+  animation: other-stat-tap 180ms var(--ease-snap);
+}
+.other-stats-card button.stat-recorded .stat-icon svg { color: inherit; }
+.other-stats-card button.stat-recorded .foul-dot { background: var(--on-accent); }
+.other-stats-card button.stat-recorded::after {
+  content: "✓"; position: absolute; top: 4px; right: 8px;
+  color: var(--on-accent); font: 700 20px var(--font-body); pointer-events: none;
+}
+@keyframes other-stat-tap {
+  0% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}

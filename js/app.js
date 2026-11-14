@@ -2780,10 +2780,14 @@ gameSetupForm.addEventListener(
 );
 
 
+const tapFeedbackTimers = new WeakMap();
+
 function showTapFeedback(
   button,
   action
 ) {
+  window.clearTimeout(tapFeedbackTimers.get(button));
+
   const isMiss =
     action === "2pt-miss" ||
     action === "3pt-miss" ||
@@ -2804,7 +2808,7 @@ function showTapFeedback(
       : "stat-recorded-make"
   );
 
-  window.setTimeout(
+  tapFeedbackTimers.set(button, window.setTimeout(
     () => {
       button.classList.remove(
         "stat-recorded",
@@ -2813,7 +2817,7 @@ function showTapFeedback(
       );
     },
     560
-  );
+  ));
 }
 
 

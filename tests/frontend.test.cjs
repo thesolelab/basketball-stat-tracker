@@ -319,5 +319,44 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     assert.equal(await row.locator('.history-share-button').isVisible(), false);
     await touch.detach();
   });
+  await t.test('Other Stats rows and tap feedback stay correct for every stat', async () => {
+    await page.evaluate(() => { resetGameStats(); gameIsActive = true; showScreen(gameScreen); updateDisplay(); });
+    const actions = ['oreb', 'dreb', 'steal', 'block', 'assist', 'turnover', 'foul'];
+    const fields = ['offensiveRebounds', 'defensiveRebounds', 'steals', 'blocks', 'assists', 'turnovers', 'fouls'];
+    assert.deepEqual(await page.locator('.other-stats-card [data-action]').evaluateAll(buttons => buttons.map(button => button.dataset.action)), actions);
+    for (const width of [390, 1280]) {
+      await page.setViewportSize({ width, height: 1000 });
+      const boxes = await page.locator('.other-stats-card [data-action]').evaluateAll(buttons => buttons.map(button => {
+        const box = button.getBoundingClientRect(); return { top: box.top, left: box.left, width: box.width };
+      }));
+      for (let row = 0; row < 3; row++) {
+        assert.equal(boxes[row * 2].top, boxes[row * 2 + 1].top);
+        assert.ok(boxes[row * 2].left < boxes[row * 2 + 1].left);
+      }
+      assert.ok(boxes[6].top > boxes[5].top);
+      assert.ok(boxes[6].width > boxes[0].width * 1.8);
+    }
+    await page.setViewportSize({ width: 390, height: 1000 });
+    await page.locator('.other-stats-card').scrollIntoViewIfNeeded();
+    for (let index = 0; index < actions.length; index++) {
+      const button = page.locator(`[data-action="${actions[index]}"]`);
+      await button.click();
+      assert.equal(await page.evaluate(field => stats[field], fields[index]), 1);
+      assert.equal(await button.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(200, 16, 46)');
+      assert.equal(await button.evaluate(element => getComputedStyle(element).color), 'rgb(255, 255, 255)');
+      assert.equal(await button.evaluate(element => getComputedStyle(element).animationName), 'none');
+    }
+    await page.clock.install();
+    const assist = page.locator('[data-action="assist"]');
+    await assist.click();
+    await page.clock.fastForward(300);
+    await assist.click();
+    await page.clock.fastForward(300);
+    assert.equal(await assist.evaluate(element => element.classList.contains('stat-recorded')), true);
+    await page.clock.fastForward(300);
+    assert.equal(await assist.evaluate(element => element.classList.contains('stat-recorded')), false);
+    assert.equal(await page.evaluate(() => stats.assists), 3);
+    await page.clock.resume();
+  });
   assert.deepEqual(errors, []);
 });

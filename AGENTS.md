@@ -201,8 +201,9 @@ Layout, top to bottom:
    - Running splits (FG 0/0, 3PT 0/0, FT 0/0) sit under the header
      as small numeric chips; optionally add a thin progress bar or
      ring per split showing percentage.
-4. **Other stats grid:** OFF REB, DEF REB, ASSIST, STEAL, BLOCK,
-   TURNOVER, PERSONAL FOUL as a 2-column grid of large tap tiles,
+4. **Other stats grid:** Row 1: OFF REB, DEF REB. Row 2: STEAL, BLOCK.
+   Row 3: ASSIST, TURNOVER. Row 4: PERSONAL FOUL (full width).
+   Use a 2-column grid of large tap tiles,
    uppercase label, icon optional. Turnover and Personal Foul use a
    subtle var(--accent) left stripe to signal negative stats.
 5. **Recent actions ticker:** a one-line scrolling or stacked log of
@@ -215,6 +216,7 @@ Layout, top to bottom:
 
 Interaction feedback (all under 200ms, never blocking input):
 - Every tap: a press-down scale (0.97) and a brief accent flash.
+- Other Stats taps use a solid accent fill, white label/icon, and a checkmark for clear confirmation. Keep input responsive and retain color feedback with reduced motion.
 - On a made shot: a floating "+2 / +3 / +1" rises and fades from the
   tapped button; the score number rolls up.
 - Optional haptics: `navigator.vibrate(10)` on tap where supported,
