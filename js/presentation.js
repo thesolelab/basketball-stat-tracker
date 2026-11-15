@@ -111,7 +111,7 @@
     'detailFieldGoals', 'detailThreePoint', 'detailFreeThrows']) {
     observer.observe(document.getElementById(id), { childList: true, characterData: true, subtree: true });
   }
-  document.querySelectorAll('[data-action$="-made"]').forEach(button => {
+  document.querySelectorAll('[data-action]:not([data-action$="-miss"])').forEach(button => {
     button.addEventListener('click', () => {
       if (!gameIsActive || reducedMotion.matches) return;
       const floating = document.createElement('span');

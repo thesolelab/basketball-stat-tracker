@@ -342,8 +342,7 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
       const button = page.locator(`[data-action="${actions[index]}"]`);
       await button.click();
       assert.equal(await page.evaluate(field => stats[field], fields[index]), 1);
-      assert.equal(await button.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(200, 16, 46)');
-      assert.equal(await button.evaluate(element => getComputedStyle(element).color), 'rgb(255, 255, 255)');
+      assert.equal(await button.evaluate(element => getComputedStyle(element, '::after').content), 'none');
       assert.equal(await button.evaluate(element => getComputedStyle(element).animationName), 'none');
     }
     await page.clock.install();
@@ -357,6 +356,11 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     assert.equal(await assist.evaluate(element => element.classList.contains('stat-recorded')), false);
     assert.equal(await page.evaluate(() => stats.assists), 3);
     await page.clock.resume();
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await assist.click();
+    assert.equal(await assist.evaluate(element => getComputedStyle(element).animationName), 'hud-tap');
+    assert.equal(await assist.locator('.shot-float').textContent(), '+1');
+    assert.equal(await assist.evaluate(element => getComputedStyle(element, '::after').content), 'none');
   });
   assert.deepEqual(errors, []);
 });
