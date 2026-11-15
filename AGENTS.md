@@ -216,7 +216,7 @@ Layout, top to bottom:
 
 Interaction feedback (all under 200ms, never blocking input):
 - Every tap: a press-down scale (0.97) and a brief accent flash.
-- Other Stats taps use a solid accent fill, white label/icon, and a checkmark for clear confirmation. Keep input responsive and retain color feedback with reduced motion.
+- Other Stats taps use the same brief press/flash as the shot buttons, with a +1 indicator. Do not add a separate solid-fill or checkmark state. Respect reduced motion.
 - On a made shot: a floating "+2 / +3 / +1" rises and fades from the
   tapped button; the score number rolls up.
 - Optional haptics: `navigator.vibrate(10)` on tap where supported,
