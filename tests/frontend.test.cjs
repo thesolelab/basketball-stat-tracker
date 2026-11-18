@@ -362,5 +362,43 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     assert.equal(await assist.locator('.shot-float').textContent(), '+1');
     assert.equal(await assist.evaluate(element => getComputedStyle(element, '::after').content), 'none');
   });
+  await t.test('opponent initials capitalize during typing and save in setup and edits', async () => {
+    await page.evaluate(() => { gameIsActive = false; prepareNewGameForm(); showScreen(setupScreen); });
+    await page.locator('#opponentInput').pressSequentially('lincoln high KHS');
+    assert.equal(await page.locator('#opponentInput').inputValue(), 'Lincoln High KHS');
+    await page.locator('#opponentInput').fill("st. mary's north-west");
+    assert.equal(await page.locator('#opponentInput').inputValue(), "St. Mary's North-West");
+    await page.locator('#opponentInput').evaluate(input => input.setSelectionRange(4, 4));
+    await page.keyboard.insertText('new ');
+    assert.equal(await page.locator('#opponentInput').inputValue(), "St. New Mary's North-West");
+    assert.equal(await page.locator('#opponentInput').evaluate(input => input.selectionStart), 8);
+    await page.locator('#gameSetupForm').evaluate(form => form.requestSubmit());
+    assert.equal(await page.evaluate(() => currentGame.opponent), "St. New Mary's North-West");
+    await page.evaluate(() => { renderGameDetail(readCompletedGames()[0]); showScreen(gameDetailScreen); openEditGame(); });
+    await page.fill('#editOpponent', 'east valley KHS');
+    assert.equal(await page.locator('#editOpponent').inputValue(), 'East Valley KHS');
+    await page.click('#saveEditGame');
+    assert.equal(await page.evaluate(() => selectedDetailGame.opponent), 'East Valley KHS');
+  });
+  await t.test('tablet recording controls fit without scrolling or covering Personal Foul', async () => {
+    await page.evaluate(() => { gameIsActive = true; updateGameHeader(); showScreen(gameScreen); });
+    for (const [width, height] of [[768,1024], [1024,768], [820,1180], [1180,820], [1024,600], [768,640]]) {
+      await page.setViewportSize({ width, height });
+      await page.evaluate(() => window.scrollTo(0,0));
+      const controls = await page.locator('#gameScreen [data-action], #undoButton, #endGameButton, #exitGameButton').evaluateAll(buttons => buttons.map(button => {
+        const box = button.getBoundingClientRect();
+        const topmost = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+        return { action: button.dataset.action || button.id, top: box.top, bottom: box.bottom, height: box.height, uncovered: topmost === button || button.contains(topmost) };
+      }));
+      for (const control of controls) {
+        assert.ok(control.top >= 0 && control.bottom <= height, `${control.action} outside ${width}x${height}: ${control.top}-${control.bottom}`);
+        assert.ok(control.uncovered, `${control.action} covered at ${width}x${height}`);
+        if (control.action !== 'exitGameButton') assert.ok(control.height >= 56, `${control.action} tap target shrank`);
+      }
+    }
+    const before = await page.evaluate(() => stats.fouls);
+    await page.click('[data-action="foul"]');
+    assert.equal(await page.evaluate(() => stats.fouls), before + 1);
+  });
   assert.deepEqual(errors, []);
 });

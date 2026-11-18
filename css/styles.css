@@ -2829,3 +2829,45 @@ button[data-action] { position: relative; }
 
 /* Other Stats share the shot-button feedback, with a +1 indicator. */
 .other-stats-card .shot-float { color: var(--text); }
+
+/* Keep recording controls together on tablets, in either orientation. */
+@media (min-width: 700px) and (min-height: 600px) {
+  body:has(#gameScreen.active-screen) .app {
+    max-width: 1180px;
+    padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  }
+  #gameScreen.active-screen {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; align-items: start;
+  }
+  #gameScreen > .game-card { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); }
+  #gameScreen .game-header { padding: 8px 12px; gap: 8px; }
+  #gameScreen .game-info { min-width: 0; }
+  #gameScreen .season-label { margin: 0 0 2px; font-size: 11px; }
+  #gameScreen .player-name-row h1 { font-size: 26px; line-height: 1; }
+  #gameScreen .player-number { font-size: 20px; }
+  #gameScreen .opponent { margin: 2px 0; font-size: 15px; line-height: 1.2; overflow-wrap: anywhere; }
+  #gameScreen .game-type-badge { font-size: 11px; padding: 2px 5px; }
+  #gameScreen .points-card { min-width: 70px; padding: 4px 8px; }
+  #gameScreen .points-card strong { font-size: 60px; }
+  #gameScreen .stat-bar { align-content: center; padding: 6px; border-top: 0; }
+  #gameScreen .stat { padding: 8px 0; }
+  #gameScreen .stat strong { font-size: 22px; }
+  #gameScreen .stat:last-child strong { font-size: 17px; }
+  #gameScreen > .shooting-card { grid-column: 1; grid-row: 2; padding: 10px; }
+  #gameScreen .section-header { flex-wrap: nowrap; gap: 8px; }
+  #gameScreen .section-header h2 { display: none; }
+  #gameScreen .shooting-summary { font-size: 12px; padding: 4px 6px; }
+  #gameScreen .shot-row { grid-template-columns: 36px minmax(0,1.5fr) minmax(0,1fr); margin-top: 8px; }
+  #gameScreen .shot-row button { min-height: var(--tap-min); padding: 6px; font-size: 21px; }
+  #gameScreen > .recent-actions { grid-column: 1; grid-row: 3; min-height: 28px; padding: 4px 8px; }
+  #gameScreen .recent-actions .eyebrow { display: none; }
+  #gameScreen > .other-stats-card { grid-column: 2; grid-row: 2 / 4; padding: 10px; }
+  #gameScreen .stat-buttons { margin-top: 8px; gap: 8px; }
+  #gameScreen .stat-buttons button { min-height: var(--tap-min); padding: 6px; gap: 4px; }
+  #gameScreen .stat-icon, #gameScreen .stat-icon svg { width: 19px; height: 19px; }
+  #gameScreen .stat-button-label { font-size: 15px; }
+  #gameScreen .foul-button { min-height: var(--tap-min); margin-top: 8px; padding: 6px; }
+  #gameScreen > .game-controls { grid-column: 1 / -1; position: static; padding: 4px; margin: 0; }
+  #gameScreen .game-controls button { min-height: var(--tap-min); }
+  #gameScreen > .exit-game-button { grid-column: 1 / -1; min-height: 32px; margin: 0; padding: 0 16px; }
+}
