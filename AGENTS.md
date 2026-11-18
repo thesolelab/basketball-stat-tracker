@@ -184,7 +184,7 @@ Use these consistently; they are what make the app feel designed:
 
 #### Live Game screen (most important)
 
-On tablet-sized viewports, place scoring and Other Stats side by side, keeping all recording controls visible and primary tap targets at least 56px tall. Preserve the requested Other Stats row order.
+On tablets, fill the available viewport with recording controls. In portrait, stack full-width Scoring and Other Stats panels; in landscape, place them side by side. Expand buttons to use available height, keep all controls visible, and keep primary tap targets at least 56px tall. Preserve the requested Other Stats row order.
 
 Layout, top to bottom:
 1. **Scoreboard header:** background var(--scoreboard-bg) (the
