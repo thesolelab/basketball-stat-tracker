@@ -385,6 +385,20 @@ test('frontend save, sync, keyboard, and export regressions', async (t) => {
     for (const [width, height] of [[768,1024], [1024,768], [820,1180], [1180,820], [1024,600], [768,640]]) {
       await page.setViewportSize({ width, height });
       await page.evaluate(() => window.scrollTo(0,0));
+      const layout = await page.evaluate(() => {
+        const screen = gameScreen.getBoundingClientRect();
+        const scoring = document.querySelector('.shooting-card').getBoundingClientRect();
+        const other = document.querySelector('.other-stats-card').getBoundingClientRect();
+        return { bottom: screen.bottom, width: screen.width, scoringWidth: scoring.width, otherWidth: other.width, scoringTop: scoring.top, otherTop: other.top };
+      });
+      assert.ok(layout.bottom >= height - 12 && layout.bottom <= height, `Layout must fill ${width}x${height}`);
+      if (height > width) {
+        assert.equal(layout.scoringWidth, layout.width);
+        assert.equal(layout.otherWidth, layout.width);
+        assert.ok(layout.otherTop > layout.scoringTop);
+      } else {
+        assert.equal(layout.scoringTop, layout.otherTop);
+      }
       const controls = await page.locator('#gameScreen [data-action], #undoButton, #endGameButton, #exitGameButton').evaluateAll(buttons => buttons.map(button => {
         const box = button.getBoundingClientRect();
         const topmost = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);

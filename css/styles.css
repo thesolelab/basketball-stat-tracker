@@ -2871,3 +2871,41 @@ button[data-action] { position: relative; }
   #gameScreen .game-controls button { min-height: var(--tap-min); }
   #gameScreen > .exit-game-button { grid-column: 1 / -1; min-height: 32px; margin: 0; padding: 0 16px; }
 }
+
+/* Use the tablet viewport instead of shrinking controls into the top half. */
+@media (min-width: 700px) and (min-height: 600px) {
+  body:has(#gameScreen.active-screen) .app { max-width: none; }
+  #gameScreen.active-screen {
+    height: calc(100dvh - max(8px, env(safe-area-inset-top)) - max(8px, env(safe-area-inset-bottom)));
+    grid-template-rows: auto minmax(236px, 1fr) 32px 66px 32px;
+  }
+  #gameScreen > .shooting-card {
+    height: 100%; display: grid; grid-template-rows: auto repeat(3, minmax(56px, 1fr)); gap: 8px;
+  }
+  #gameScreen .shot-row { margin-top: 0; }
+  #gameScreen .shot-row button { height: 100%; font-size: clamp(23px, 2.5vw, 32px); }
+  #gameScreen > .other-stats-card {
+    height: 100%; display: grid; grid-template-rows: auto minmax(184px, 3fr) minmax(56px, 1fr); gap: 8px;
+  }
+  #gameScreen .stat-buttons { margin-top: 0; grid-template-rows: repeat(3, minmax(56px, 1fr)); }
+  #gameScreen .stat-buttons button { height: 100%; }
+  #gameScreen .stat-button-label { font-size: clamp(17px, 2vw, 24px); }
+  #gameScreen .stat-icon, #gameScreen .stat-icon svg { width: 25px; height: 25px; }
+  #gameScreen .foul-button { margin: 0; height: 100%; font-size: clamp(18px, 2vw, 24px); }
+  #gameScreen > .recent-actions { height: 100%; }
+  #gameScreen > .game-controls { grid-row: 4; height: 100%; }
+  #gameScreen .game-controls button { height: 100%; }
+  #gameScreen > .exit-game-button { grid-row: 5; height: 100%; }
+}
+
+@media (min-width: 700px) and (min-height: 600px) and (orientation: portrait) {
+  #gameScreen.active-screen {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(236px, 0.9fr) 32px minmax(288px, 1.1fr) 66px 32px;
+  }
+  #gameScreen > .shooting-card { grid-column: 1; grid-row: 2; }
+  #gameScreen > .recent-actions { grid-column: 1; grid-row: 3; }
+  #gameScreen > .other-stats-card { grid-column: 1; grid-row: 4; }
+  #gameScreen > .game-controls { grid-column: 1; grid-row: 5; }
+  #gameScreen > .exit-game-button { grid-column: 1; grid-row: 6; }
+}
