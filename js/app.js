@@ -2653,6 +2653,35 @@ setupBackButton.addEventListener(
 );
 
 
+function capitalizeOpponentWords(value) {
+  return value.replace(/(^|[\s-])(\p{L})/gu, (_, separator, letter) => separator + letter.toUpperCase());
+}
+
+function capitalizeOpponentInput(input) {
+  const start = input.selectionStart;
+  const end = input.selectionEnd;
+  const direction = input.selectionDirection;
+  const value = input.value;
+  const capitalized = capitalizeOpponentWords(value);
+  if (value === capitalized) return;
+  input.value = capitalized;
+  if (start !== null && end !== null) {
+    input.setSelectionRange(
+      capitalizeOpponentWords(value.slice(0, start)).length,
+      capitalizeOpponentWords(value.slice(0, end)).length,
+      direction
+    );
+  }
+}
+
+[opponentInput, editOpponent].forEach((input) => {
+  input.addEventListener("input", (event) => {
+    if (!event.isComposing) capitalizeOpponentInput(input);
+  });
+  input.addEventListener("compositionend", () => capitalizeOpponentInput(input));
+});
+
+
 gameSetupForm.addEventListener(
   "submit",
 
@@ -2667,10 +2696,7 @@ gameSetupForm.addEventListener(
         .trim();
 
 
-    const opponent =
-      opponentInput
-        .value
-        .trim();
+    const opponent = capitalizeOpponentWords(opponentInput.value.trim());
 
 
     const date =
@@ -3196,7 +3222,7 @@ function saveEditedGame() {
     return;
   }
 
-  const opponent = editOpponent.value.trim();
+  const opponent = capitalizeOpponentWords(editOpponent.value.trim());
   const date = editDate.value;
 
   const values = {

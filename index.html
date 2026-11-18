@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=27">
+  <link rel="stylesheet" href="css/styles.css?v=28">
 </head>
 
 <body>
@@ -1030,6 +1030,7 @@
           <input
             type="text"
             id="opponentInput"
+            autocapitalize="words"
             maxlength="50"
             autocomplete="off"
             placeholder="Enter opponent"
@@ -1936,7 +1937,7 @@
       <div class="edit-game-grid">
         <label class="edit-field edit-field-wide">
           <span>Opponent</span>
-          <input type="text" id="editOpponent" maxlength="50" autocomplete="off">
+          <input type="text" id="editOpponent" autocapitalize="words" maxlength="50" autocomplete="off">
         </label>
 
         <label class="edit-field">
@@ -2134,7 +2135,7 @@
 
   <script src="js/persistence.js?v=16"></script>
   <script src="js/sharing.js?v=24"></script>
-  <script src="js/app.js?v=26"></script>
+  <script src="js/app.js?v=28"></script>
   <script src="js/presentation.js?v=27"></script>
 
 </body>

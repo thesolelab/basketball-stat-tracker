@@ -174,6 +174,7 @@ Use these consistently; they are what make the app feel designed:
 
 #### New Game form
 
+- Automatically capitalize opponent word initials while typing in both setup and edit forms. Preserve existing capitals and cursor position.
 - Fields: dark inset inputs, 1px var(--border-strong), square, bold
   values, accent border on focus.
 - Home/Away and Game Type: segmented controls, rectangular, selected
@@ -182,6 +183,8 @@ Use these consistently; they are what make the app feel designed:
   at least var(--tap-min) tall.
 
 #### Live Game screen (most important)
+
+On tablet-sized viewports, place scoring and Other Stats side by side, keeping all recording controls visible and primary tap targets at least 56px tall. Preserve the requested Other Stats row order.
 
 Layout, top to bottom:
 1. **Scoreboard header:** background var(--scoreboard-bg) (the
